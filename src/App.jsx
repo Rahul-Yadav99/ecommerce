@@ -1,10 +1,20 @@
-import React from 'react'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import 'remixicon/fonts/remixicon.css'
+import NotFound from './components/NotFound';
+import Products from './components/Admin/Products';
+import Orders from './components/Admin/Orders';
 
-export default function App() {
+const App = () => {
   return (
-    <>
-      <h1>hello world</h1>
-      <p>code is working well...</p>
-    </>
+    <BrowserRouter>
+        <Routes>
+            <Route path='/admin'>
+                <Route path='products' element={<Products />} />
+                <Route path='orders' element={<Orders />} />
+            </Route>
+            <Route path='*' element={<NotFound />} />
+        </Routes>
+    </BrowserRouter>
   )
 }
+export default App;
