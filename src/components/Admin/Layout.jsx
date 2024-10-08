@@ -9,6 +9,14 @@ const Layout = ({children}) => {
 
     const menus = [
         {
+            label : 'Dashboard',
+            href: '/admin/dashbaord'
+        },
+        {
+            label : 'Customers',
+            href: '/admin/customers'
+        },
+        {
             label : 'Products',
             href: '/admin/products'
         },
@@ -38,7 +46,7 @@ const Layout = ({children}) => {
                 <div className="flex flex-col ">
                     {
                         menus.map((item, index) => (
-                            <Link key={index} to={item.href} className="p-3 text-base font-[17.5px] text-white"
+                            <Link key={index} to={item.href} className="p-3 text-base font-[17.5px] text-white "
                                 style={{
                                     background : (location.pathname === item.href) ? '#e11d48' : 'transparent'
                                 }}
@@ -47,6 +55,9 @@ const Layout = ({children}) => {
                             </Link>
                         ))
                     }
+                    <button className="text-left p-3 text-base font-[17.5px] text-white hover:bg-[#e11d48]">
+                        Logout
+                    </button>
                 </div>
             </aside>
 
@@ -89,7 +100,7 @@ const Layout = ({children}) => {
                         </button>
                     </div>
                 </nav>
-                <div className="p-8 z-1 bg-white">
+                <div className="p-8 z-1 bg-gray-100">
                     {children}
                 </div>
             </section>
