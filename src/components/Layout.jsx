@@ -26,7 +26,7 @@ const Layout = ({children}) => {
     <div>
       <nav className='py-2 bg-white shadow-xl sticky top-0 left-0'>
         <div className='w-10/12 h-full m-auto flex items-center justify-between'>
-            <Link to={'/'} className=' font-bold text-2xl'>
+            <Link to={'/'} className=' font-bold text-2xl '>
                 VibeNest
             </Link>
             <ul className='flex gap-7 items-center justify-center'>
@@ -47,6 +47,10 @@ const Layout = ({children}) => {
         </div>
       </nav>
 
+       <div className="bg-gray-100">
+        {children}
+       </div>
+
       <footer className='bg-[dodgerblue] py-16'>
         <div className="w-10/12 m-auto grid grid-cols-3">
             <div className="">
@@ -63,7 +67,7 @@ const Layout = ({children}) => {
                 <ul className='space-y-2 mt-4'>
                     {
                         menus.map((item, index) => (
-                            <li key={index} className='text-white'>
+                            <li key={index} className='text-white '>
                                 <Link to={item.href}>{item.label}</Link>
                             </li>
                         ))
@@ -82,7 +86,7 @@ const Layout = ({children}) => {
         </div>
             
             <hr className='mt-3' />
-            <p className='text-center mt-1 text-white text-[16px]'>Copyright © 2024 VibeNest Rahul.dev</p>
+            <p className='text-center mt-1 text-white text-[16px]'>Copyright © 2024 VibeNest</p>
       </footer>
     </div>
   )
