@@ -1,8 +1,24 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import firebaseAppConfig from '../util/firebase-config'
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+const auth = getAuth(firebaseAppConfig)
 
 const Layout = ({children}) => {
     const location = useLocation()
+    const [session, setSession] = useState(null)
+    const [accountMenu, setAccountMenu] = useState(false)
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if(user){
+                setSession(user)
+            }else{
+                setSession(null)
+            }
+        })
+    },[])
+
     const menus = [
         {
             label: 'Home',
@@ -24,7 +40,7 @@ const Layout = ({children}) => {
     ]
   return (
     <div>
-      <nav className='py-2 bg-white shadow-xl sticky top-0 left-0'>
+      <nav className='py-2 bg-white shadow-xl sticky top-0 left-0 z-10'>
         <div className='w-10/12 h-full m-auto flex items-center justify-between'>
             <Link to={'/'} className=' font-bold text-2xl '>
                 VibeNest
@@ -41,8 +57,38 @@ const Layout = ({children}) => {
                         </li>
                     ))
                 }
-                <Link to={'/login'} className='text-[16px] py-2 px-6 hover:bg-[dodgerblue] hover:text-white'>Login</Link>
-                <Link to={'/singup'} className='text-[16px] py-2 px-6 bg-[dodgerblue] text-white rounded hover:bg-[#3e82ff]'>Singup</Link>
+                {
+                    !session &&
+                    <>
+                        <Link to={'/login'} className='text-[16px] py-2 px-6 hover:bg-[dodgerblue] hover:text-white'>Login</Link>
+                        <Link to={'/signup'} className='text-[16px] py-2 px-6 bg-[dodgerblue] text-white rounded hover:bg-[#3e82ff]'>Signup</Link>
+                    </>
+                }
+                {
+                    session && 
+                    <button className="bg-gray-600 rounded-full relative">
+                        <img src="/img/avtar.png" alt="" className="w-14 h-14 " onClick={()=>setAccountMenu(!accountMenu)} />
+                            {
+                                accountMenu &&
+                                <div className="shadow-xl absolute top-[60px] right-0 bg-white py-6">
+                                    <div className='flex flex-col items-start'>
+                                        <Link to={'/profile'} className="text-base font-semibold hover:bg-gray-100 w-full py-2 px-16 text-start">
+                                            <i className="ri-user-line mr-3 text-green-500"></i>
+                                            Profile
+                                        </Link>
+                                        <Link to={'/profile'} className="text-base font-semibold hover:bg-gray-100 w-full py-2 px-16 text-start">
+                                            <i className="ri-shopping-cart-line mr-3 text-green-500"></i>
+                                            Cart
+                                        </Link>
+                                        <button className="text-base font-semibold w-full text-left py-2 px-16 hover:bg-gray-100" onClick={() => signOut(auth)}>
+                                            <i className="ri-logout-box-line mr-3 text-red-500"></i>
+                                            Logout
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                    </button>
+                }
             </ul>
         </div>
       </nav>
@@ -58,7 +104,7 @@ const Layout = ({children}) => {
                 VibeNest
             </Link>
             <p className='text-base text-[#d4d4d8] mt-4'>
-                <i className="ri-map-pin-line mr-3 text-black text-xl"></i>
+                <i className="ri-map-pin-line mr-3 text-xl"></i>
                 Sonia Vihar, New Delhi, Delhi 110094
             </p>
             </div>

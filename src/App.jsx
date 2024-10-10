@@ -1,6 +1,6 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import 'remixicon/fonts/remixicon.css'
-import Products from './components/Admin/Products';
+import AdminProducts from './components/Admin/Products';
 import Orders from './components/Admin/Orders';
 import Dashboard from './components/Admin/Dashboard';
 import Settings from './components/Admin/Settings';
@@ -8,14 +8,24 @@ import Payments from './components/Admin/Payments';
 import Customers from './components/Admin/Customers';
 import NotFound from './components/NotFound';
 import Home from './components/Home';
+import Products from './components/Products';
+import Category from './components/Category';
+import Login from './components/Login';
+import Signup from './components/Signup';
+import Contact from './components/Contact';
 
 const App = () => {
   return (
     <BrowserRouter>
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/products' element={<Products />} />
+          <Route path='/category' element={<Category />} />
+          <Route path='/contact-us' element={<Contact />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<Signup />} />
             <Route path='/admin'>
-                <Route path='products' element={<Products />} />
+                <Route path='products' element={<AdminProducts />} />
                 <Route path='orders' element={<Orders />} />
                 <Route path='dashbaord' element={<Dashboard />} />
                 <Route path='customers' element={<Customers />} />
