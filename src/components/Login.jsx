@@ -9,6 +9,8 @@ const auth = getAuth(firebaseAppConfig)
 
 const Login = () => {
   const navigate = useNavigate()
+  const [error, setError] = useState(null)
+  const [loader, setLoader] = useState(false)
 
   const [formValue, setFormValue] = useState({
     email : '',
@@ -16,9 +18,17 @@ const Login = () => {
   })
 
   const login = async (e) => {
-    e.preventDefault()
-    await signInWithEmailAndPassword(auth, formValue.email, formValue.password)
-    navigate('/')
+    try{
+      e.preventDefault()
+      setLoader(true)
+      await signInWithEmailAndPassword(auth, formValue.email, formValue.password)
+      navigate('/')
+    }catch(err){
+      setError(err.message)
+    }
+    finally{
+      setLoader(false)
+    }
   }
 
   const handleChange = (e) => {
@@ -47,19 +57,29 @@ const Login = () => {
                         <label className='font-semibold text-lg'>Password:</label>
                         <input onChange={handleChange} type="password" name="password" placeholder='*******' required className='p-3 border border-gray-300 rounded'/>
                     </div>
-
-                    <button 
-                    className='mt-2 bg-[dodgerblue] py-3 px-6 rounded-lg w-fit text-white font-semibold hover:bg-[#3e82ff]' 
-                    style={{
-                      transition:'0.3s'
-                    }}
-                  >
-                    Login
-                  </button>
+                    {
+                      loader ?
+                      <h1 className='text-lg font-semibold text-green-600'>Loading...</h1>
+                      :
+                      <button 
+                        className='mt-2 bg-[dodgerblue] py-3 px-6 rounded-lg w-fit text-white font-semibold hover:bg-[#3e82ff]' 
+                        style={{
+                          transition:'0.3s'
+                        }}
+                      >
+                      Login
+                    </button>
+                    }
                 </form>
                 <div className='mt-3'>
                   Don`t have an account ? <Link to={'/signup'} className='text-blue-600'>Signup</Link>
                 </div>
+                {
+                  error && 
+                  <div className="mt-3 p-3 bg-red-600 text-white font-semibold">
+                    <p>{error}</p>
+                  </div>
+                }
             </div>
         </div>
     </Layout>

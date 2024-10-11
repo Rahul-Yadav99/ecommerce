@@ -76,7 +76,7 @@ const Layout = ({children}) => {
                                             <i className="ri-user-line mr-3 text-green-500"></i>
                                             Profile
                                         </Link>
-                                        <Link to={'/profile'} className="text-base font-semibold hover:bg-gray-100 w-full py-2 px-16 text-start">
+                                        <Link to={'/cart'} className="text-base font-semibold hover:bg-gray-100 w-full py-2 px-16 text-start">
                                             <i className="ri-shopping-cart-line mr-3 text-green-500"></i>
                                             Cart
                                         </Link>

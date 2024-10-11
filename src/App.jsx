@@ -13,6 +13,8 @@ import Category from './components/Category';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Contact from './components/Contact';
+import PreGuard from './components/Guard/PreGuard';
+import Cart from './components/Cart';
 
 const App = () => {
   return (
@@ -22,8 +24,13 @@ const App = () => {
           <Route path='/products' element={<Products />} />
           <Route path='/category' element={<Category />} />
           <Route path='/contact-us' element={<Contact />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/signup' element={<Signup />} />
+          <Route path='/cart' element={<Cart />} />
+
+          <Route element={<PreGuard />}>
+            <Route path='/login' element={<Login />} />
+            <Route path='/signup' element={<Signup />} />
+          </Route>
+
             <Route path='/admin'>
                 <Route path='products' element={<AdminProducts />} />
                 <Route path='orders' element={<Orders />} />
