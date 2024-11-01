@@ -40,7 +40,7 @@ const Layout = ({children}) => {
     ]
   return (
     <div>
-      <nav className='py-2 bg-white shadow-xl sticky top-0 left-0 z-10'>
+      <nav className='md:flex hidden py-2 bg-white shadow-xl sticky top-0 left-0 z-10'>
         <div className='w-10/12 h-full m-auto flex items-center justify-between'>
             <Link to={'/'} className=' font-bold text-2xl '>
                 VibeNest
