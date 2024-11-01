@@ -92,15 +92,14 @@ const Home = () => {
   return (
     <Layout>
       <Slider />
-      <div className='w-10/12 m-auto py-8'>
-      <h1>Rahul</h1>
+      <div className='md:w-10/12 w-11/12 m-auto py-8'>
         <h1 className='text-3xl font-bold'>Latest Products</h1>
         <p className='text-gray-600 mt-3 mb-3'>Bring home the latest products designed to blend sophistication with practicality. Whether for daily use or special occasions, this is the must-have item of the season.</p>
-        <div className='grid grid-cols-5 gap-8 py-8'>
+        <div className='grid md:grid-cols-5 grid-cols-1 md:gap-8 gap-2 py-8'>
           {
             products.map((item, index) => (
               <div key={index} className='bg-white shadow-xl border'>
-                <img src={item.image} alt=""/>
+                <img src={item.image} alt="" className=''/>
                 <div className="p-2">
                   <h1 className='font-semibold '>{item.title}</h1>
                   <div className='space-x-3'>
@@ -109,7 +108,7 @@ const Home = () => {
                     <label className='text-green-600'>({item.discount}% off)</label>
                   </div>
                   <button 
-                    className='mt-3 bg-green-600 py-3 w-full text-white font-semibold hover:bg-green-700' 
+                    className='mt-3 rounded-lg bg-green-600 py-3 w-full text-white font-semibold hover:bg-green-700' 
                     style={{
                       transition:'0.3s'
                     }}
@@ -117,7 +116,7 @@ const Home = () => {
                     Buy Now
                   </button>
                   <button 
-                    className='mt-2 bg-[dodgerblue] py-3 w-full text-white font-semibold hover:bg-[#3e82ff]' 
+                    className='mt-2 rounded-lg bg-[dodgerblue] py-3 w-full text-white font-semibold hover:bg-[#3e82ff]' 
                     style={{
                       transition:'0.3s'
                     }}

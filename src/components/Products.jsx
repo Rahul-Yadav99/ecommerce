@@ -106,7 +106,7 @@ const Products = () => {
                     <label className='text-green-600'>({item.discount}% off)</label>
                   </div>
                   <button 
-                    className='mt-3 bg-green-600 py-3 w-full text-white font-semibold hover:bg-green-700' 
+                    className='mt-3 rounded-lg bg-green-600 py-3 w-full text-white font-semibold hover:bg-green-700' 
                     style={{
                       transition:'0.3s'
                     }}
@@ -114,7 +114,7 @@ const Products = () => {
                     Buy Now
                   </button>
                   <button 
-                    className='mt-2 bg-[dodgerblue] py-3 w-full text-white font-semibold hover:bg-[#3e82ff]' 
+                    className='mt-2 rounded-lg bg-[dodgerblue] py-3 w-full text-white font-semibold hover:bg-[#3e82ff]' 
                     style={{
                       transition:'0.3s'
                     }}
@@ -123,7 +123,6 @@ const Products = () => {
                     Add to cart
                   </button>
                 </div>
-                  
               </div>
             ))
           }
