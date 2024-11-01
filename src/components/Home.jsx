@@ -93,6 +93,7 @@ const Home = () => {
     <Layout>
       <Slider />
       <div className='w-10/12 m-auto py-8'>
+      <h1>Rahul</h1>
         <h1 className='text-3xl font-bold'>Latest Products</h1>
         <p className='text-gray-600 mt-3 mb-3'>Bring home the latest products designed to blend sophistication with practicality. Whether for daily use or special occasions, this is the must-have item of the season.</p>
         <div className='grid grid-cols-5 gap-8 py-8'>
