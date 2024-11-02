@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import firebaseAppConfig from '../util/firebase-config'
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+import { getAuth, onAuthStateChanged, signOut} from 'firebase/auth'
 const auth = getAuth(firebaseAppConfig)
 
 const Layout = ({children}) => {
@@ -38,6 +38,9 @@ const Layout = ({children}) => {
         },
         
     ]
+
+    console.log(session);
+    
   return (
     <div>
       <nav className='md:flex hidden py-2 bg-white shadow-xl sticky top-0 left-0 z-10'>
@@ -72,6 +75,7 @@ const Layout = ({children}) => {
                                 accountMenu &&
                                 <div className="shadow-xl absolute top-[60px] right-0 bg-white py-6">
                                     <div className='flex flex-col items-start'>
+                                        <h1 className='bg-gray-100 text-base font-semibold w-full text-center py-2'>{session.displayName}</h1>
                                         <Link to={'/profile'} className="text-base font-semibold hover:bg-gray-100 w-full py-2 px-16 text-start">
                                             <i className="ri-user-line mr-3 text-green-500"></i>
                                             Profile
