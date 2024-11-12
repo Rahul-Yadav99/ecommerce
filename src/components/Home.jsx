@@ -86,7 +86,7 @@ const Home = () => {
       <div className='md:w-8/12 w-11/12 m-auto py-8'>
         <h1 className='text-3xl font-bold'>Latest Products</h1>
         <p className='text-gray-600 mt-3 mb-5'>Bring home the latest products designed to blend sophistication with practicality. Whether for daily use or special occasions, this is the must-have item of the season.</p>
-        <div className='grid md:grid-cols-5 grid-cols-2 md:gap-8 gap-2 '>
+        <div className='grid md:grid-cols-4 grid-cols-2 md:gap-8 gap-2 '>
           {
             products.map((item, index) => (
               <div key={index} className='bg-white shadow-xl border '>
@@ -129,15 +129,15 @@ const Home = () => {
         </div>
       </div>
       <div className='bg-white py-8 text-center shadow-xl'>
-          <h1 className='md:text-5xl text-2xl font-semibold text-gray-700'>What We Offer!</h1>
-          <p className='text-gray-500 md:text-[20px] text-[16px]'>The purpose of lorem ipsum</p>
+          <h1 className='md:text-3xl text-2xl font-semibold text-gray-700'>What We Offer!</h1>
+          <p className='text-gray-500'>The purpose of lorem ipsum</p>
         <div className='grid md:grid-cols-4 grid-cols-1 gap-4 w-8/12 m-auto mt-3'>
             {
               weOffer.map((item, index) => (
                 <div key={index} className='bg-white pt-4 border shadow-xl rounded-lg text-center'>
                   <i className={item.icon}></i>
                   <h1 className='text-2xl '>{item.title}</h1>
-                  <p className='md:text-[20px] text-[16px] text-gray-500 m-3'>{item.p}</p>
+                  <p className=' text-gray-500 m-3'>{item.p}</p>
                   <div className={item.borderBottem} />
                 </div>
               ))

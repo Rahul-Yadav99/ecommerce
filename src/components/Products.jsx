@@ -90,10 +90,10 @@ const Products = () => {
   ])
   return (
     <Layout>
-      <div className='w-8/12 m-auto py-8'>
+      <div className='md:w-8/12 w-11/12 m-auto py-8'>
         <h1 className='text-3xl font-bold'>All Products</h1>
         <p className='text-gray-600 mt-3 mb-3'>Bring home the latest products designed to blend sophistication with practicality. Whether for daily use or special occasions, this is the must-have item of the season.</p>
-        <div className='grid md:grid-cols-5 grid-cols-1 gap-8 py-8'>
+        <div className='grid md:grid-cols-5 grid-cols-2 md:gap-8 gap-2 py-8'>
           {
             products.map((item, index) => (
               <div key={index} className='bg-white shadow-xl border'>

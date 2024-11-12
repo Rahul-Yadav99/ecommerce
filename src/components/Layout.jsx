@@ -8,6 +8,7 @@ const Layout = ({children}) => {
     const location = useLocation()
     const [session, setSession] = useState(null)
     const [accountMenu, setAccountMenu] = useState(false)
+    const [mobileMenu, setMobileMenu] = useState(false)
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
@@ -43,12 +44,16 @@ const Layout = ({children}) => {
     
   return (
     <div>
-      <nav className='md:flex hidden py-2 bg-white shadow-xl sticky top-0 left-0 z-10'>
-        <div className='w-8/12 h-full m-auto flex items-center justify-between'>
+        {/* Desktop Nav */}
+        <nav className='py-2 bg-white shadow-xl sticky top-0 left-0 z-10'>
+        <div className='md:w-8/12 w-10/12 h-full m-auto flex items-center justify-between'>
             <Link to={'/'} className=' font-bold text-2xl '>
                 VibeNest
             </Link>
-            <ul className='flex gap-7 items-center justify-center'>
+            <button className='md:hidden' onClick={() => setMobileMenu(!mobileMenu)}>
+                <i className="ri-menu-4-line font-bold text-2xl"></i>
+            </button>
+            <ul className='md:flex hidden gap-7 items-center justify-center'>
                 {
                     menus.map((item, index) => (
                         <li key={index} className='text-[16px] hover:bg-[dodgerblue] hover:text-white'>
@@ -96,7 +101,7 @@ const Layout = ({children}) => {
             </ul>
         </div>
       </nav>
-
+  
        <div className="bg-gray-100">
         {children}
        </div>
@@ -138,6 +143,59 @@ const Layout = ({children}) => {
             <hr className='mt-3' />
             <p className='text-center mt-1 text-white text-[16px]'>Copyright © 2024 VibeNest</p>
       </footer>
+    
+        {/* Phone nav */}
+    
+        <aside className='h-full bg-[dodgerblue] shadow-xl fixed top-0 left-0 z-10 overflow-hidden pt-6'
+            style={{
+                width: mobileMenu ? 250 : 0,
+                transition: '0.3s',
+            }}
+        >
+            {
+                session && 
+                <button className="bg-gray-600 rounded-full border ml-6">
+                        <img src="/img/avtar.png" alt="" className="w-14 h-14 " onClick={()=>setAccountMenu(!accountMenu)} />
+                            {
+                                accountMenu &&
+                                <div className="shadow-xl absolute top-[83px] right-2 bg-white py-6">
+                                    <div className='flex flex-col items-start'>
+                                        <h1 className='bg-gray-100 text-base font-semibold w-full text-center py-2'>{session.displayName}</h1>
+                                        <Link to={'/profile'} className="text-base font-semibold hover:bg-gray-100 w-full py-2 px-16 text-start">
+                                            <i className="ri-user-line mr-3 text-green-500"></i>
+                                            Profile
+                                        </Link>
+                                        <Link to={'/cart'} className="text-base font-semibold hover:bg-gray-100 w-full py-2 px-16 text-start">
+                                            <i className="ri-shopping-cart-line mr-3 text-green-500"></i>
+                                            Cart
+                                        </Link>
+                                        <button className="text-base font-semibold w-full text-left py-2 px-16 hover:bg-gray-100" onClick={() => signOut(auth)}>
+                                            <i className="ri-logout-box-line mr-3 text-red-500"></i>
+                                            Logout
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                </button>
+            }
+            <div className='flex flex-col gap-8 p-6'>
+                {
+                    menus.map((item, index) => (
+                        <Link to={item.href} key={index} className='text-white text-lg font-medium'>
+                            {item.label}
+                        </Link>
+                    ))
+                }
+                {
+                    !session && 
+                    <>
+                        <Link to={'/login'} className='py-2 px-6 text-white border bg-[deeppink] rounded'>Login</Link>
+                        <Link to={'/signup'} className='border py-2 px-6 bg-[deeppink] text-white rounded'>Signup</Link>
+                    </>
+                }
+            </div>
+        </aside>
+
     </div>
   )
 }
