@@ -51,7 +51,10 @@ const Layout = ({children}) => {
                 VibeNest
             </Link>
             <button className='md:hidden' onClick={() => setMobileMenu(!mobileMenu)}>
-                <i className="ri-menu-4-line font-bold text-2xl"></i>
+                {
+                    mobileMenu ? <i className="ri-close-line font-bold text-2xl"></i> : <i className="ri-menu-4-line font-bold text-2xl"></i>
+
+                }
             </button>
             <ul className='md:flex hidden gap-7 items-center justify-center'>
                 {
@@ -181,7 +184,7 @@ const Layout = ({children}) => {
             <div className='flex flex-col gap-8 p-6'>
                 {
                     menus.map((item, index) => (
-                        <Link to={item.href} key={index} className='text-white text-lg font-medium'>
+                        <Link to={item.href} key={index} className='text-white text-lg font-medium w-full'>
                             {item.label}
                         </Link>
                     ))
@@ -189,8 +192,8 @@ const Layout = ({children}) => {
                 {
                     !session && 
                     <>
-                        <Link to={'/login'} className='py-2 px-6 text-white border bg-[deeppink] rounded'>Login</Link>
-                        <Link to={'/signup'} className='border py-2 px-6 bg-[deeppink] text-white rounded'>Signup</Link>
+                        <Link to={'/login'} className='py-2 px-6 text-white bg-[deeppink] rounded'>Login</Link>
+                        <Link to={'/signup'} className='py-2 px-6 bg-[deeppink] text-white rounded'>Signup</Link>
                     </>
                 }
             </div>

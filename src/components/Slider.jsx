@@ -22,10 +22,10 @@ const Slider = () => {
             }}
             navigation={true}
             modules={[Autoplay, Pagination, Navigation]}
-            className="mySwiper h-[200px] md:hidden flex"
+            className="mySwiper h-[250px] md:hidden"
           >
             <SwiperSlide>
-              <img src="/img/s1.webp" alt="" className='h-full w-full  object-cover'/>
+              <img src="/img/s1.webp" alt="" className='h-full w-full object-cover'/>
             </SwiperSlide>
             <SwiperSlide>
               <img src="/img/s2.webp" alt="" className='h-full w-full object-cover'/>
