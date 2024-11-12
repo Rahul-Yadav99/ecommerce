@@ -9,6 +9,7 @@ const Slider = () => {
   return (
     <div>
       <header>
+          {/* Mobile phone Slider */}
           <Swiper
             spaceBetween={30}
             centeredSlides={true}
@@ -21,7 +22,36 @@ const Slider = () => {
             }}
             navigation={true}
             modules={[Autoplay, Pagination, Navigation]}
-            className="mySwiper"
+            className="mySwiper h-[200px] md:hidden flex"
+          >
+            <SwiperSlide>
+              <img src="/img/s1.webp" alt="" className='h-full w-full  object-cover'/>
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src="/img/s2.webp" alt="" className='h-full w-full object-cover'/>
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src="/img/s3.webp" alt="" className='h-full w-full object-cover'/>
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src="/img/s4.webp" alt="" className='h-full w-full object-cover'/>
+            </SwiperSlide>
+          </Swiper>
+            
+           {/* desktop Slider  */}
+          <Swiper
+            spaceBetween={30}
+            centeredSlides={true}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            pagination={{
+              clickable: true,
+            }}
+            navigation={true}
+            modules={[Autoplay, Pagination, Navigation]}
+            className="mySwiper hidden md:flex"
           >
             <SwiperSlide>
               <img src="/img/s1.webp" alt="" />

@@ -35,19 +35,10 @@ const Category = () => {
     ])
   return (
     <Layout>
-        <div className='w-10/12 m-auto py-8'>
+        <div className='w-8/12 m-auto py-8'>
             <div className='grid grid-cols-4 auto-rows-[400px] gap-2'>
                 {
                     category.map((item, index) => (
-                        // <Link to={'#'} key={index} className='border-2 overflow-hidden'
-                        //     style={{
-                        //         gridRow : (index === 2) ? 'span 2' : '',
-                        //         gridColumn : (index === 0 || index === 4 || index === 5 || index === 6) ? 'span 2' : '',
-                        //     }}
-                        // >
-                        //     <img className="object-cover h-full w-full" src={item.url}></img>
-                        //     <h1 className='z-100'>{item.title}</h1>
-                        // </Link>
                         <div key={index} 
                             style={{
                                 gridRow : (index === 2) ? 'span 2' : '',

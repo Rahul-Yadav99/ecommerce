@@ -52,54 +52,51 @@ const Home = () => {
       price: 2000,
       discount: 15,
       image: '/products/g.jpg'
+    }
+  ])
+
+  const [weOffer, setWeOffer] = useState([
+    {
+      title : 'Free Delivery',
+      icon : 'ri-truck-line text-[#376af7] text-5xl',
+      p : 'Nor again is there anyone who loves or pursues or desires to obtain pain of itself.',
+      borderBottem : 'bg-[#376af7] h-[4px] rounded-lg'
     },
     {
-      title : 'Men`s Shirt blue denim',
-      description : 'I am related to men`s product',
-      price: 2000,
-      discount: 15,
-      image: '/products/h.jpg'
+      title : 'Secure Payment',
+      icon : 'ri-bank-card-line text-[#d93f48] text-5xl',
+      p : 'Nor again is there anyone who loves or pursues or desires to obtain pain of itself.',
+      borderBottem : 'bg-[#d93f48] h-[4px] rounded-lg'
     },
     {
-      title : 'Men`s Shirt blue denim',
-      description : 'I am related to men`s product',
-      price: 2000,
-      discount: 15,
-      image: '/products/i.jpg'
-    },
-    {
-      title : 'Men`s Shirt blue denim',
-      description : 'I am related to men`s product',
-      price: 2000,
-      discount: 15,
-      image: '/products/j.jpg'
-    },
-    {
-      title : 'Men`s Shirt blue denim',
-      description : 'I am related to men`s product',
-      price: 2000,
-      discount: 15,
-      image: '/products/k.jpg'
-    },
-    {
-      title : 'Men`s Shirt blue denim',
-      description : 'I am related to men`s product',
-      price: 2000,
-      discount: 15,
-      image: '/products/a.jpg'
+      title : 'Free Return`s',
+      icon : 'ri-shopping-cart-line text-[#1b8657] text-5xl',
+      p : 'Nor again is there anyone who loves or pursues or desires to obtain pain of itself.',
+      borderBottem : 'bg-[#1b8657] h-[4px] rounded-lg'
+    },{
+      title : '24/7 Support',
+      icon : 'ri-customer-service-line text-[#fbc437] text-5xl',
+      p : 'Nor again is there anyone who loves or pursues or desires to obtain pain of itself.',
+      borderBottem : 'bg-[#fbc437] h-[4px] rounded-lg'
     },
   ])
   return (
     <Layout>
       <Slider />
-      <div className='md:w-10/12 w-11/12 m-auto py-8'>
+      <div className='md:w-8/12 w-11/12 m-auto py-8'>
         <h1 className='text-3xl font-bold'>Latest Products</h1>
-        <p className='text-gray-600 mt-3 mb-3'>Bring home the latest products designed to blend sophistication with practicality. Whether for daily use or special occasions, this is the must-have item of the season.</p>
-        <div className='grid md:grid-cols-5 grid-cols-1 md:gap-8 gap-2 py-8'>
+        <p className='text-gray-600 mt-3 mb-5'>Bring home the latest products designed to blend sophistication with practicality. Whether for daily use or special occasions, this is the must-have item of the season.</p>
+        <div className='grid md:grid-cols-5 grid-cols-2 md:gap-8 gap-2 '>
           {
             products.map((item, index) => (
-              <div key={index} className='bg-white shadow-xl border'>
-                <img src={item.image} alt="" className=''/>
+              <div key={index} className='bg-white shadow-xl border '>
+                <div className='overflow-hidden'>
+                  <img src={item.image} alt="" className='hover:scale-110 ' 
+                  style={{
+                    transition : '0.3s'
+                  }}
+                  />
+                </div>
                 <div className="p-2">
                   <h1 className='font-semibold '>{item.title}</h1>
                   <div className='space-x-3'>
@@ -131,6 +128,22 @@ const Home = () => {
           }
         </div>
       </div>
+      <div className='bg-white py-8 text-center shadow-xl'>
+          <h1 className='md:text-5xl text-2xl font-semibold text-gray-700'>What We Offer!</h1>
+          <p className='text-gray-500 md:text-[20px] text-[16px]'>The purpose of lorem ipsum</p>
+        <div className='grid md:grid-cols-4 grid-cols-1 gap-4 w-8/12 m-auto mt-3'>
+            {
+              weOffer.map((item, index) => (
+                <div key={index} className='bg-white pt-4 border shadow-xl rounded-lg text-center'>
+                  <i className={item.icon}></i>
+                  <h1 className='text-2xl '>{item.title}</h1>
+                  <p className='md:text-[20px] text-[16px] text-gray-500 m-3'>{item.p}</p>
+                  <div className={item.borderBottem} />
+                </div>
+              ))
+            }
+          </div>
+        </div>
     </Layout>
   )
 }
