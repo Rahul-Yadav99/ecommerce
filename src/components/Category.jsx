@@ -35,8 +35,8 @@ const Category = () => {
     ])
   return (
     <Layout>
-        <div className='w-8/12 m-auto py-8'>
-            <div className='grid grid-cols-4 auto-rows-[400px] gap-2'>
+        <div className='md:w-8/12 w-11/12 m-auto py-8'>
+            <div className='grid md:grid-cols-4 grid-cols-2 md:auto-rows-[400px] auto-rows-auto-[200px] gap-2'>
                 {
                     category.map((item, index) => (
                         <div key={index} 

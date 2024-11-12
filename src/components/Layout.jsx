@@ -181,10 +181,14 @@ const Layout = ({children}) => {
                             }
                 </button>
             }
-            <div className='flex flex-col gap-8 p-6'>
+            <div className='flex flex-col gap-2 pl-2 pt-6 pr-2'>
                 {
                     menus.map((item, index) => (
-                        <Link to={item.href} key={index} className='text-white text-lg font-medium w-full'>
+                        <Link to={item.href} key={index} className='text-white px-4 py-2 text-lg font-medium w-full'
+                            style={{
+                                background: (item.href === location.pathname) ? 'deeppink' : '',
+                            }}
+                        >
                             {item.label}
                         </Link>
                     ))
