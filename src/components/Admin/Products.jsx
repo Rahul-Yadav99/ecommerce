@@ -92,11 +92,11 @@ const Products = () => {
     <Layout>
       <div className="">
         <h1 className='text-xl font-semibold mb-4'>Product`s</h1>
-        <div className=' grid md:grid-cols-6 grid-cols-1 gap-8 '>
+        <div className=' grid md:grid-cols-5 grid-cols-1 gap-8 '>
           {
             products.map((item, index)=>(
-              <div key={index} className='bg-white rounded-md shadow-lg w-[210px]'>
-                <img src={item.image} alt="" className='rounded-t-md w-full h-[280px] object-cover' />
+              <div key={index} className='bg-white rounded-md shadow-lg'>
+                <img src={item.image} alt=""/>
                 <div className='p-4'>
                   <h1 className='font-base text-left'>{item.title}</h1>
                   <p className='text-gray-600'>{item.description.slice(0,50)}...</p>

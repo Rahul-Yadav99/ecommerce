@@ -15,7 +15,7 @@ const Customers = () => {
 
   return (
     <Layout>
-      <div>
+      <div className='min-h-screen'>
         <h1 className='text-xl font-semibold'>Customer`s</h1>
         <div className='mt-6'>
           <table className='w-full'>

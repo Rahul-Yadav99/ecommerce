@@ -1,42 +1,69 @@
 import React, { useState } from 'react'
 import Layout from './Layout'
+import { Link } from 'react-router-dom'
 
 const Category = () => {
     const [category, setCategory] = useState([
         {
-            title: 'Electronics'
+            title: 'Electronics',
+            url: '/img/c1.jpg'
         },
         {
-            title: 'Fashion'
+            title: 'Fashion',
+            url: '/img/c2.jpg'
         },
         {
-            title: 'Smartphone'
+            title: 'Smartphone',
+            url: '/img/c3.jpg'
         },
         {
-            title: 'Men`s'
+            title: 'Men`s',
+            url: '/img/c4.jpg'
         },
         {
-            title: 'Women`s'
+            title: 'Women`s',
+            url: '/img/c5.jpg'
         },
         {
-            title: 'Fashion'
+            title: 'Fashion',
+            url: '/img/c2.jpg'
         },
         {
-            title: 'Game`s'
-        },
-        {
-            title: 'Toy`s'
-        },
+            title: 'Game`s',
+            url: '/img/c7.jpg'
+        }
     ])
   return (
     <Layout>
         <div className='w-10/12 m-auto py-8'>
-            <div className='grid md:grid-cols-4 grid-cols-1  gap-16'>
+            <div className='grid grid-cols-4 auto-rows-[400px] gap-2'>
                 {
                     category.map((item, index) => (
-                        <div key={index} className='hover:bg-[dodgerblue] hover:text-white bg-white shadow-lg flex items-center justify-center flex-col p-8 rounded-lg border' style={{transition: '0.3s'}}>
-                            <i className="ri-menu-search-line text-6xl"></i>
-                            <h1 className='text-2xl font-bold'>{item.title}</h1>
+                        // <Link to={'#'} key={index} className='border-2 overflow-hidden'
+                        //     style={{
+                        //         gridRow : (index === 2) ? 'span 2' : '',
+                        //         gridColumn : (index === 0 || index === 4 || index === 5 || index === 6) ? 'span 2' : '',
+                        //     }}
+                        // >
+                        //     <img className="object-cover h-full w-full" src={item.url}></img>
+                        //     <h1 className='z-100'>{item.title}</h1>
+                        // </Link>
+                        <div key={index} 
+                            style={{
+                                gridRow : (index === 2) ? 'span 2' : '',
+                                gridColumn : (index === 0 || index === 4 || index === 5 || index === 6) ? 'span 2' : '',
+                                position : 'relative'
+                            }}
+                        >
+                            <img className="object-cover h-full w-full overflow-hidden" src={item.url}  />
+                            <Link to={'/'} className='absolute bottom-5 right-5 font-semibold text-lg bg-white hover:text-white hover:bg-[dodgerblue] px-6 py-2 rounded-full'
+                                style={{
+                                    transition : '0.2s'
+                                }}
+                            >
+                                {item.title}
+                                <i className="ri-arrow-right-up-line ml-2"></i>
+                            </Link>
                         </div>
                     ))
                 }
