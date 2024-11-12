@@ -90,16 +90,16 @@ const Home = () => {
           {
             products.map((item, index) => (
               <div key={index} className='bg-white shadow-xl border '>
-                <div className='overflow-hidden'>
-                  <img src={item.image} alt="" className='hover:scale-110 ' 
+                <div className='overflow-hidden relative'>
+                  <img src={item.image} alt="" className='hover:scale-110 h-[280px] w-full object-cover object-top' 
                   style={{
                     transition : '0.3s'
                   }}
                   />
                 </div>
-                <div className="p-2">
+                <div className="py-4 px-4">
                   <h1 className='font-semibold '>{item.title}</h1>
-                  <div className='space-x-3'>
+                  <div className='space-x-2'>
                     <label>₹{item.price-(item.price*item.discount)/100}</label>
                     <del className='font-semibold text-red-600'>₹{item.price}</del>
                     <label className='text-green-600'>({item.discount}% off)</label>

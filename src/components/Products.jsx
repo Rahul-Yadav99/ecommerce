@@ -93,20 +93,20 @@ const Products = () => {
       <div className='md:w-8/12 w-11/12 m-auto py-8'>
         <h1 className='text-3xl font-bold'>All Products</h1>
         <p className='text-gray-600 mt-3 mb-3'>Bring home the latest products designed to blend sophistication with practicality. Whether for daily use or special occasions, this is the must-have item of the season.</p>
-        <div className='grid md:grid-cols-5 grid-cols-2 md:gap-8 gap-2 py-8'>
+        <div className='grid md:grid-cols-4 grid-cols-1 md:gap-8 gap-2 py-8'>
           {
             products.map((item, index) => (
-              <div key={index} className='bg-white shadow-xl border'>
-                <div className='overflow-hidden'>
-                  <img src={item.image} alt="" className='hover:scale-110 ' 
+              <div key={index} className='bg-white shadow-xl border '>
+                <div className='overflow-hidden relative'>
+                  <img src={item.image} alt="" className='hover:scale-110 h-[280px] w-full object-cover object-top' 
                   style={{
                     transition : '0.3s'
                   }}
                   />
                 </div>
-                <div className="p-2">
+                <div className="py-4 px-4">
                   <h1 className='font-semibold '>{item.title}</h1>
-                  <div className='space-x-3'>
+                  <div className='space-x-2'>
                     <label>₹{item.price-(item.price*item.discount)/100}</label>
                     <del className='font-semibold text-red-600'>₹{item.price}</del>
                     <label className='text-green-600'>({item.discount}% off)</label>
@@ -129,6 +129,7 @@ const Products = () => {
                     Add to cart
                   </button>
                 </div>
+                  
               </div>
             ))
           }

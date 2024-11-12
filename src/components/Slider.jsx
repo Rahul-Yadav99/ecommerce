@@ -25,16 +25,16 @@ const Slider = () => {
             className="mySwiper h-[250px] md:hidden"
           >
             <SwiperSlide>
-              <img src="/img/s1.webp" alt="" className='h-full w-full object-cover'/>
+              <img src="/img/s1.webp" alt="" className='h-full w-full object-left object-cover'/>
             </SwiperSlide>
             <SwiperSlide>
-              <img src="/img/s2.webp" alt="" className='h-full w-full object-cover'/>
+              <img src="/img/s2.webp" alt="" className='h-full w-full object-right-top object-cover'/>
             </SwiperSlide>
             <SwiperSlide>
-              <img src="/img/s3.webp" alt="" className='h-full w-full object-cover'/>
+              <img src="/img/s3.webp" alt="" className='h-full w-full object-left object-cover'/>
             </SwiperSlide>
             <SwiperSlide>
-              <img src="/img/s4.webp" alt="" className='h-full w-full object-cover'/>
+              <img src="/img/s4.webp" alt="" className='h-full w-full object-left object-cover'/>
             </SwiperSlide>
           </Swiper>
             

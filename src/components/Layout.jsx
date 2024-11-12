@@ -149,7 +149,7 @@ const Layout = ({children}) => {
     
         {/* Phone nav */}
     
-        <aside className='h-full bg-[dodgerblue] shadow-xl fixed top-0 left-0 z-10 overflow-hidden pt-6'
+        <aside className='h-full bg-gray-700 shadow-xl fixed top-0 left-0 z-10 overflow-hidden pt-6'
             style={{
                 width: mobileMenu ? 250 : 0,
                 transition: '0.3s',
@@ -184,9 +184,9 @@ const Layout = ({children}) => {
             <div className='flex flex-col gap-2 pl-2 pt-6 pr-2'>
                 {
                     menus.map((item, index) => (
-                        <Link to={item.href} key={index} className='text-white px-4 py-2 text-lg font-medium w-full'
+                        <Link to={item.href} key={index} className='text-white px-4 py-2 text-sm font-medium w-full'
                             style={{
-                                background: (item.href === location.pathname) ? 'deeppink' : '',
+                                background: (item.href === location.pathname) ? 'dodgerblue' : '',
                             }}
                         >
                             {item.label}
@@ -196,8 +196,8 @@ const Layout = ({children}) => {
                 {
                     !session && 
                     <>
-                        <Link to={'/login'} className='py-2 px-6 text-white bg-[deeppink] rounded'>Login</Link>
-                        <Link to={'/signup'} className='py-2 px-6 bg-[deeppink] text-white rounded'>Signup</Link>
+                        <Link to={'/login'} className='py-2 px-4 text-white bg-[dodgerblue] rounded'>Login</Link>
+                        <Link to={'/signup'} className='py-2 px-4 border border-[dodgerblue] text-white rounded'>Signup</Link>
                     </>
                 }
             </div>

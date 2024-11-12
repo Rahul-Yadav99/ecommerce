@@ -47,7 +47,7 @@ const Category = () => {
                             }}
                         >
                             <img className="object-cover h-full w-full overflow-hidden" src={item.url}  />
-                            <Link to={'/'} className='absolute bottom-5 right-5 font-semibold text-lg bg-white hover:text-white hover:bg-[dodgerblue] px-6 py-2 rounded-full'
+                            <Link to={'/'} className='absolute md:bottom-5 bottom-2 right-2 md:right-5 md:font-semibold md:text-lg text-xs bg-white hover:text-white hover:bg-[dodgerblue] md:px-6 px-2 py-1 md:py-2 rounded-full'
                                 style={{
                                     transition : '0.2s'
                                 }}
