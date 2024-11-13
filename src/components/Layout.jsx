@@ -109,20 +109,20 @@ const Layout = ({children}) => {
         {children}
        </div>
 
-      <footer className='bg-[dodgerblue] py-16'>
-        <div className="w-8/12 m-auto grid grid-cols-3">
+      <footer className='bg-[dodgerblue] md:py-16 py-8'>
+        <div className="md:w-8/12 w-11/12 m-auto grid md:grid-cols-3 grid-cols-1 gap-8">
             <div className="">
             <Link to={'/'} className=' font-bold text-5xl text-white'>
                 VibeNest
             </Link>
-            <p className='text-base text-[#d4d4d8] mt-4'>
+            <p className='text-base text-[#d4d4d8] md:mt-4 mt-2'>
                 <i className="ri-map-pin-line mr-3 text-xl"></i>
                 Sonia Vihar, New Delhi, Delhi 110094
             </p>
             </div>
             <div className="">
                 <h1 className='text-3xl text-white font-semibold'>Usefull Links</h1>
-                <ul className='space-y-2 mt-4'>
+                <ul className='space-y-2 md:mt-4 mt-1'>
                     {
                         menus.map((item, index) => (
                             <li key={index} className='text-white '>

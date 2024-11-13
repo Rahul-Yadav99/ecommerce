@@ -85,7 +85,7 @@ const Home = () => {
       <Slider />
       <div className='md:w-8/12 w-11/12 m-auto py-8'>
         <h1 className='text-3xl font-bold'>Latest Products</h1>
-        <p className='text-gray-600 mt-3 mb-5'>Bring home the latest products designed to blend sophistication with practicality. Whether for daily use or special occasions, this is the must-have item of the season.</p>
+        <p className='text-gray-600 text-sm md:text-base mt-3 mb-5'>Bring home the latest products designed to blend sophistication with practicality.</p>
         <div className='grid md:grid-cols-4 grid-cols-1 md:gap-8 gap-2 '>
           {
             products.map((item, index) => (
@@ -98,7 +98,7 @@ const Home = () => {
                   />
                 </div>
                 <div className="py-4 px-4">
-                  <h1 className='font-semibold '>{item.title}</h1>
+                  <h1 className='font-semibold'>{item.title}</h1>
                   <div className='space-x-2'>
                     <label>₹{item.price-(item.price*item.discount)/100}</label>
                     <del className='font-semibold text-red-600'>₹{item.price}</del>
@@ -143,7 +143,7 @@ const Home = () => {
               ))
             }
           </div>
-        </div>
+      </div>
     </Layout>
   )
 }
