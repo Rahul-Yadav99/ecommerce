@@ -93,7 +93,7 @@ const Home = () => {
                 <div className='overflow-hidden relative'>
                   <img src={item.image} alt="" className='hover:scale-110' 
                   style={{
-                    transition : '0.3s'
+                    transition : '0.3s',
                   }}
                   />
                 </div>
