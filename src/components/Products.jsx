@@ -92,13 +92,13 @@ const Products = () => {
     <Layout>
       <div className='md:w-8/12 w-11/12 m-auto py-8'>
         <h1 className='text-3xl font-bold'>All Products</h1>
-        <p className='text-gray-600 mt-3 mb-3'>Bring home the latest products designed to blend sophistication with practicality. Whether for daily use or special occasions, this is the must-have item of the season.</p>
+        <p className='text-gray-600 mt-3 mb-3 text-sm md:text-base'>Bring home the latest products designed to blend sophistication with practicality. Whether for daily use or special occasions, this is the must-have item of the season.</p>
         <div className='grid md:grid-cols-4 grid-cols-1 md:gap-8 gap-2 py-8'>
           {
             products.map((item, index) => (
               <div key={index} className='bg-white shadow-xl border '>
                 <div className='overflow-hidden relative'>
-                  <img src={item.image} alt="" className='hover:scale-110 h-[280px] w-full object-cover object-top' 
+                  <img src={item.image} alt="" className='hover:scale-110' 
                   style={{
                     transition : '0.3s'
                   }}

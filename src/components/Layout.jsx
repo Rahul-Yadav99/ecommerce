@@ -51,6 +51,7 @@ const Layout = ({children}) => {
                 VibeNest
             </Link>
             <button className='md:hidden' onClick={() => setMobileMenu(!mobileMenu)}>
+            
                 {
                     mobileMenu ? <i className="ri-close-line font-bold text-2xl"></i> : <i className="ri-menu-4-line font-bold text-2xl"></i>
 
