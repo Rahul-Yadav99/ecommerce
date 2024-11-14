@@ -91,7 +91,7 @@ const Home = () => {
             products.map((item, index) => (
               <div key={index} className='bg-white shadow-xl border '>
                 <div className='overflow-hidden relative'>
-                  <img src={item.image} alt="" className='hover:scale-110 h-[280px] w-full object-cover object-top' 
+                  <img src={item.image} alt="" className='hover:scale-110' 
                   style={{
                     transition : '0.3s'
                   }}
