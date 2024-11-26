@@ -101,7 +101,7 @@ const Profile = () => {
   return (
     <Layout>
       <div className="w-11/12 md:w-8/12 m-auto py-8">
-        <div className="bg-white rounded shadow-lg md:p-8 border">
+        <div className="bg-white rounded shadow-lg md:p-8 p-2 border">
           <div className="flex gap-3">
             <i className="ri-user-line text-gray-600 md:text-3xl text-xl font-bold"></i>
             <h1 className="text-gray-600 md:text-3xl text-xl font-bold">Profile</h1>
