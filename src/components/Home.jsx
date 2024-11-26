@@ -80,18 +80,51 @@ const Home = () => {
       borderBottem : 'bg-[#fbc437] h-[4px] rounded-lg'
     },
   ])
+
+  const [brands, setBrands] = useState([
+    {
+      url : '/img/01.webp'
+    },
+    {
+      url : '/img/02.webp'
+    },
+    {
+      url : '/img/03.webp'
+    },
+    {
+      url : '/img/04.webp'
+    },
+    {
+      url : '/img/05.webp'
+    },
+    {
+      url : '/img/06.webp'
+    },
+    {
+      url : '/img/07.webp'
+    },
+    {
+      url : '/img/08.webp'
+    },
+    {
+      url : '/img/09.webp'
+    },
+    {
+      url : '/img/10.webp'
+    },
+  ])
   return (
     <Layout>
       <Slider />
       <div className='md:w-8/12 w-11/12 m-auto py-8'>
-        <h1 className='text-3xl font-bold'>Latest Products</h1>
-        <p className='text-gray-600 text-sm md:text-base mt-3 mb-5'>Bring home the latest products designed to blend sophistication with practicality.</p>
+        <h1 className='md:text-3xl text-2xl font-semibold text-gray-700 text-center'>Latest Products</h1>
+        <p className='text-gray-600 text-sm md:text-base md:mt-3 mb-5 text-center'>Bring home the latest products designed to blend sophistication with practicality.</p>
         <div className='grid md:grid-cols-4 grid-cols-1 md:gap-8 gap-2 '>
           {
             products.map((item, index) => (
-              <div key={index} className='bg-white shadow-xl border '>
+              <div key={index} className='bg-white shadow-xl border rounded-lg'>
                 <div className='overflow-hidden relative'>
-                  <img src={item.image} alt="" className='hover:scale-110' 
+                  <img src={item.image} alt="" className='hover:scale-110 rounded-lg' 
                   style={{
                     transition : '0.3s',
                   }}
@@ -128,10 +161,11 @@ const Home = () => {
           }
         </div>
       </div>
-      <div className='bg-white py-8 text-center shadow-xl'>
+
+      <div className='bg-white md:py-20 py-8 text-center shadow-xl'>
           <h1 className='md:text-3xl text-2xl font-semibold text-gray-700'>What We Offer!</h1>
           <p className='text-gray-500'>The purpose of lorem ipsum</p>
-        <div className='grid md:grid-cols-4 grid-cols-1 gap-4 w-8/12 m-auto mt-3'>
+        <div className='grid md:grid-cols-4 grid-cols-1 gap-4 md:w-8/12 w-11/12 m-auto mt-3'>
             {
               weOffer.map((item, index) => (
                 <div key={index} className='bg-white pt-4 border shadow-xl rounded-lg text-center'>
@@ -144,6 +178,21 @@ const Home = () => {
             }
           </div>
       </div>
+
+      <div className="bg-white md:py-20 py-8 text-center shadow-xl">
+        <h1 className='md:text-3xl text-2xl font-semibold text-gray-700'>Shop By Brands</h1>
+        <p className='text-gray-500'>Select Your Favorite Brands And Purchase</p>
+        <div className="grid md:grid-cols-5 grid-cols-2 gap-4 md:w-8/12 w-11/12 m-auto mt-3">
+            {
+              brands.map((item, index) => (
+                <div key={index} className='border py-2 px-4 rounded-lg'>
+                  <img src={item.url}  />
+                </div>
+                
+              ))
+            }
+        </div>
+      </div>     
     </Layout>
   )
 }

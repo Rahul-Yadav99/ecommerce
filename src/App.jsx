@@ -9,12 +9,12 @@ import Customers from './components/Admin/Customers';
 import NotFound from './components/NotFound';
 import Home from './components/Home';
 import Products from './components/Products';
-import Category from './components/Category';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Contact from './components/Contact';
 import PreGuard from './components/Guard/PreGuard';
 import Cart from './components/Cart';
+import Profile from './components/Profile';
 
 const App = () => {
   return (
@@ -22,9 +22,9 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/products' element={<Products />} />
-          <Route path='/category' element={<Category />} />
           <Route path='/contact-us' element={<Contact />} />
           <Route path='/cart' element={<Cart />} />
+          <Route path='/profile' element={<Profile />}/>
 
           <Route element={<PreGuard />}>
             <Route path='/login' element={<Login />} />

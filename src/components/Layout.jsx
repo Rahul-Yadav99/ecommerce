@@ -30,10 +30,6 @@ const Layout = ({children}) => {
             href: '/products'
         },
         {
-            label: 'Category',
-            href: '/category'
-        },
-        {
             label: 'Contact us',
             href: '/contact-us'
         },
