@@ -36,13 +36,12 @@ const Layout = ({children}) => {
         
     ]
 
-    console.log(session);
     
   return (
     <div>
         {/* Desktop Nav */}
         <nav className='py-2 bg-white shadow-xl sticky top-0 left-0 z-10'>
-        <div className='md:w-8/12 w-10/12 h-full m-auto flex items-center justify-between'>
+        <div className='md:w-8/12 w-11/12 h-full m-auto flex items-center justify-between'>
             <Link to={'/'} className=' font-bold text-2xl '>
                 VibeNest
             </Link>
@@ -102,11 +101,11 @@ const Layout = ({children}) => {
         </div>
       </nav>
   
-       <div className="bg-gray-100">
+       <div className="bg-white">
         {children}
        </div>
 
-      <footer className='bg-[dodgerblue] md:py-16 py-8'>
+      <footer className='bg-[dodgerblue] md:py-16 py-8 z-10'>
         <div className="md:w-8/12 w-11/12 m-auto grid md:grid-cols-3 grid-cols-1 gap-8">
             <div className="">
             <Link to={'/'} className=' font-bold text-5xl text-white'>

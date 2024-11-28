@@ -4,6 +4,7 @@ import Layout from './Layout'
 import { Link } from 'react-router-dom'
 import firebaseAppConfig from '../util/firebase-config'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import Swal from 'sweetalert2'
 
 const auth = getAuth(firebaseAppConfig)
 
@@ -22,9 +23,18 @@ const Login = () => {
       e.preventDefault()
       setLoader(true)
       await signInWithEmailAndPassword(auth, formValue.email, formValue.password)
+      new Swal({
+        title: 'Login Success',
+        text: 'You have been logged in successfully',
+        icon: 'success',
+      })
       navigate('/')
     }catch(err){
       setError(err.message)
+      new Swal({
+        title: 'Error',
+        text: err.message
+      })
     }
     finally{
       setLoader(false)

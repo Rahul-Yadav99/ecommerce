@@ -3,6 +3,7 @@ import Layout from './Layout'
 import { Link, useNavigate } from 'react-router-dom'
 import firebaseAppConfig from '../util/firebase-config'
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import Swal from 'sweetalert2'
 
 const auth = getAuth(firebaseAppConfig)
 
@@ -23,9 +24,18 @@ const Signup = () => {
       setLoader(true)
       await createUserWithEmailAndPassword(auth, formValue.email, formValue.password)
       await updateProfile(auth.currentUser,{displayName: formValue.fullname})
+      new Swal({
+        title: 'Signup Successfull',
+        text: 'You have been signed up successfully',
+        icon: 'success',
+      })
       navigate('/')
     } catch (err) {
       setError(err.message)
+      new Swal({
+        title: 'Error',
+        text: err.message
+      })
     }
     finally{
       setLoader(false)

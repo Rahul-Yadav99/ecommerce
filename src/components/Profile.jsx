@@ -1,234 +1,407 @@
-import React, { useEffect, useState } from "react";
-import Layout from "./Layout";
-import firebaseAppConfig from "../util/firebase-config";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { json, useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react'
+import firebaseAppConfig from '../util/firebase-config'
+import { onAuthStateChanged, getAuth, updateProfile } from 'firebase/auth'
+import { useNavigate } from 'react-router-dom'
 import { getFirestore, addDoc, collection, getDocs, query, where, updateDoc, doc } from 'firebase/firestore'
+import Layout from './Layout'
+import Swal from 'sweetalert2'
+import uploadFile from '../util/storage'
 
-import Swal from "sweetalert2";
+const auth = getAuth(firebaseAppConfig)
+const db = getFirestore(firebaseAppConfig)
 
-const auth = getAuth(firebaseAppConfig);
-const db = getFirestore(firebaseAppConfig);
+const Profile = ()=>{
+    const [orders, setOrders] = useState([])
+    const [uploading, setUploading] = useState(false)
+    const navigate = useNavigate()
+    const [session, setSession] = useState(null)
+    const [formValue, setFormValue] = useState({
+        fullname: '',
+        email: '',
+        mobile: ''
+    })
+    const [isAddress, setIsAddress] = useState(false)
+    const [docId, setDocId] = useState(null)
+    const [isUpdated, setIsUpdated] = useState(false)
 
-const Profile = () => {
-  const navigate = useNavigate();
-  const [session, setSession] = useState(null);
+    const [addressForm, setAddressForm] = useState({
+        address: '',
+        city: '',
+        state: '',
+        country: '',
+        pincode: '',
+        userId: '',
+        mobile: ''
+    })
 
-  const [formValue, setFormValue] = useState({
-    address: "",
-    city: "",
-    state: "",
-    country: "",
-    pincode: "",
-    mobile: "",
-    userId: "",
-    userName: "",
-    userEmail: "",
-  });
+    useEffect(()=>{
+        onAuthStateChanged(auth, (user)=>{
+            if(user)
+            {
+                setSession(user)
+            }
+            else {
+                setSession(false)
+                navigate('/login')
+            }
+        })
+    }, [])
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setSession(user);
+    useEffect(()=>{
+        const req = async ()=>{
+            if(session)
+            {
+                setFormValue({
+                    ...formValue,
+                    fullname: session.displayName,
+                    mobile: (session.phoneNumber ? session.phoneNumber : '')
+                })
+    
+                setAddressForm({
+                    ...addressForm,
+                    userId: session.uid
+                })
+    
+                // fetch address
+                const col = collection(db, "addresses")
+                const q = query(col, where("userId", "==", session.uid))
+                const snapshot = await getDocs(q)
+                
+                setIsAddress(!snapshot.empty)
 
-        // setFormValue({
-        //   ...formValue,
-        //   userId: user.uid,
-        //   userName: user.displayName,
-        //   userEmail: user.email
-        // })
-      } else {
-        setSession(null);
-        navigate("/");
-      }
-    });
-  }, []);
+                snapshot.forEach((doc)=>{
+                    setDocId(doc.id)
+                    const address = doc.data()
+                    setAddressForm({
+                        ...addressForm,
+                        ...address
+                    })
+                })
+            }
+        }
+        req()
+    }, [session, isUpdated])
 
-  useEffect(() => {
-    const req = async () => {
-      if (session) {
-        setFormValue({
-          ...formValue,
-          userId: session.uid,
-          userName: session.displayName,
-          userEmail: session.email,
-        });
-        const col = collection(db, "addresses");
-        const q = query(col, where("userId", "==", session.uid))
-        const snapshot = await getDocs(q);
-        
-        snapshot.forEach((doc) => {
-          const address = doc.data()
-          setFormValue({
-            ...formValue,
-            ...address
-          })
-          console.log(address);
-          
-        });
-      }
-    };
-    req();
-  }, [session]);
-  // console.log(formValue)
+    useEffect(()=>{
+        const req = async ()=>{
+            if(session)
+            {
+                const col = collection(db, "orders")
+                const q = query(col, where("userId", "==", session.uid))
+                const snapshot = await getDocs(q)
+                const tmp = []
+                snapshot.forEach((doc)=>{
+                    tmp.push(doc.data())
+                })
+                setOrders(tmp)
+            }
+        }
 
-  const handleOnChange = (e) => {
-    const input = e.target;
-    const name = input.name;
-    const value = input.value;
-    setFormValue({
-      ...formValue,
-      [name]: value,
-    });
-  };
+        req()
+    }, [session])
 
-  const saveAddressInfo = async (e) => {
-    try {
-      e.preventDefault();
-      await addDoc(collection(db, "addresses"), formValue);
-      new Swal({
-        icon: "success",
-        title: "Address Saved",
-      });
-    } catch (err) {
-      new Swal({
-        icon: "error",
-        title: "Failed",
-        text: err.message,
-      });
+    const setProfilePicture = async (e)=>{
+        const input = e.target
+        const file = input.files[0]
+        const filenameArray = file.name.split(".")
+        const ext = filenameArray[filenameArray.length-1]
+        const filename = Date.now()+'.'+ext
+        const path = `pictures/${filename}`
+        setUploading(true)
+        const url = await uploadFile(file, path)
+        await updateProfile(auth.currentUser,{
+            photoURL: url
+        })
+        setUploading(false)
+        setSession({
+            ...session,
+            photoURL: url
+        })
     }
-  };
-  return (
-    <Layout>
-      <div className="w-11/12 md:w-8/12 m-auto py-8">
-        <div className="bg-white rounded shadow-lg md:p-8 p-2 border">
-          <div className="flex gap-3">
-            <i className="ri-user-line text-gray-600 md:text-3xl text-xl font-bold"></i>
-            <h1 className="text-gray-600 md:text-3xl text-xl font-bold">Profile</h1>
-          </div>
-          <div className="h-[1px] mt-3 bg-[dodgerblue]" />
-          <div className="grid md:grid-cols-3 grid-cols-1 md:gap-8">
-            <div className="bg-white rounded mt-8 shadow-lg md:p-8 p-2 border md:col-span-2">
-              <div className="flex gap-3">
-                <i className="ri-link-unlink-m text-gray-600 md:text-3xl text-xl font-bold"></i>
-                <h1 className="text-gray-600 md:text-3xl text-xl font-bold">
-                  Delivery Address
-                </h1>
-              </div>
-              <div className="h-[1px] mt-3 bg-[dodgerblue] mb-3" />
-              <form
-                className="grid grid-cols-2 md:gap-6 gap-2"
-                onSubmit={saveAddressInfo}
-              >
-                <div className="flex flex-col gap-2 col-span-2">
-                  <label className="font-semibold text-lg">
-                    Area/Street/Vill:
-                  </label>
-                  <input
-                    onChange={handleOnChange}
-                    name="address"
-                    type="text"
-                    className="p-3 border border-gray-300 rounded"
-                  />
+
+    const handleFormValue = (e)=>{
+        const input = e.target
+        const name = input.name
+        const value = input.value
+        setFormValue({
+            ...formValue,
+            [name]: value
+        })
+    }
+
+    const saveProfileInfo = async (e)=>{
+        e.preventDefault()
+        
+        await updateProfile(auth.currentUser, {
+            displayName: formValue.fullname,
+            phoneNumber: formValue.mobile
+        })
+        new Swal({
+            icon: 'success',
+            title: 'Profile Saved !'
+        })
+    }
+
+    const setAddress = async (e)=>{
+        try {
+            e.preventDefault()
+            await addDoc(collection(db, "addresses"), addressForm)
+            setIsAddress(true)
+            setIsUpdated(!isUpdated)
+            new Swal({
+                icon: 'success',
+                title: 'Address Saved !'
+            })
+        }
+        catch(err)
+        {
+            new Swal({
+                icon: 'error',
+                title: 'Failed !',
+                text: err.message
+            })
+        }
+    }
+
+    const updateAddress = async (e)=>{
+        try {
+            e.preventDefault()
+            const ref = doc(db, "addresses", docId)
+            await updateDoc(ref, addressForm)
+            new Swal({
+                icon: 'success',
+                title: 'Address Updated !'
+            })
+        }
+        catch(err)
+        {
+            new Swal({
+                icon: 'error',
+                title: 'Failed !',
+                text: err.message
+            })
+        }
+    }
+
+    const handleAddressForm = (e)=>{
+        const input = e.target
+        const name = input.name
+        const value = input.value
+        setAddressForm({
+            ...addressForm,
+            [name]: value
+        })
+    }
+
+    const getStatusColor = (status)=>{
+        if(status === "processing")
+            return "bg-blue-600"
+
+        else if(status === "pending")
+            return "bg-indigo-600"
+
+        else if(status === "dispatched")
+            return "bg-rose-600"
+
+        else if(status === "returned")
+            return "bg-orange-600"
+
+        else 
+            return "bg-cyan-600"
+    }
+
+    if(session === null)
+    return (
+      <h1>Loading..</h1>
+    )
+    
+
+    return (
+        <Layout>
+            <div className='mx-auto md:my-16 shadow-lg rounded-md p-8 md:w-7/12 border'>
+                <div className='flex gap-3'>
+                    <i className="ri-shopping-cart-line text-4xl"></i>
+                    <h1 className="text-3xl font-semibold">Orders</h1>
                 </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="font-semibold text-lg">City:</label>
-                  <input
-                    onChange={handleOnChange}
-                    name="city"
-                    type="text"
-                    className="p-3 border border-gray-300 rounded"
-                  />
-                </div>
+                <hr className='my-6' />
 
-                <div className="flex flex-col gap-2">
-                  <label className="font-semibold text-lg">State:</label>
-                  <input
-                    onChange={handleOnChange}
-                    name="state"
-                    type="text"
-                    className="p-3 border border-gray-300 rounded"
-                  />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label className="font-semibold text-lg">Country:</label>
-                  <input
-                    onChange={handleOnChange}
-                    name="country"
-                    type="text"
-                    className="p-3 border border-gray-300 rounded"
-                  />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label className="font-semibold text-lg">Pincode:</label>
-                  <input
-                    onChange={handleOnChange}
-                    name="pincode"
-                    type="number"
-                    className="p-3 border border-gray-300 rounded"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="font-semibold text-lg">Mobile:</label>
-                  <input
-                    onChange={handleOnChange}
-                    name="mobile"
-                    type="number"
-                    className="p-3 border border-gray-300 rounded"
-                  />
-                </div>
-                <div className="col-span-2">
-                  <button className="px-4 py-2 bg-[dodgerblue] text-white rounded w-fit hover:bg-[#3e82ff]">
-                    <i className="ri-save-line mr-2"></i>
-                    Save
-                  </button>
-
-                  {/* <button className='px-4 py-2 bg-[#d1221d] text-white rounded w-fit hover:bg-[#f72822]'>
-                    <i className="ri-save-line mr-2"></i>
-                    Submit
-                    </button> */}
-                </div>
-              </form>
+                {
+                    orders.map((item, index)=>(
+                        <div className='flex gap-3 mb-8' key={index}>
+                            <img src={item.image} className='w-[100px]' />
+                            <div>
+                                <h1 className='capitalize font-semibold text-lg'>{item.title}</h1>
+                                <p className='text-gray-600'>{item.description.slice(0,50)}</p>
+                                <div className='space-x-2'>
+                                    <label className='font-bold text-lg'>
+                                    ₹{item.price-(item.price*item.discount)/100}
+                                    </label>
+                                    <del>₹{item.price}</del>
+                                    <label>({item.discount} Off)%</label>
+                                </div>
+                                <button className={`mt-2 ${getStatusColor(item.status)} rounded px-3 py-1 text-xs text-white font-medium capitalize`}>
+                                    {item.status ? item.status : 'pending'}
+                                </button>
+                            </div>
+                        </div>
+                    ))
+                }
             </div>
-            <div className="bg-white rounded mt-8 shadow-lg p-8 border">
-              <img
-                src="/img/avtar.png"
-                alt=""
-                className="w-14 h-14 bg-gray-600 rounded-full mb-3 mt-3"
-              />
-              <h1 className="font-semibold text-lg mt-4">
-                 Name: <span className="text-gray-600">{formValue.userName}</span>
-              </h1>
-              <h1 className="font-semibold text-lg mt-4">
-                 Email: <span className="text-gray-600">{formValue.userEmail}</span>
-              </h1>
-              <h1 className="font-semibold text-lg mt-4">
-                 Area: <span className="text-gray-600">{formValue.address}</span>
-              </h1>
-              <h1 className="font-semibold text-lg mt-4">
-                 City: <span className="text-gray-600">{formValue.city}</span>
-              </h1>
-              <h1 className="font-semibold text-lg mt-4">
-                 State: <span className="text-gray-600">{formValue.state}</span>
-              </h1>
-              <h1 className="font-semibold text-lg mt-4">
-                 Country: <span className="text-gray-600">{formValue.country}</span>
-              </h1>
-              <h1 className="font-semibold text-lg mt-4">
-                 Pincode: <span className="text-gray-600">{formValue.pincode}</span>
-              </h1>
-              <h1 className="font-semibold text-lg mt-4">
-                 Mobile: <span className="text-gray-600">{formValue.mobile}</span>
-              </h1>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Layout>
-  );
-};
 
-export default Profile;
+            <div className='mx-auto md:my-16 shadow-lg rounded-md p-8 md:w-7/12 border'>
+                <div className='flex gap-3'>
+                    <i className="ri-user-line text-4xl"></i>
+                    <h1 className="text-3xl font-semibold">Profile</h1>
+                </div>
+
+                <hr className='my-6' />
+
+                <div className='w-24 h-24 mx-auto relative mb-6'>
+                    {
+                        uploading ? 
+                        <img src="/images/loader.gif" />
+                        :
+                        <img src={session.photoURL ? session.photoURL : "/img/avtar.png"} className='rounded-full w-24 h-24 bg-gray-600'/>
+                    }
+                    <input type="file" accept="image/*" className='opacity-0 absolute top-0 left-0 w-full h-full' onChange={setProfilePicture} />
+                </div>
+
+                <form className='grid grid-cols-2 gap-6' onSubmit={saveProfileInfo}>
+                    <div className='flex flex-col gap-2'>
+                        <label className='text-lg font-semibold'>Fullname</label>
+
+                        <input 
+                            onChange={handleFormValue}
+                            required
+                            name="fullname"
+                            className='p-2 rounded border border-gray-300'
+                            value={formValue.fullname}
+                        />
+                    </div>
+
+                    <div className='flex flex-col gap-2'>
+                        <label className='text-lg font-semibold'>Email</label>
+                        <input 
+                            disabled
+                            onChange={handleFormValue}
+                            required
+                            name="email"
+                            type="email"
+                            className='p-2 rounded border border-gray-300'
+                            value={session.email}
+                        />
+                    </div>
+
+                    <div />
+                    <div className='col-span-2'>
+                    <button className='px-4 py-2 bg-[dodgerblue] text-white rounded w-fit'>
+                        <i className="ri-save-line mr-2"></i>
+                        Save
+                    </button>
+                    </div>
+                </form>
+            </div>
+
+            <div className='mx-auto md:my-16 shadow-lg rounded-md p-8 md:w-7/12 border'>
+                <div className='flex gap-3'>
+                    <i className="ri-link-unlink-m text-4xl"></i>
+                    <h1 className="text-3xl font-semibold">Delivery Address</h1>
+                </div>
+
+                <hr className='my-6' />
+
+                <form className='grid grid-cols-2 gap-6' onSubmit={isAddress ? updateAddress : setAddress}>
+                    <div className='flex flex-col gap-2 col-span-2'>
+                        <label className='text-lg font-semibold'>Area/Street/Vill</label>
+                        <input
+                            onChange={handleAddressForm} 
+                            required
+                            name="address"
+                            type="text"
+                            className='p-2 rounded border border-gray-300'
+                            value={addressForm.address}
+                        />
+                    </div>
+
+                    <div className='flex flex-col gap-2'>
+                        <label className='text-lg font-semibold'>City</label>
+                        <input 
+                            onChange={handleAddressForm} 
+                            required
+                            name="city"
+                            type="text"
+                            className='p-2 rounded border border-gray-300'
+                            value={addressForm.city}
+                        />
+                    </div>
+
+                    <div className='flex flex-col gap-2'>
+                        <label className='text-lg font-semibold'>State</label>
+                        <input 
+                            onChange={handleAddressForm} 
+                            required
+                            name="state"
+                            type="text"
+                            className='p-2 rounded border border-gray-300'
+                            value={addressForm.state}
+                        />
+                    </div>
+
+                    <div className='flex flex-col gap-2'>
+                        <label className='text-lg font-semibold'>Country</label>
+                        <input 
+                            onChange={handleAddressForm} 
+                            required
+                            name="country"
+                            type="text"
+                            className='p-2 rounded border border-gray-300'
+                            value={addressForm.country}
+                        />
+                    </div>
+
+                    <div className='flex flex-col gap-2'>
+                        <label className='text-lg font-semibold'>Pincode</label>
+                        <input 
+                            onChange={handleAddressForm} 
+                            required
+                            name="pincode"
+                            type="number"
+                            className='p-2 rounded border border-gray-300'
+                            value={addressForm.pincode}
+                        />
+                    </div>
+
+                    <div className='flex flex-col gap-2' id="address">
+                        <label className='text-lg font-semibold'>Mobile</label>
+                        <input 
+                            onChange={handleAddressForm}
+                            required
+                            name="mobile"
+                            type="number"
+                            className='p-2 rounded border border-gray-300'
+                            value={addressForm.mobile}
+                        />
+                    </div>
+                    <div className='col-span-2'>
+                    {
+                        isAddress ? 
+                        <button className='px-4 py-2 bg-[dodgerblue] text-white rounded w-fit '>
+                            <i className="ri-save-line mr-2"></i>
+                            Save
+                        </button>
+                        :
+                        <button className='px-4 py-2 bg-[dodgerblue] text-white rounded w-fit '>
+                            <i className="ri-save-line mr-2"></i>
+                            Submit
+                        </button>
+                    }
+
+</div>
+                </form>
+            </div>
+        </Layout>
+    )
+}
+
+export default Profile
