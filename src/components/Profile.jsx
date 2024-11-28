@@ -218,7 +218,7 @@ const Profile = ()=>{
 
     return (
         <Layout>
-            <div className='mx-auto md:my-16 shadow-lg rounded-md p-8 md:w-7/12 border'>
+            <div className='mx-auto md:my-16 shadow-lg rounded-md p-4 md:w-7/12 border mt-4'>
                 <div className='flex gap-3'>
                     <i className="ri-shopping-cart-line text-4xl"></i>
                     <h1 className="text-3xl font-semibold">Orders</h1>
@@ -249,7 +249,7 @@ const Profile = ()=>{
                 }
             </div>
 
-            <div className='mx-auto md:my-16 shadow-lg rounded-md p-8 md:w-7/12 border'>
+            <div className='mx-auto md:my-16 shadow-lg rounded-md p-4 md:w-7/12 border mt-4'>
                 <div className='flex gap-3'>
                     <i className="ri-user-line text-4xl"></i>
                     <h1 className="text-3xl font-semibold">Profile</h1>
@@ -303,7 +303,7 @@ const Profile = ()=>{
                 </form>
             </div>
 
-            <div className='mx-auto md:my-16 shadow-lg rounded-md p-8 md:w-7/12 border'>
+            <div className='mx-auto md:my-16 shadow-lg rounded-md p-4 md:w-7/12 border mt-4'>
                 <div className='flex gap-3'>
                     <i className="ri-link-unlink-m text-4xl"></i>
                     <h1 className="text-3xl font-semibold">Delivery Address</h1>
