@@ -119,11 +119,11 @@ const Home = () => {
       <div className='md:w-8/12 w-9/12 m-auto py-8'>
         <h1 className='md:text-3xl text-2xl font-semibold text-gray-700 text-center'>Latest Products</h1>
         <p className='text-gray-600 text-sm md:text-base md:mt-3 mb-5 text-center'>Bring home the latest products designed to blend sophistication with practicality.</p>
-        <div className='grid md:grid-cols-5 grid-cols-1 md:gap-8 gap-4 '>
+        <div className='grid md:grid-cols-4 grid-cols-1 md:gap-8 gap-4 '>
           {
             products.map((item, index) => (
               <div key={index} className='m-auto border pb-2 rounded-lg shadow-xl'>
-              <img src={item.image} alt="" className='md:h-[280px] md:w-[210px] object-cover rounded-lg' />
+              <img src={item.image} alt="" className=' object-cover rounded-lg' />
               <div className='flex flex-col items-start justify-start gap-y-1 mt-2 p-2'>
                   <h1 className='text-gray-600 text-base capitalize'>{item.title}</h1>
                   <div className=' '>
