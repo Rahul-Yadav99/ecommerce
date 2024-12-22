@@ -42,11 +42,10 @@ const Layout = ({children}) => {
         {/* Desktop Nav */}
         <nav className='py-2 bg-white shadow-xl sticky top-0 left-0 z-10'>
         <div className='md:w-8/12 w-11/12 h-full m-auto flex items-center justify-between'>
-            <Link to={'/'} className=' font-bold text-2xl '>
+            <Link to={'/'} className='font-bold text-2xl text-[dodgerblue]'>
                 VibeNest
             </Link>
             <button className='md:hidden' onClick={() => setMobileMenu(!mobileMenu)}>
-            
                 {
                     mobileMenu ? <i className="ri-close-line font-bold text-2xl"></i> : <i className="ri-menu-4-line font-bold text-2xl"></i>
 

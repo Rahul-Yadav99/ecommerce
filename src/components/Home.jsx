@@ -1,8 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from './Layout'
 import Slider from './Slider';
+import firebaseAppConfig from '../util/firebase-config';
+import { getFirestore, addDoc, collection } from 'firebase/firestore';
+import Swal from 'sweetalert2';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
+const db = getFirestore(firebaseAppConfig)
+const auth = getAuth(firebaseAppConfig)
 
 const Home = () => {
+
   const [products, setProducts] = useState([
     {
       title : 'Men`s Shirt blue denim',
@@ -113,6 +121,36 @@ const Home = () => {
       url : '/img/10.webp'
     },
   ])
+
+  const [session, setSession] = useState(null)
+
+  useEffect(()=>{
+    onAuthStateChanged(auth, (user)=>{
+      if(user){
+        setSession(user)
+      }else{
+        setSession(null)
+      }
+    })
+  }, [])
+
+  const addToCart = async (item) => {
+    try{
+      item.userId = session.uid;
+      await addDoc(collection(db, "carts"), item)
+      new Swal({
+        title : 'Item Added',
+        text : 'Item has been added to your cart',
+        icon : 'success',
+      })
+    }catch(err){
+      new Swal({
+        title: 'Error',
+        text: 'Something went wrong',
+        icon: 'error',
+      })
+    }
+  }
   return (
     <Layout>
       <Slider />
@@ -126,7 +164,7 @@ const Home = () => {
               <img src={item.image} alt="" className=' object-cover rounded-lg' />
               <div className='flex flex-col items-start justify-start gap-y-1 mt-2 p-2'>
                   <h1 className='text-gray-600 text-base capitalize'>{item.title}</h1>
-                  <div className=' '>
+                  <div className='space-x-1'>
                     <label className='text-gray-600 font-semibold'>₹{item.price-(item.price*item.discount)/100}</label>
                     <del className='text-red-600'>₹{item.price}</del>
                     <label className='text-green-600'>({item.discount}% off)</label>
@@ -140,10 +178,11 @@ const Home = () => {
                      Buy Now
                   </button>
                  <button 
-                    className='mt-1 rounded-lg bg-[dodgerblue] py-1 w-full px-3 text-white hover:bg-[#3e82ff]' 
-                    style={{
-                     transition:'0.3s'
-                    }}
+                  onClick={() => addToCart(item)}
+                  className='mt-1 rounded-lg bg-[dodgerblue] py-1 w-full px-3 text-white hover:bg-[#3e82ff]' 
+                  style={{
+                    transition:'0.3s'
+                  }}
                   >
                     <i className="ri-shopping-cart-line mr-1"></i>
                      Add to cart

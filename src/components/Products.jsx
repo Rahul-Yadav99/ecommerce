@@ -111,15 +111,15 @@ const Products = () => {
                     style={{
                      transition:'0.3s'
                     }}
-                   >
+                  >
                      Buy Now
                   </button>
                  <button 
-                    className='mt-1 rounded-lg bg-[dodgerblue] py-1 w-full px-3 text-white hover:bg-[#3e82ff]' 
-                    style={{
-                     transition:'0.3s'
-                    }}
-                  >
+                      className='mt-1 rounded-lg bg-[dodgerblue] py-1 w-full px-3 text-white hover:bg-[#3e82ff]' 
+                      style={{
+                      transition:'0.3s'
+                      }}
+                >
                     <i className="ri-shopping-cart-line mr-1"></i>
                      Add to cart
                    </button>

@@ -100,7 +100,7 @@ const Layout = ({children}) => {
                         </button>
                     </div>
                 </nav>
-                <div className="p-8 z-1 bg-gray-100">
+                <div className="p-8 z-1">
                     {children}
                 </div>
             </section>
