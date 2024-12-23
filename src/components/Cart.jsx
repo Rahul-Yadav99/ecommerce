@@ -41,10 +41,11 @@ const Cart = () => {
       res()
     }, [session])
 
-    const removeProduct = async (index) => {
-      const ref = doc(db, 'carts', index);
+    const removeProduct = async (id) => {
+      const ref = doc(db, 'carts', id);
       await deleteDoc(ref);
     }
+console.log(products);
 
   return (
     <Layout>
@@ -67,7 +68,7 @@ const Cart = () => {
                       <label className='text-green-600'>({item.discount}% off)</label>
                     </div>
                     <button className='bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700'
-                      onClick={()=>removeProduct()}
+                      onClick={()=>removeProduct(item.userId)}
                     >
                       <i className="ri-delete-bin-6-line mr-1"></i>
                       Remove

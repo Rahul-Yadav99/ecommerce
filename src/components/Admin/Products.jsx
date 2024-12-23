@@ -89,8 +89,30 @@ const Products = () => {
     // },
   ])
 
+  const [productForm, setProductForm] = useState({
+    title: '',
+    description: '',
+    price: '',
+    discount: '',
+  })
   const [productModel, setProductModel] = useState(false)
 
+  const handleProductForm = (e) => {
+    const input = e.target
+    const name = input.name
+    const value = input.value
+    setProductForm({
+      ...productForm,
+      [name]: value
+    })
+    
+  }
+
+  const createProduct = (e) => {
+    e.preventDefault()
+    console.log(productForm);
+    
+  }
   return (
     <Layout>
       <div className="">
@@ -129,11 +151,11 @@ const Products = () => {
                 <i className="ri-close-line text-lg font-semibold"></i>
               </button>
               <h1 className='text-lg font-semibold'>New Product</h1>
-              <form className='grid grid-cols-2 mt-4 gap-4'>
-                <input type="text" name="title" placeholder='Enter product title here' required className='col-span-2 p-2 border border-gray-300 rounded'/>
-                <input type="number" name="price" placeholder='Enter product price here' required className='p-2 border border-gray-300 rounded'/>
-                <input type="number" name="discount" placeholder='Enter discount title here' required className='p-2 border border-gray-300 rounded'/>
-                <textarea name="description" placeholder='Description' required className='col-span-2 p-2 border border-gray-300 rounded' rows={10} ></textarea>
+              <form onSubmit={createProduct} className='grid grid-cols-2 mt-4 gap-4'>
+                <input type="text" name="title" placeholder='Enter product title here' required onChange={handleProductForm} className='col-span-2 p-2 border border-gray-300 rounded'/>
+                <input type="number" name="price" placeholder='Enter product price here' required onChange={handleProductForm} className='p-2 border border-gray-300 rounded'/>
+                <input type="number" name="discount" placeholder='Enter discount discount here' required onChange={handleProductForm} className='p-2 border border-gray-300 rounded'/>
+                <textarea name="description" placeholder='Description' required onChange={handleProductForm} className='col-span-2 p-2 border border-gray-300 rounded' rows={10} ></textarea>
                 <div>
                   <button className='bg-[dodgerblue] text-white py-2 px-4 rounded hover:bg-[deeppink]'>Submit</button>
                 </div>
