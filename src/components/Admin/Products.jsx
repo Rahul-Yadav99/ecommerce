@@ -162,7 +162,7 @@ const Products = () => {
         <div className=' grid md:grid-cols-5 grid-cols-1 gap-8 '>
           {
             products.map((item, index)=>(
-              <div key={index} className='bg-white rounded-md shadow-xl'>
+              <div key={index} className='bg-white rounded-md shadow-xl border'>
                 <img src={item.image} alt=""/>
                 <div className='p-4'>
                   <h1 className='font-base text-left'>{item.title}</h1>
