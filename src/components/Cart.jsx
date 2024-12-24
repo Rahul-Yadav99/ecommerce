@@ -45,7 +45,6 @@ const Cart = () => {
       const ref = doc(db, 'carts', id);
       await deleteDoc(ref);
     }
-console.log(products);
 
   return (
     <Layout>

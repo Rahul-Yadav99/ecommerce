@@ -1,7 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from './Layout'
+import firebaseAppConfig from '../../util/firebase-config'
+import { getFirestore, addDoc, collection, getDocs } from 'firebase/firestore'
+import Swal from 'sweetalert2'
+
+const db = getFirestore(firebaseAppConfig)
 
 const Products = () => {
+
   const [products, setProducts] = useState([
     // {
     //   title : 'Men`s Shirt blue denim',
@@ -89,13 +95,28 @@ const Products = () => {
     // },
   ])
 
-  const [productForm, setProductForm] = useState({
+  const model = {
     title: '',
     description: '',
     price: '',
     discount: '',
-  })
+  }
+
+  const [productForm, setProductForm] = useState(model)
   const [productModel, setProductModel] = useState(false)
+
+  useEffect(()=>{
+    const req = async () => {
+      const snapshot = await getDocs(collection(db, "products"))
+      const tmp = []
+      snapshot.forEach((doc)=>{
+        const allProducts = doc.data()
+        tmp.push(allProducts)
+      })
+      setProducts(tmp)
+    }
+    req()
+  }, [products])
 
   const handleProductForm = (e) => {
     const input = e.target
@@ -108,14 +129,27 @@ const Products = () => {
     
   }
 
-  const createProduct = (e) => {
-    e.preventDefault()
-    console.log(productForm);
-    
+  const createProduct = async (e) => {
+    try {
+      e.preventDefault()
+      await addDoc(collection(db, 'products'), productForm)  
+      setProductForm(model)
+      new Swal({
+        title: 'Product Added',
+        text: 'Product Added Successfully',
+        icon: 'success',
+      })  
+    } catch (error) {
+      new Swal({
+        title: 'Error',
+        text: error.message,
+        icon: 'error',
+      })
+    }    
   }
   return (
     <Layout>
-      <div className="">
+      <div className="min-h-screen">
         <div className="flex justify-between">
           <h1 className='text-xl font-semibold mb-4'>Product`s</h1>
           <h1 className='text-xl font-semibold mb-4'>Rahul</h1>
@@ -128,7 +162,7 @@ const Products = () => {
         <div className=' grid md:grid-cols-5 grid-cols-1 gap-8 '>
           {
             products.map((item, index)=>(
-              <div key={index} className='bg-white rounded-md shadow-lg'>
+              <div key={index} className='bg-white rounded-md shadow-xl'>
                 <img src={item.image} alt=""/>
                 <div className='p-4'>
                   <h1 className='font-base text-left'>{item.title}</h1>
@@ -153,10 +187,10 @@ const Products = () => {
               </button>
               <h1 className='text-lg font-semibold'>New Product</h1>
               <form onSubmit={createProduct} className='grid grid-cols-2 mt-4 gap-4'>
-                <input type="text" name="title" placeholder='Enter product title here' required onChange={handleProductForm} className='col-span-2 p-2 border border-gray-300 rounded'/>
-                <input type="number" name="price" placeholder='Enter product price here' required onChange={handleProductForm} className='p-2 border border-gray-300 rounded'/>
-                <input type="number" name="discount" placeholder='Enter discount discount here' required onChange={handleProductForm} className='p-2 border border-gray-300 rounded'/>
-                <textarea name="description" placeholder='Description' required onChange={handleProductForm} className='col-span-2 p-2 border border-gray-300 rounded' rows={10} ></textarea>
+                <input type="text" name="title" placeholder='Enter product title here' required onChange={handleProductForm} value={productForm.title} className='col-span-2 p-2 border border-gray-300 rounded'/>
+                <input type="number" name="price" placeholder='Enter product price here' required onChange={handleProductForm} value={productForm.price} className='p-2 border border-gray-300 rounded'/>
+                <input type="number" name="discount" placeholder='Enter discount discount here' required onChange={handleProductForm} value={productForm.discount} className='p-2 border border-gray-300 rounded'/>
+                <textarea name="description" placeholder='Description' required onChange={handleProductForm} value={productForm.description} className='col-span-2 p-2 border border-gray-300 rounded' rows={10} ></textarea>
                 <div>
                   <button className='bg-[dodgerblue] text-white py-2 px-4 rounded hover:bg-[deeppink]'>Submit</button>
                 </div>
