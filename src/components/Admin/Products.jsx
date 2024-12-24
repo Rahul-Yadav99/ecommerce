@@ -118,6 +118,7 @@ const Products = () => {
       <div className="">
         <div className="flex justify-between">
           <h1 className='text-xl font-semibold mb-4'>Product`s</h1>
+          <h1 className='text-xl font-semibold mb-4'>Rahul</h1>
           <button className='border px-2 py-3 text-gray-600 bg-gray-100 rounded hover:bg-gray-50' onClick={()=>setProductModel(true)}>
             <i className='ri-sticky-note-add-line mr-1'></i>
             New Product
