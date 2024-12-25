@@ -100,10 +100,12 @@ const Products = () => {
     description: '',
     price: '',
     discount: '',
+    image: ''
   }
 
   const [productForm, setProductForm] = useState(model)
   const [productModel, setProductModel] = useState(false)
+  const [imageModel, setImageModel] = useState(false)
 
   useEffect(()=>{
     const req = async () => {
@@ -147,25 +149,39 @@ const Products = () => {
       })
     }    
   }
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0]
+    if(!file) return
+    const data = new FormData()
+    data.append('file', file)
+    data.append("upload_preset", 'ecomerce')    
+    data.append("cloud_name", 'dq6m3j3jf')
+    const res = await fetch("https://api.cloudinary.com/v1_1/dq6m3j3jf/image/upload", {
+      method: "POST",
+      body: data
+    })
+    const uploadedImageURL = await res.json()
+    console.log(uploadedImageURL.url);
+  }
   return (
     <Layout>
       <div className="min-h-screen">
         <div className="flex justify-between">
           <h1 className='text-xl font-semibold mb-4'>Product`s</h1>
-          <h1 className='text-xl font-semibold mb-4'>Rahul</h1>
-          <button className='border px-2 py-3 text-gray-600 bg-gray-100 rounded hover:bg-gray-50' onClick={()=>setProductModel(true)}>
+          <button className='border px-2 py-3 text-white bg-[dodgerblue] rounded hover:bg-[deeppink]' onClick={()=>setProductModel(true)}>
             <i className='ri-sticky-note-add-line mr-1'></i>
             New Product
           </button>
         </div>
 
-        <div className=' grid md:grid-cols-5 grid-cols-1 gap-8 '>
+        <div className=' grid md:grid-cols-5 grid-cols-1 gap-8 mt-3'>
           {
             products.map((item, index)=>(
               <div key={index} className='bg-white rounded-md shadow-xl'>
-                <img src={item.image} alt=""/>
+                <img src='/products/a.jpg' onClick={()=>setImageModel(true)}/>
                 <div className='p-4'>
-                  <h1 className='font-base text-left'>{item.title}</h1>
+                  <h1 className='font-base text-left capitalize'>{item.title}</h1>
                   <p className='text-gray-600'>{item.description.slice(0,50)}...</p>
                   <div className='flex gap-2 mt-1'>
                     <label>₹{item.price-(item.price*item.discount)/100}</label>
@@ -190,12 +206,29 @@ const Products = () => {
                 <input type="text" name="title" placeholder='Enter product title here' required onChange={handleProductForm} value={productForm.title} className='col-span-2 p-2 border border-gray-300 rounded'/>
                 <input type="number" name="price" placeholder='Enter product price here' required onChange={handleProductForm} value={productForm.price} className='p-2 border border-gray-300 rounded'/>
                 <input type="number" name="discount" placeholder='Enter discount discount here' required onChange={handleProductForm} value={productForm.discount} className='p-2 border border-gray-300 rounded'/>
+                {/* <input type="file" name='image' required onChange={handleProductForm} value={productForm.image} /> */}
                 <textarea name="description" placeholder='Description' required onChange={handleProductForm} value={productForm.description} className='col-span-2 p-2 border border-gray-300 rounded' rows={10} ></textarea>
                 <div>
                   <button className='bg-[dodgerblue] text-white py-2 px-4 rounded hover:bg-[deeppink]'>Submit</button>
                 </div>
               </form>
             </div>
+          </div>
+        }
+
+        {
+          imageModel &&
+          <div className="bg-gray-800 bg-opacity-80 absolute top-0 left-0 w-full h-full flex justify-center items-center">
+          <div className="bg-white w-6/12 py-4 px-6 rounded-md relative">
+          <button className='absolute top-4 right-3' onClick={()=>setImageModel(false)}>
+            <i className="ri-close-line text-lg font-semibold"></i>
+          </button>
+          <h1 className='text-lg font-semibold'>Upload Product Image</h1>
+          <div className="mt-3">
+            <input type="file" onChange={handleFileUpload} />
+            {/* <button className='bg-[dodgerblue] text-white py-2 px-4 rounded hover:bg-[deeppink]'>Submit</button> */}
+          </div>
+          </div>
           </div>
         }
       </div>
