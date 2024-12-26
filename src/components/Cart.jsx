@@ -52,17 +52,17 @@ const Cart = () => {
 
   return (
     <Layout>
-      <div className='md:w-8/12 w-9/12 m-auto p-8'>
+      <div className='md:w-8/12 w-9/12 m-auto py-8'>
         <div className='flex items-center gap-4'>
-          <i className="ri-shopping-cart-line text-3xl font-bold"></i>
-          <h1 className='text-3xl font-bold'>Cart</h1>
+          <i className="ri-shopping-cart-line text-2xl font-bold"></i>
+          <h1 className='text-2xl font-bold'>Cart</h1>
         </div>
         <hr className='my-6'/>
-        <div className="grid md:grid-cols-4 grid-cols-1 md:gap-x-8 md:gap-y-8 gap-x-1 gap-y-3">
+        <div className="grid md:grid-cols-3 grid-cols-1 md:gap-x-8 md:gap-y-8 gap-x-1 gap-y-3">
           {
             products.map((item, index) => (
-              <div key={index} className='m-auto border pb-2 rounded-lg shadow-xl'>
-                <img src={item.image} alt="" className='object-cover rounded-lg' />
+              <div key={index} className='m-auto pb-2 rounded-lg shadow-xl'>
+                <img src={item.image ? item.image : "https://via.placeholder.com/300x300"} alt="" className='w-[300px] h-[300px] object-cover rounded-lg' />
                 <div className='flex flex-col items-start justify-start gap-y-1 mt-2 pl-2'>
                     <h1 className='text-gray-600 text-base capitalize'>{item.title}</h1>
                     <p className='text-gray-600 capitalize text-sm'>{item.description.slice(0,50)}...</p>

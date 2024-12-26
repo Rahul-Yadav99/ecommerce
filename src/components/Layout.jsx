@@ -52,7 +52,7 @@ const Layout = ({children}) => {
 
                 }
             </button>
-            <ul className='md:flex hidden gap-7 items-center justify-center'>
+            <ul className='md:flex hidden gap-6 items-center justify-center'>
                 {
                     menus.map((item, index) => (
                         <li key={index} className='text-[16px] hover:bg-[dodgerblue] hover:text-white'>

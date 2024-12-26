@@ -205,12 +205,12 @@ const Products = () => {
           ?
           <Loader />
           :
-          <div className=' grid md:grid-cols-5 grid-cols-1 gap-8 mt-3'>
+          <div className=' grid md:grid-cols-4 grid-cols-1 gap-8 mt-3'>
             {
               products.map((item, index)=>(
                 <div key={index} className='bg-white rounded-md shadow-xl border m-auto'>
                   <div className="relative overflow-hidden ">
-                    <img src={item.image ? item.image : '/products/a.jpg'} className='object-cover'/>
+                    <img src={item.image ? item.image : 'https://via.placeholder.com/300x300'} className='w-[300px] h-[300px] object-cover rounded-lg'/>
                     <input type="file" className='opacity-0 w-full h-full absolute top-0 left-0' onChange={(e)=>handleFileUpload(e, item.imageId)}/>
                   </div>
                   <div className='px-2 py-4 '>

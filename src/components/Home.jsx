@@ -172,15 +172,15 @@ const Home = () => {
       <div className='md:w-8/12 w-9/12 m-auto py-8'>
         <h1 className='md:text-3xl text-2xl font-semibold text-gray-700 text-center'>Latest Products</h1>
         <p className='text-gray-600 text-sm md:text-base md:mt-3 mb-5 text-center'>Bring home the latest products designed to blend sophistication with practicality.</p>
-        <div className='grid md:grid-cols-4 grid-cols-1 md:gap-8 gap-4 '>
+        <div className='grid md:grid-cols-3 grid-cols-1 md:gap-8 gap-4 '>
           {
             products.map((item, index) => (
-              <div key={index} className='m-auto border pb-2 rounded-lg shadow-xl'>
-              <img src={item.image ? item.image : "/products/a.jpg"} alt="" className='object-cover rounded-lg w-full' />
+              <div key={index} className='m-auto pb-2 shadow-xl rounded-lg'>
+              <img src={item.image ? item.image : "https://via.placeholder.com/300x300"} alt="" className='w-[300px] h-[300px] object-cover rounded-lg' />
               <div className='flex flex-col items-start justify-start gap-y-1 mt-2 p-2'>
                   <h1 className='font-base text-left capitalize font-semibold'>{item.title}</h1>
                   <p className='text-gray-600 capitalize text-sm'>{item.description.slice(0,50)}...</p>
-                  <div className='space-x-1'>
+                  <div className='space-x-2'>
                     <label className='text-gray-600 text-sm font-semibold'>₹{item.price-(item.price*item.discount)/100}</label>
                     <del className='text-red-600 text-sm'>₹{item.price}</del>
                     <label className='text-green-600 text-sm'>({item.discount}% off)</label>
