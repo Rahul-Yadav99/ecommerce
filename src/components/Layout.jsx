@@ -42,7 +42,8 @@ const Layout = ({children}) => {
         {/* Desktop Nav */}
         <nav className='py-2 bg-white shadow-xl sticky top-0 left-0 z-10'>
         <div className='md:w-8/12 w-11/12 h-full m-auto flex items-center justify-between'>
-            <Link to={'/'} className='font-bold text-2xl text-[dodgerblue]'>
+            <Link to={'/'} className='font-bold text-2xl text-[dodgerblue] flex  items-center gap-3'>
+                <img src="/img/logo.png" alt="" className='h-[2%] w-[10%]'/>
                 VibeNest
             </Link>
             <button className='md:hidden' onClick={() => setMobileMenu(!mobileMenu)}>
@@ -104,10 +105,11 @@ const Layout = ({children}) => {
         {children}
        </div>
 
-      <footer className='bg-[dodgerblue] md:py-16 py-8 z-10'>
+      <footer className='bg-[#4e4e4e] md:py-16 py-8 z-10'>
         <div className="md:w-8/12 w-11/12 m-auto grid md:grid-cols-3 grid-cols-1 gap-8">
             <div className="">
-            <Link to={'/'} className=' font-bold text-5xl text-white'>
+            <Link to={'/'} className='font-bold text-5xl text-white flex  items-center gap-3'>
+                <img src="/img/logo.png" alt="" className='h-[2%] w-[10%]'/>
                 VibeNest
             </Link>
             <p className='text-base text-[#d4d4d8] md:mt-4 mt-2'>

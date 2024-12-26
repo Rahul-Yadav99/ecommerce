@@ -11,9 +11,10 @@ const Cart = () => {
 
   const [products, setProducts] = useState([
   ])
-
   const [session, setSession] = useState(null)
   
+  const [updateUi, setUpdateUi] = useState(false)
+
   useEffect(()=>{
       onAuthStateChanged(auth, (user)=>{
         if(user){
@@ -33,18 +34,21 @@ const Cart = () => {
           const tmp = []
           snapshot.forEach((doc)=>{
             const document = doc.data()
+            document.cartId = doc.id
             tmp.push(document)
           })
           setProducts(tmp)
         }
       }
       res()
-    }, [session])
+    }, [session, updateUi])
 
     const removeProduct = async (id) => {
-      const ref = doc(db, 'carts', id);
+      const ref = doc(db, "carts", id);
       await deleteDoc(ref);
+      setUpdateUi(!updateUi)
     }
+
 
   return (
     <Layout>
@@ -61,14 +65,13 @@ const Cart = () => {
                 <img src={item.image} alt="" className='object-cover rounded-lg' />
                 <div className='flex flex-col items-start justify-start gap-y-1 mt-2 pl-2'>
                     <h1 className='text-gray-600 text-base capitalize'>{item.title}</h1>
+                    <p className='text-gray-600 capitalize text-sm'>{item.description.slice(0,50)}...</p>
                     <div className='space-x-2'>
                       <label className='text-gray-600 font-semibold'>₹{item.price-(item.price*item.discount)/100}</label>
                       <del className='text-red-600'>₹{item.price}</del>
                       <label className='text-green-600'>({item.discount}% off)</label>
                     </div>
-                    <button className='bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700'
-                      onClick={()=>removeProduct(item.userId)}
-                    >
+                    <button onClick={()=>removeProduct(item.cartId)} className='bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700'>
                       <i className="ri-delete-bin-6-line mr-1"></i>
                       Remove
                     </button>

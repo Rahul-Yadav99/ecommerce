@@ -6,8 +6,8 @@ import { getFirestore, addDoc, collection, getDocs } from 'firebase/firestore';
 import Swal from 'sweetalert2';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
-const db = getFirestore(firebaseAppConfig)
 const auth = getAuth(firebaseAppConfig)
+const db = getFirestore(firebaseAppConfig)
 
 const Home = () => {
 
@@ -176,7 +176,7 @@ const Home = () => {
           {
             products.map((item, index) => (
               <div key={index} className='m-auto border pb-2 rounded-lg shadow-xl'>
-              <img src={item.image ? item.image : "/products/a.jpg"} alt="" className=' object-cover rounded-lg' />
+              <img src={item.image ? item.image : "/products/a.jpg"} alt="" className='object-cover rounded-lg w-full' />
               <div className='flex flex-col items-start justify-start gap-y-1 mt-2 p-2'>
                   <h1 className='font-base text-left capitalize font-semibold'>{item.title}</h1>
                   <p className='text-gray-600 capitalize text-sm'>{item.description.slice(0,50)}...</p>
@@ -186,7 +186,7 @@ const Home = () => {
                     <label className='text-green-600 text-sm'>({item.discount}% off)</label>
                   </div>
                   <button 
-                    className='mt-1 rounded-lg bg-green-600 py-1 w-full px-3 text-white hover:bg-green-700' 
+                    className='mt-1 rounded-lg bg-green-600 py-2 w-full px-3 text-white hover:bg-green-700' 
                     style={{
                      transition:'0.3s'
                     }}
@@ -195,7 +195,7 @@ const Home = () => {
                   </button>
                  <button 
                   onClick={() => addToCart(item)}
-                  className='mt-1 rounded-lg bg-[dodgerblue] py-1 w-full px-3 text-white hover:bg-[#3e82ff]' 
+                  className='mt-1 rounded-lg bg-[dodgerblue] py-2 w-full px-3 text-white hover:bg-[#3e82ff]' 
                   style={{
                     transition:'0.3s'
                   }}

@@ -115,7 +115,7 @@ const Products = () => {
       const tmp = []
       snapshot.forEach((doc)=>{
         const allProducts = doc.data()
-        allProducts.id = doc.id
+        allProducts.imageId = doc.id
         tmp.push(allProducts)
       })
       setProducts(tmp)
@@ -155,8 +155,6 @@ const Products = () => {
       setUpdateUI(!updateUI)
     }    
   }
-
- 
 
   const handleFileUpload = async (e, id) => {
     try {
@@ -213,7 +211,7 @@ const Products = () => {
                 <div key={index} className='bg-white rounded-md shadow-xl border m-auto'>
                   <div className="relative overflow-hidden ">
                     <img src={item.image ? item.image : '/products/a.jpg'} className='object-cover'/>
-                    <input type="file" className='opacity-0 w-full h-full absolute top-0 left-0' onChange={(e)=>handleFileUpload(e, item.id)}/>
+                    <input type="file" className='opacity-0 w-full h-full absolute top-0 left-0' onChange={(e)=>handleFileUpload(e, item.imageId)}/>
                   </div>
                   <div className='px-2 py-4 '>
                     <h1 className='font-base text-left capitalize font-semibold'>{item.title}</h1>
@@ -250,25 +248,6 @@ const Products = () => {
             </div>
           </div>
         }
-
-        {/* {
-          loader 
-          ? 
-          <Loader /> 
-          :
-          imageModel &&
-          <div className="bg-gray-800 bg-opacity-80 absolute top-0 left-0 w-full h-full flex justify-center items-center">
-            <div className="bg-white w-1/4 h-1/4 py-4 px-6 rounded-md relative">
-              <button className='absolute top-4 right-3' onClick={()=>setImageModel(false)}>
-                <i className="ri-close-line text-lg font-semibold"></i>
-              </button>
-              <h1 className='text-lg font-semibold'>Upload Product Image</h1>
-              <div className="flex justify-center items-center h-full">
-                <input type="file" onChange={handleFileUpload} />
-              </div>
-            </div>
-          </div>
-        } */}
       </div>
     </Layout>
   )
