@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Layout from './Layout'
 import firebaseAppConfig from '../../util/firebase-config'
-import { getFirestore, addDoc, collection, getDocs } from 'firebase/firestore'
+import { getFirestore, addDoc, collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import Swal from 'sweetalert2'
+import Loader from '../Loader'
+import { getId } from 'firebase/installations'
 
 const db = getFirestore(firebaseAppConfig)
 
@@ -100,12 +102,12 @@ const Products = () => {
     description: '',
     price: '',
     discount: '',
-    image: ''
   }
 
   const [productForm, setProductForm] = useState(model)
   const [productModel, setProductModel] = useState(false)
-  const [imageModel, setImageModel] = useState(false)
+  const [loader, setLoader] = useState(false)
+  const [updateUI, setPudateUI] = useState(false)
 
   useEffect(()=>{
     const req = async () => {
@@ -113,12 +115,14 @@ const Products = () => {
       const tmp = []
       snapshot.forEach((doc)=>{
         const allProducts = doc.data()
+        allProducts.id = doc.id
         tmp.push(allProducts)
       })
       setProducts(tmp)
     }
     req()
-  }, [products])
+  }, [updateUI])
+
 
   const handleProductForm = (e) => {
     const input = e.target
@@ -150,19 +154,31 @@ const Products = () => {
     }    
   }
 
-  const handleFileUpload = async (e) => {
-    const file = e.target.files[0]
+ 
+
+  const handleFileUpload = async (e, id) => {
+    const input = e.target
+    const file = input.files[0]
     if(!file) return
-    const data = new FormData()
-    data.append('file', file)
-    data.append("upload_preset", 'ecomerce')    
-    data.append("cloud_name", 'dq6m3j3jf')
+    setLoader(true)
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append("upload_preset", 'ecomerce')
+    formData.append("cloud_name", 'dq6m3j3jf')
     const res = await fetch("https://api.cloudinary.com/v1_1/dq6m3j3jf/image/upload", {
       method: "POST",
-      body: data
+      body: formData
     })
     const uploadedImageURL = await res.json()
-    console.log(uploadedImageURL.url);
+    const imageURL = uploadedImageURL.url
+    await addDoc(collection(db, 'images'), {
+      image: imageURL,
+      createdAt: new Date()
+    })
+    const ref = doc(db, 'products', id)
+    await updateDoc(ref, { image: imageURL })
+    setLoader(false)
+    setPudateUI(!updateUI)
   }
   return (
     <Layout>
@@ -175,24 +191,33 @@ const Products = () => {
           </button>
         </div>
 
-        <div className=' grid md:grid-cols-5 grid-cols-1 gap-8 mt-3'>
-          {
-            products.map((item, index)=>(
-              <div key={index} className='bg-white rounded-md shadow-xl'>
-                <img src='/products/a.jpg' onClick={()=>setImageModel(true)}/>
-                <div className='p-4'>
-                  <h1 className='font-base text-left capitalize'>{item.title}</h1>
-                  <p className='text-gray-600'>{item.description.slice(0,50)}...</p>
-                  <div className='flex gap-2 mt-1'>
-                    <label>₹{item.price-(item.price*item.discount)/100}</label>
-                    <del className='font-semibold text-red-600'>₹{item.price}</del>
-                    <label className='text-green-600'>({item.discount}% off)</label>
+        {
+          loader
+          ?
+          <Loader />
+          :
+          <div className=' grid md:grid-cols-5 grid-cols-1 gap-8 mt-3'>
+            {
+              products.map((item, index)=>(
+                <div key={index} className='bg-white rounded-md shadow-xl border w-[300px] m-auto'>
+                  <div className="relative overflow-hidden">
+                    <img src={item.image ? item.image : '/products/a.jpg'} className=' h-[300px] w-[300px] border object-cover'/>
+                    <input type="file" className='opacity-0 w-full h-full absolute top-0 left-0' onChange={(e)=>handleFileUpload(e, item.id)}/>
+                  </div>
+                  <div className='p-4'>
+                    <h1 className='font-base text-left capitalize font-semibold'>{item.title}</h1>
+                    <p className='text-gray-600 capitalize text-sm'>{item.description.slice(0,50)}...</p>
+                    <div className='flex gap-2 mt-1'>
+                      <label>₹{item.price-(item.price*item.discount)/100}</label>
+                      <del className='font-semibold text-red-600'>₹{item.price}</del>
+                      <label className='text-green-600'>({item.discount}% off)</label>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
-          }
-        </div>
+              ))
+            }
+          </div>
+        }
 
         {
           productModel && 
@@ -206,7 +231,6 @@ const Products = () => {
                 <input type="text" name="title" placeholder='Enter product title here' required onChange={handleProductForm} value={productForm.title} className='col-span-2 p-2 border border-gray-300 rounded'/>
                 <input type="number" name="price" placeholder='Enter product price here' required onChange={handleProductForm} value={productForm.price} className='p-2 border border-gray-300 rounded'/>
                 <input type="number" name="discount" placeholder='Enter discount discount here' required onChange={handleProductForm} value={productForm.discount} className='p-2 border border-gray-300 rounded'/>
-                {/* <input type="file" name='image' required onChange={handleProductForm} value={productForm.image} /> */}
                 <textarea name="description" placeholder='Description' required onChange={handleProductForm} value={productForm.description} className='col-span-2 p-2 border border-gray-300 rounded' rows={10} ></textarea>
                 <div>
                   <button className='bg-[dodgerblue] text-white py-2 px-4 rounded hover:bg-[deeppink]'>Submit</button>
@@ -216,21 +240,24 @@ const Products = () => {
           </div>
         }
 
-        {
+        {/* {
+          loader 
+          ? 
+          <Loader /> 
+          :
           imageModel &&
           <div className="bg-gray-800 bg-opacity-80 absolute top-0 left-0 w-full h-full flex justify-center items-center">
-          <div className="bg-white w-6/12 py-4 px-6 rounded-md relative">
-          <button className='absolute top-4 right-3' onClick={()=>setImageModel(false)}>
-            <i className="ri-close-line text-lg font-semibold"></i>
-          </button>
-          <h1 className='text-lg font-semibold'>Upload Product Image</h1>
-          <div className="mt-3">
-            <input type="file" onChange={handleFileUpload} />
-            {/* <button className='bg-[dodgerblue] text-white py-2 px-4 rounded hover:bg-[deeppink]'>Submit</button> */}
+            <div className="bg-white w-1/4 h-1/4 py-4 px-6 rounded-md relative">
+              <button className='absolute top-4 right-3' onClick={()=>setImageModel(false)}>
+                <i className="ri-close-line text-lg font-semibold"></i>
+              </button>
+              <h1 className='text-lg font-semibold'>Upload Product Image</h1>
+              <div className="flex justify-center items-center h-full">
+                <input type="file" onChange={handleFileUpload} />
+              </div>
+            </div>
           </div>
-          </div>
-          </div>
-        }
+        } */}
       </div>
     </Layout>
   )

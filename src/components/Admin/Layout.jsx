@@ -69,7 +69,7 @@ const Layout = ({children}) => {
                     transition: '0.3s',
                 }}
             >
-                <nav className="min-h-16 px-5 bg-white shadow-xl flex items-center justify-between sticky top-0 left-0">
+                <nav className="min-h-16 px-5 bg-white shadow-xl flex items-center justify-between sticky top-0 left-0 z-10">
                     <div className="flex gap-4 items-center">
                         <button 
                             onClick={()=>setSize(size === 280 ? 0 : 280)}
