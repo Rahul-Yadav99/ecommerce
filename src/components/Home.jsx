@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Layout from './Layout'
 import Slider from './Slider';
 import firebaseAppConfig from '../util/firebase-config';
-import { getFirestore, addDoc, collection } from 'firebase/firestore';
+import { getFirestore, addDoc, collection, getDocs } from 'firebase/firestore';
 import Swal from 'sweetalert2';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
@@ -12,55 +12,55 @@ const auth = getAuth(firebaseAppConfig)
 const Home = () => {
 
   const [products, setProducts] = useState([
-    {
-      title : 'Men`s Shirt blue denim',
-      description : 'I am related to men`s product',
-      price: 2000,
-      discount: 50,
-      image: '/products/a.jpg'
-    },
-    {
-      title : 'Men`s Shirt blue denim',
-      description : 'I am related to men`s product',
-      price: 2000,
-      discount: 15,
-      image: '/products/b.jpg'
-    },
-    {
-      title : 'Men`s Shirt blue denim',
-      description : 'I am related to men`s product',
-      price: 2000,
-      discount: 15,
-      image: '/products/c.jpg'
-    },
-    {
-      title : 'Men`s Shirt blue denim',
-      description : 'I am related to men`s product',
-      price: 2000,
-      discount: 15,
-      image: '/products/d.jpg'
-    },
-    {
-      title : 'Men`s Shirt blue denim',
-      description : 'I am related to men`s product',
-      price: 2000,
-      discount: 15,
-      image: '/products/e.jpg'
-    },
-    {
-      title : 'Men`s Shirt blue denim',
-      description : 'I am related to men`s product',
-      price: 2000,
-      discount: 15,
-      image: '/products/a.jpg'
-    },
-    {
-      title : 'Men`s Shirt blue denim',
-      description : 'I am related to men`s product',
-      price: 2000,
-      discount: 15,
-      image: '/products/g.jpg'
-    }
+    // {
+    //   title : 'Men`s Shirt blue denim',
+    //   description : 'I am related to men`s product',
+    //   price: 2000,
+    //   discount: 50,
+    //   image: '/products/a.jpg'
+    // },
+    // {
+    //   title : 'Men`s Shirt blue denim',
+    //   description : 'I am related to men`s product',
+    //   price: 2000,
+    //   discount: 15,
+    //   image: '/products/b.jpg'
+    // },
+    // {
+    //   title : 'Men`s Shirt blue denim',
+    //   description : 'I am related to men`s product',
+    //   price: 2000,
+    //   discount: 15,
+    //   image: '/products/c.jpg'
+    // },
+    // {
+    //   title : 'Men`s Shirt blue denim',
+    //   description : 'I am related to men`s product',
+    //   price: 2000,
+    //   discount: 15,
+    //   image: '/products/d.jpg'
+    // },
+    // {
+    //   title : 'Men`s Shirt blue denim',
+    //   description : 'I am related to men`s product',
+    //   price: 2000,
+    //   discount: 15,
+    //   image: '/products/e.jpg'
+    // },
+    // {
+    //   title : 'Men`s Shirt blue denim',
+    //   description : 'I am related to men`s product',
+    //   price: 2000,
+    //   discount: 15,
+    //   image: '/products/a.jpg'
+    // },
+    // {
+    //   title : 'Men`s Shirt blue denim',
+    //   description : 'I am related to men`s product',
+    //   price: 2000,
+    //   discount: 15,
+    //   image: '/products/g.jpg'
+    // }
   ])
 
   const [weOffer, setWeOffer] = useState([
@@ -151,6 +151,21 @@ const Home = () => {
       })
     }
   }
+
+  useEffect(()=>{
+    const req = async () => {
+      const snapshot = await getDocs(collection(db, 'products'))
+      const tmp = []
+      snapshot.forEach((doc)=>{
+        const allProducts = doc.data()
+        allProducts.id = doc.id
+        tmp.push(allProducts)
+      })
+      setProducts(tmp)
+    }
+    req()
+  }, [])
+
   return (
     <Layout>
       <Slider />
@@ -161,13 +176,14 @@ const Home = () => {
           {
             products.map((item, index) => (
               <div key={index} className='m-auto border pb-2 rounded-lg shadow-xl'>
-              <img src={item.image} alt="" className=' object-cover rounded-lg' />
+              <img src={item.image ? item.image : "/products/a.jpg"} alt="" className=' object-cover rounded-lg' />
               <div className='flex flex-col items-start justify-start gap-y-1 mt-2 p-2'>
-                  <h1 className='text-gray-600 text-base capitalize'>{item.title}</h1>
+                  <h1 className='font-base text-left capitalize font-semibold'>{item.title}</h1>
+                  <p className='text-gray-600 capitalize text-sm'>{item.description.slice(0,50)}...</p>
                   <div className='space-x-1'>
-                    <label className='text-gray-600 font-semibold'>₹{item.price-(item.price*item.discount)/100}</label>
-                    <del className='text-red-600'>₹{item.price}</del>
-                    <label className='text-green-600'>({item.discount}% off)</label>
+                    <label className='text-gray-600 text-sm font-semibold'>₹{item.price-(item.price*item.discount)/100}</label>
+                    <del className='text-red-600 text-sm'>₹{item.price}</del>
+                    <label className='text-green-600 text-sm'>({item.discount}% off)</label>
                   </div>
                   <button 
                     className='mt-1 rounded-lg bg-green-600 py-1 w-full px-3 text-white hover:bg-green-700' 

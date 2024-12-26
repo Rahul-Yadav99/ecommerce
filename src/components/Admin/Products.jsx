@@ -107,7 +107,7 @@ const Products = () => {
   const [productForm, setProductForm] = useState(model)
   const [productModel, setProductModel] = useState(false)
   const [loader, setLoader] = useState(false)
-  const [updateUI, setPudateUI] = useState(false)
+  const [updateUI, setUpdateUI] = useState(false)
 
   useEffect(()=>{
     const req = async () => {
@@ -151,34 +151,45 @@ const Products = () => {
         text: error.message,
         icon: 'error',
       })
+    }finally{
+      setUpdateUI(!updateUI)
     }    
   }
 
  
 
   const handleFileUpload = async (e, id) => {
-    const input = e.target
-    const file = input.files[0]
-    if(!file) return
-    setLoader(true)
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append("upload_preset", 'ecomerce')
-    formData.append("cloud_name", 'dq6m3j3jf')
-    const res = await fetch("https://api.cloudinary.com/v1_1/dq6m3j3jf/image/upload", {
-      method: "POST",
-      body: formData
-    })
-    const uploadedImageURL = await res.json()
-    const imageURL = uploadedImageURL.url
-    await addDoc(collection(db, 'images'), {
-      image: imageURL,
-      createdAt: new Date()
-    })
-    const ref = doc(db, 'products', id)
-    await updateDoc(ref, { image: imageURL })
-    setLoader(false)
-    setPudateUI(!updateUI)
+    try {
+      const input = e.target
+      const file = input.files[0]
+      if(!file) return
+      setLoader(true)
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append("upload_preset", 'ecomerce')
+      formData.append("cloud_name", 'dq6m3j3jf')
+      const res = await fetch("https://api.cloudinary.com/v1_1/dq6m3j3jf/image/upload", {
+        method: "POST",
+        body: formData
+      })
+      const uploadedImageURL = await res.json()
+      const imageURL = uploadedImageURL.url
+      await addDoc(collection(db, 'images'), {
+        image: imageURL,
+        createdAt: new Date()
+      })
+      const ref = doc(db, 'products', id)
+      await updateDoc(ref, { image: imageURL })      
+    } catch (error) {
+      new Swal({
+        title: 'Error',
+        text: error.message,
+        icon: 'error',
+      })
+    }finally{
+      setLoader(false)
+      setUpdateUI(!updateUI)
+    }
   }
   return (
     <Layout>
@@ -199,18 +210,18 @@ const Products = () => {
           <div className=' grid md:grid-cols-5 grid-cols-1 gap-8 mt-3'>
             {
               products.map((item, index)=>(
-                <div key={index} className='bg-white rounded-md shadow-xl border w-[300px] m-auto'>
-                  <div className="relative overflow-hidden">
-                    <img src={item.image ? item.image : '/products/a.jpg'} className=' h-[300px] w-[300px] border object-cover'/>
+                <div key={index} className='bg-white rounded-md shadow-xl border m-auto'>
+                  <div className="relative overflow-hidden ">
+                    <img src={item.image ? item.image : '/products/a.jpg'} className='object-cover'/>
                     <input type="file" className='opacity-0 w-full h-full absolute top-0 left-0' onChange={(e)=>handleFileUpload(e, item.id)}/>
                   </div>
-                  <div className='p-4'>
+                  <div className='px-2 py-4 '>
                     <h1 className='font-base text-left capitalize font-semibold'>{item.title}</h1>
                     <p className='text-gray-600 capitalize text-sm'>{item.description.slice(0,50)}...</p>
-                    <div className='flex gap-2 mt-1'>
-                      <label>₹{item.price-(item.price*item.discount)/100}</label>
-                      <del className='font-semibold text-red-600'>₹{item.price}</del>
-                      <label className='text-green-600'>({item.discount}% off)</label>
+                    <div className='flex gap-1 mt-1'>
+                      <label className='text-sm'>₹{item.price-(item.price*item.discount)/100}</label>
+                      <del className='text-sm text-red-600'>₹{item.price}</del>
+                      <label className='text-sm text-green-600'>({item.discount}% off)</label>
                     </div>
                   </div>
                 </div>
