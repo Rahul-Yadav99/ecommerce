@@ -172,10 +172,13 @@ const Products = () => {
       })
       const uploadedImageURL = await res.json()
       const imageURL = uploadedImageURL.url
-      await addDoc(collection(db, 'images'), {
-        image: imageURL,
-        createdAt: new Date()
-      })
+
+      //Storing the image URL in the database
+      // await addDoc(collection(db, 'images'), {
+      //   image: imageURL,
+      //   createdAt: new Date()
+      // })
+      
       const ref = doc(db, 'products', id)
       await updateDoc(ref, { image: imageURL })      
     } catch (error) {
@@ -211,7 +214,7 @@ const Products = () => {
                 products.map((item, index)=>(
                   <div key={index} className='bg-white rounded-md shadow-xl m-auto'>
                     <div className="relative overflow-hidden ">
-                      <img src={item.image ? item.image : 'https://via.placeholder.com/300x300'} className='w-[300px] h-[300px] object-cover rounded-lg'/>
+                      <img src={item.image ? item.image : 'https://via.placeholder.com/300x300'} className='w-72 h-72 object-cover rounded-lg'/>
                       <input type="file" className='opacity-0 w-full h-full absolute top-0 left-0' onChange={(e)=>handleFileUpload(e, item.imageId)}/>
                     </div>
                     <div className='px-2 py-4 '>

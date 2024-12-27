@@ -62,7 +62,7 @@ const Cart = () => {
           {
             products.map((item, index) => (
               <div key={index} className='m-auto pb-2 rounded-lg shadow-xl'>
-                <img src={item.image ? item.image : "https://via.placeholder.com/300x300"} alt="" className='w-[300px] h-[300px] object-cover rounded-lg' />
+                <img src={item.image ? item.image : "https://via.placeholder.com/300x300"} alt="" className='w-72 h-72 object-cover rounded-lg' />
                 <div className="grid grid-cols-2">
                   <div className='flex flex-col items-start justify-start gap-y-1 mt-2 pl-2'>
                       <h1 className='text-base font-semibold capitalize'>{item.title}</h1>

@@ -98,7 +98,7 @@ const Products = () => {
           {
             products.map((item, index) => (
               <div key={index} className='m-auto pb-2 rounded-lg shadow-xl'>
-              <img src={item.image} alt="" className='w-[300px] h-[300px] object-cover rounded-lg' />
+              <img src={item.image} alt="" className='w-72 h-72 object-cover rounded-lg' />
               <div className='flex flex-col items-start justify-start gap-y-1 mt-2 p-2'>
                   <h1 className='text-gray-600 text-base capitalize'>{item.title}</h1>
                   <p className='text-gray-600 capitalize text-sm'>{item.description.slice(0,50)}...</p>

@@ -35,7 +35,6 @@ const Layout = ({children}) => {
         },
         
     ]
-
     
   return (
     <div>
@@ -108,8 +107,8 @@ const Layout = ({children}) => {
       <footer className='bg-[#4e4e4e] md:py-16 py-8 z-10'>
         <div className="md:w-8/12 w-11/12 m-auto grid md:grid-cols-3 grid-cols-1 gap-8">
             <div className="">
-            <Link to={'/'} className='font-bold text-5xl text-white flex  items-center gap-3'>
-                <img src="/img/logo.png" alt="" className='h-[2%] w-[10%]'/>
+            <Link to={'/'} className='font-bold text-5xl text-white flex  items-center gap-2'>
+                <img src="/img/logo.png" alt="" className='h-[12%] w-[30%]'/>
                 VibeNest
             </Link>
             <p className='text-base text-[#d4d4d8] md:mt-4 mt-2'>
