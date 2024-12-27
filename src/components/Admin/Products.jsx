@@ -190,66 +190,69 @@ const Products = () => {
     }
   }
   return (
-    <Layout>
-      <div className="min-h-screen">
-        <div className="flex justify-between">
-          <h1 className='text-xl font-semibold mb-4'>Product`s</h1>
-          <button className='border px-2 py-3 text-white bg-[dodgerblue] rounded hover:bg-[deeppink]' onClick={()=>setProductModel(true)}>
-            <i className='ri-sticky-note-add-line mr-1'></i>
-            New Product
-          </button>
-        </div>
-
-        {
-          loader
-          ?
-          <Loader />
-          :
-          <div className=' grid md:grid-cols-4 grid-cols-1 gap-8 mt-3'>
-            {
-              products.map((item, index)=>(
-                <div key={index} className='bg-white rounded-md shadow-xl m-auto'>
-                  <div className="relative overflow-hidden ">
-                    <img src={item.image ? item.image : 'https://via.placeholder.com/300x300'} className='w-[300px] h-[300px] object-cover rounded-lg'/>
-                    <input type="file" className='opacity-0 w-full h-full absolute top-0 left-0' onChange={(e)=>handleFileUpload(e, item.imageId)}/>
-                  </div>
-                  <div className='px-2 py-4 '>
-                    <h1 className='font-base text-left capitalize font-semibold'>{item.title}</h1>
-                    <p className='text-gray-600 capitalize text-sm'>{item.description.slice(0,50)}...</p>
-                    <div className='flex gap-1 mt-1'>
-                      <label className='text-sm'>₹{item.price-(item.price*item.discount)/100}</label>
-                      <del className='text-sm text-red-600'>₹{item.price}</del>
-                      <label className='text-sm text-green-600'>({item.discount}% off)</label>
+    <> 
+    {
+      loader 
+      ?
+      <Loader />
+      :
+      <Layout>
+        <div className="min-h-screen">
+          <div className="flex justify-between">
+            <h1 className='text-xl font-semibold mb-4'>Product`s</h1>
+            <button className='border px-2 py-3 text-white bg-[dodgerblue] rounded hover:bg-[deeppink]' onClick={()=>setProductModel(true)}>
+              <i className='ri-sticky-note-add-line mr-1'></i>
+              New Product
+            </button>
+          </div>
+  
+            <div className=' grid md:grid-cols-4 grid-cols-1 gap-8 mt-3'>
+              {
+                products.map((item, index)=>(
+                  <div key={index} className='bg-white rounded-md shadow-xl m-auto'>
+                    <div className="relative overflow-hidden ">
+                      <img src={item.image ? item.image : 'https://via.placeholder.com/300x300'} className='w-[300px] h-[300px] object-cover rounded-lg'/>
+                      <input type="file" className='opacity-0 w-full h-full absolute top-0 left-0' onChange={(e)=>handleFileUpload(e, item.imageId)}/>
+                    </div>
+                    <div className='px-2 py-4 '>
+                      <h1 className='font-base text-left capitalize font-semibold'>{item.title}</h1>
+                      <p className='text-gray-600 capitalize text-sm'>{item.description.slice(0,50)}...</p>
+                      <div className='flex gap-1 mt-1'>
+                        <label className='text-sm'>₹{item.price-(item.price*item.discount)/100}</label>
+                        <del className='text-sm text-red-600'>₹{item.price}</del>
+                        <label className='text-sm text-green-600'>({item.discount}% off)</label>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
-            }
-          </div>
-        }
-
-        {
-          productModel && 
-          <div className="bg-gray-800 bg-opacity-80 absolute top-0 left-0 w-full h-full flex justify-center items-center">
-            <div className="bg-white w-6/12 py-4 px-6 rounded-md relative">
-              <button className='absolute top-3 right-3' onClick={()=>setProductModel(false)}>
-                <i className="ri-close-line text-lg font-semibold"></i>
-              </button>
-              <h1 className='text-lg font-semibold'>New Product</h1>
-              <form onSubmit={createProduct} className='grid grid-cols-2 mt-4 gap-4'>
-                <input type="text" name="title" placeholder='Enter product title here' required onChange={handleProductForm} value={productForm.title} className='col-span-2 p-2 border border-gray-300 rounded'/>
-                <input type="number" name="price" placeholder='Enter product price here' required onChange={handleProductForm} value={productForm.price} className='p-2 border border-gray-300 rounded'/>
-                <input type="number" name="discount" placeholder='Enter discount discount here' required onChange={handleProductForm} value={productForm.discount} className='p-2 border border-gray-300 rounded'/>
-                <textarea name="description" placeholder='Description' required onChange={handleProductForm} value={productForm.description} className='col-span-2 p-2 border border-gray-300 rounded' rows={10} ></textarea>
-                <div>
-                  <button className='bg-[dodgerblue] text-white py-2 px-4 rounded hover:bg-[deeppink]'>Submit</button>
-                </div>
-              </form>
+                ))
+              }
             </div>
-          </div>
-        }
-      </div>
-    </Layout>
+  
+          {
+            productModel && 
+            <div className="bg-gray-800 bg-opacity-80 absolute top-0 left-0 w-full h-full flex justify-center items-center">
+              <div className="bg-white w-6/12 py-4 px-6 rounded-md relative">
+                <button className='absolute top-3 right-3' onClick={()=>setProductModel(false)}>
+                  <i className="ri-close-line text-lg font-semibold"></i>
+                </button>
+                <h1 className='text-lg font-semibold'>New Product</h1>
+                <form onSubmit={createProduct} className='grid grid-cols-2 mt-4 gap-4'>
+                  <input type="text" name="title" placeholder='Enter product title here' required onChange={handleProductForm} value={productForm.title} className='col-span-2 p-2 border border-gray-300 rounded'/>
+                  <input type="number" name="price" placeholder='Enter product price here' required onChange={handleProductForm} value={productForm.price} className='p-2 border border-gray-300 rounded'/>
+                  <input type="number" name="discount" placeholder='Enter discount discount here' required onChange={handleProductForm} value={productForm.discount} className='p-2 border border-gray-300 rounded'/>
+                  <textarea name="description" placeholder='Description' required onChange={handleProductForm} value={productForm.description} className='col-span-2 p-2 border border-gray-300 rounded' rows={10} ></textarea>
+                  <div>
+                    <button className='bg-[dodgerblue] text-white py-2 px-4 rounded hover:bg-[deeppink]'>Submit</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          }
+        </div>
+      </Layout>
+
+    }
+    </>
   )
 }
 
