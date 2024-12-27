@@ -63,18 +63,21 @@ const Cart = () => {
             products.map((item, index) => (
               <div key={index} className='m-auto pb-2 rounded-lg shadow-xl'>
                 <img src={item.image ? item.image : "https://via.placeholder.com/300x300"} alt="" className='w-[300px] h-[300px] object-cover rounded-lg' />
-                <div className='flex flex-col items-start justify-start gap-y-1 mt-2 pl-2'>
-                    <h1 className='text-gray-600 text-base capitalize'>{item.title}</h1>
-                    <p className='text-gray-600 capitalize text-sm'>{item.description.slice(0,50)}...</p>
-                    <div className='space-x-2'>
-                      <label className='text-gray-600 font-semibold'>₹{item.price-(item.price*item.discount)/100}</label>
-                      <del className='text-red-600'>₹{item.price}</del>
-                      <label className='text-green-600'>({item.discount}% off)</label>
-                    </div>
-                    <button onClick={()=>removeProduct(item.cartId)} className='bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700'>
-                      <i className="ri-delete-bin-6-line mr-1"></i>
-                      Remove
+                <div className="grid grid-cols-2">
+                  <div className='flex flex-col items-start justify-start gap-y-1 mt-2 pl-2'>
+                      <h1 className='text-base font-semibold capitalize'>{item.title}</h1>
+                      <p className='text-gray-600 capitalize text-xs'>{item.description.slice(0,50)}...</p>
+                      <div className='space-x-2'>
+                        <label className='text-gray-600 font-semibold text-sm'>₹{item.price-(item.price*item.discount)/100}</label>
+                        <del className='text-red-600 text-xs'>₹{item.price}</del>
+                        <label className='text-green-600 text-xs'>({item.discount}% off)</label>
+                      </div>
+                  </div>
+                  <div className="flex justify-end items-center mt-2 pr-2">
+                    <button onClick={()=>removeProduct(item.cartId)} className=''>
+                      <i className="ri-delete-bin-6-line rounded-full p-3 bg-red-500 text-white"></i>
                     </button>
+                  </div>
                 </div>
               </div>
             ))
