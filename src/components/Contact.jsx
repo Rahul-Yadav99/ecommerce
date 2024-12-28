@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 const Contact = () => {
   return (
     <Layout>
-        <div className='w-8/12 m-auto py-20 px-20 bg-white gap-20'>
+        <div className='md:w-8/12 w-11/12 m-auto md:py-20 py-8 bg-white gap-20'>
             <div className='flex flex-col justify-center'>
                 <form action="" className='mt-5 space-y-5'>
                     <div className='flex flex-col gap-2'>

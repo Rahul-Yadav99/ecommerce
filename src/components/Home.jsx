@@ -5,11 +5,15 @@ import firebaseAppConfig from '../util/firebase-config';
 import { getFirestore, addDoc, collection, getDocs } from 'firebase/firestore';
 import Swal from 'sweetalert2';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import axios from 'axios';
+import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
 
 const auth = getAuth(firebaseAppConfig)
 const db = getFirestore(firebaseAppConfig)
 
 const Home = () => {
+
+  const { error, isLoading, Razorpay } = useRazorpay();
 
   const [products, setProducts] = useState([
     // {
@@ -166,6 +170,32 @@ const Home = () => {
     req()
   }, [])
 
+  const buyNow = async (title, price) => {
+    try {
+      const { data } = await axios.post('http://localhost:8080/order', { amount : price })
+      const options = {
+        key: 'rzp_test_W1As5WgUmla9nV',
+        amount: data.amount,
+        order_id : data.orderId,
+        name : 'VibeNest',
+        description : title,
+        image : 'https://cdn-icons-png.freepik.com/512/7835/7835563.png',
+        handler : function(response){
+          console.log(response)
+        }
+      }
+      const rzp = new Razorpay(options)
+
+      rzp.open()
+
+      rap.on('Payment Failed', function(response){
+        console.log(response)
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  
   return (
     <Layout>
       <Slider />
@@ -176,16 +206,17 @@ const Home = () => {
           {
             products.map((item, index) => (
               <div key={index} className='m-auto pb-2 shadow-xl rounded-lg'>
-              <img src={item.image ? item.image : "https://via.placeholder.com/300x300"} alt="" className='w-72 h-72 object-cover rounded-lg' />
+              <img src={item.image ? item.image : "https://via.placeholder.com/300x300"} alt="" className='h-72 w-72 object-cover rounded-lg' />
               <div className='flex flex-col items-start justify-start mt-2 p-2'>
                   <h1 className='font-base text-left capitalize font-semibold'>{item.title}</h1>
-                  <p className='text-gray-600 capitalize text-sm'>{item.description.slice(0,50)}...</p>
+                  <p className='text-gray-600 capitalize text-xs'>{item.description.slice(0,50)}...</p>
                   <div className='space-x-2'>
                     <label className='text-gray-600 text-sm font-semibold'>₹{item.price-(item.price*item.discount)/100}</label>
                     <del className='text-red-600 text-sm'>₹{item.price}</del>
                     <label className='text-green-600 text-sm'>({item.discount}% off)</label>
                   </div>
                   <button 
+                    onClick={()=>buyNow(item.title, Math.round(item.price-(item.price*item.discount)/100))}
                     className='mt-1 rounded-lg bg-green-600 py-2 w-full px-3 text-white hover:bg-green-700' 
                     style={{
                      transition:'0.3s'

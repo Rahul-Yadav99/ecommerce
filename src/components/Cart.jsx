@@ -63,17 +63,17 @@ const Cart = () => {
             products.map((item, index) => (
               <div key={index} className='m-auto pb-2 rounded-lg shadow-xl'>
                 <img src={item.image ? item.image : "https://via.placeholder.com/300x300"} alt="" className='w-72 h-72 object-cover rounded-lg' />
-                <div className="grid grid-cols-2">
+                <div className="flex justify-between">
                   <div className='flex flex-col items-start justify-start gap-y-1 mt-2 pl-2'>
                       <h1 className='text-base font-semibold capitalize'>{item.title}</h1>
                       <p className='text-gray-600 capitalize text-xs'>{item.description.slice(0,50)}...</p>
-                      <div className='space-x-2'>
+                      <div className='space-x-2 '>
                         <label className='text-gray-600 font-semibold text-sm'>₹{item.price-(item.price*item.discount)/100}</label>
                         <del className='text-red-600 text-xs'>₹{item.price}</del>
                         <label className='text-green-600 text-xs'>({item.discount}% off)</label>
                       </div>
                   </div>
-                  <div className="flex justify-end items-center mt-2 pr-2">
+                  <div className="flex justify-center items-center mt-2 pr-2">
                     <button onClick={()=>removeProduct(item.cartId)} className=''>
                       <i className="ri-delete-bin-6-line rounded-full p-3 bg-red-500 text-white"></i>
                     </button>
