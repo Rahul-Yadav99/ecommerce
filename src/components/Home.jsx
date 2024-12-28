@@ -177,7 +177,7 @@ const Home = () => {
             products.map((item, index) => (
               <div key={index} className='m-auto pb-2 shadow-xl rounded-lg'>
               <img src={item.image ? item.image : "https://via.placeholder.com/300x300"} alt="" className='w-72 h-72 object-cover rounded-lg' />
-              <div className='flex flex-col items-start justify-start gap-y-1 mt-2 p-2'>
+              <div className='flex flex-col items-start justify-start mt-2 p-2'>
                   <h1 className='font-base text-left capitalize font-semibold'>{item.title}</h1>
                   <p className='text-gray-600 capitalize text-sm'>{item.description.slice(0,50)}...</p>
                   <div className='space-x-2'>
