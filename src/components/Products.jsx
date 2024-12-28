@@ -103,9 +103,9 @@ const Products = () => {
                   <h1 className='text-gray-600 text-base capitalize'>{item.title}</h1>
                   <p className='text-gray-600 capitalize text-sm'>{item.description.slice(0,50)}...</p>
                   <div className='space-x-2'>
-                    <label className='text-gray-600 font-semibold'>₹{item.price-(item.price*item.discount)/100}</label>
-                    <del className='text-red-600'>₹{item.price}</del>
-                    <label className='text-green-600'>({item.discount}% off)</label>
+                    <label className='text-gray-600 text-sm font-semibold'>₹{item.price-(item.price*item.discount)/100}</label>
+                    <del className='text-red-600 text-sm'>₹{item.price}</del>
+                    <label className='text-green-600 text-sm'>({item.discount}% off)</label>
                   </div>
                   <button
                     className='mt-1 rounded-lg bg-green-600 py-2 w-full px-3 text-white hover:bg-green-700' 

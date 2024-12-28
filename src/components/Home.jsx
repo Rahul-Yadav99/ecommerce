@@ -172,7 +172,7 @@ const Home = () => {
 
   const buyNow = async (title, price) => {
     try {
-      const { data } = await axios.post('http://localhost:8080/order', { amount : price })
+      const { data } = await axios.post('https://ecompayment.vercel.app/order', { amount : price })
       const options = {
         key: 'rzp_test_W1As5WgUmla9nV',
         amount: data.amount,
