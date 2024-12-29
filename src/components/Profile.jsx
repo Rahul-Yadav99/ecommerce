@@ -6,6 +6,7 @@ import { getFirestore, addDoc, collection, getDocs, query, where, updateDoc, doc
 import Layout from './Layout'
 import Swal from 'sweetalert2'
 import uploadFile from '../util/storage'
+import Loader from './Loader'
 
 const auth = getAuth(firebaseAppConfig)
 const db = getFirestore(firebaseAppConfig)
@@ -203,8 +204,8 @@ const Profile = ()=>{
         else if(status === "dispatched")
             return "bg-rose-600"
 
-        else if(status === "returned")
-            return "bg-orange-600"
+        else if(status === "return")
+            return "bg-red-600"
 
         else 
             return "bg-cyan-600"
@@ -212,7 +213,7 @@ const Profile = ()=>{
 
     if(session === null)
     return (
-      <h1>Loading..</h1>
+      <Loader />
     )
     
 
@@ -231,16 +232,16 @@ const Profile = ()=>{
                         <div className='flex gap-3 mb-8' key={index}>
                             <img src={item.image} className='w-[100px]' />
                             <div>
-                                <h1 className='capitalize font-semibold text-lg'>{item.title}</h1>
-                                <p className='text-gray-600'>{item.description.slice(0,50)}</p>
-                                <div className='space-x-2'>
-                                    <label className='font-bold text-lg'>
-                                    ₹{item.price-(item.price*item.discount)/100}
+                                <h1 className='capitalize font-semibold'>{item.title}</h1>
+                                <p className='text-gray-600 text-xs capitalize'>{item.description.slice(0,50)}</p>
+                                <div className='space-x-1'>
+                                    <label className='font-semibold'>
+                                    ₹{Math.round(item.price-(item.price*item.discount)/100)}
                                     </label>
-                                    <del>₹{item.price}</del>
-                                    <label>({item.discount} Off)%</label>
+                                    <del className='text-xs text-red-500'>₹{item.price}</del>
+                                    <label className='text-xs text-green-500'>({item.discount} Off)%</label>
                                 </div>
-                                <button className={`mt-2 ${getStatusColor(item.status)} rounded px-3 py-1 text-xs text-white font-medium capitalize`}>
+                                <button className={`mt-2 ${getStatusColor(item.status)} rounded px-5 py-2 text-sm text-white capitalize`}>
                                     {item.status ? item.status : 'pending'}
                                 </button>
                             </div>

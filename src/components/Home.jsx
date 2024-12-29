@@ -7,11 +7,15 @@ import Swal from 'sweetalert2';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import axios from 'axios';
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
+import { useNavigate } from 'react-router-dom';
+import Loader from './Loader'
 
 const auth = getAuth(firebaseAppConfig)
 const db = getFirestore(firebaseAppConfig)
 
-const Home = () => {
+const Home = ({slider, title='Latest Products'}) => {
+
+  const navigate = useNavigate()
 
   const { error, isLoading, Razorpay } = useRazorpay();
 
@@ -170,18 +174,25 @@ const Home = () => {
     req()
   }, [])
 
-  const buyNow = async (title, price) => {
+  const buyNow = async (product) => {
     try {
-      const { data } = await axios.post('https://ecompayment.vercel.app/order', { amount : price })
+      product.userId = session.uid
+      product.status = 'Pending'
+      product.userName = session.displayName
+      product.email = session.email
+      product.date = Date.now()
+      const amount = Math.round(product.price-(product.price*product.discount)/100)
+      const { data } = await axios.post('https://ecompayment.vercel.app/order', { amount : amount })
       const options = {
         key: 'rzp_test_W1As5WgUmla9nV',
         amount: data.amount,
         order_id : data.orderId,
         name : 'VibeNest',
-        description : title,
+        description : product.title,
         image : 'https://cdn-icons-png.freepik.com/512/7835/7835563.png',
-        handler : function(response){
-          console.log(response)
+        handler : async function(response){
+          await addDoc(collection(db, 'orders'), product)
+          navigate('/profile')
         }
       }
       const rzp = new Razorpay(options)
@@ -189,18 +200,25 @@ const Home = () => {
       rzp.open()
 
       rap.on('Payment Failed', function(response){
-        console.log(response)
+        navigate('/failed')
       })
     } catch (error) {
       console.log(error)
     }
   }
-  
+
+  if(session === null)
+    return (
+      <Loader />
+    )
+
   return (
     <Layout>
-      <Slider />
+      {
+        slider && <Slider />
+      }
       <div className='md:w-8/12 w-9/12 m-auto py-8'>
-        <h1 className='md:text-3xl text-2xl font-semibold text-gray-700 text-center'>Latest Products</h1>
+        <h1 className='md:text-3xl text-2xl font-semibold text-gray-700 text-center'>{title}</h1>
         <p className='text-gray-600 text-sm md:text-base md:mt-3 mb-5 text-center'>Bring home the latest products designed to blend sophistication with practicality.</p>
         <div className='grid md:grid-cols-3 grid-cols-1 md:gap-8 gap-4 '>
           {
@@ -216,7 +234,7 @@ const Home = () => {
                     <label className='text-green-600 text-sm'>({item.discount}% off)</label>
                   </div>
                   <button 
-                    onClick={()=>buyNow(item.title, Math.round(item.price-(item.price*item.discount)/100))}
+                    onClick={()=>buyNow(item)}
                     className='mt-1 rounded-lg bg-green-600 py-2 w-full px-3 text-white hover:bg-green-700' 
                     style={{
                      transition:'0.3s'

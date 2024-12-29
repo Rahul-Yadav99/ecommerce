@@ -8,20 +8,20 @@ import Payments from './components/Admin/Payments';
 import Customers from './components/Admin/Customers';
 import NotFound from './components/NotFound';
 import Home from './components/Home';
-import Products from './components/Products';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Contact from './components/Contact';
 import PreGuard from './components/Guard/PreGuard';
 import Cart from './components/Cart';
 import Profile from './components/Profile';
+import Failed from './components/Failed';
 
 const App = () => {
   return (
     <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/products' element={<Products />} />
+          <Route path='/' element={<Home slider />} />
+          <Route path='/products' element={<Home slider={false} title='All Products'/>} />
           <Route path='/contact-us' element={<Contact />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/profile' element={<Profile />}/>
@@ -39,6 +39,7 @@ const App = () => {
                 <Route path='payments' element={<Payments />} />
                 <Route path='settings' element={<Settings />} />
             </Route>
+          <Route path='/failed' element={<Failed />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
     </BrowserRouter>
