@@ -21,8 +21,8 @@ const App = () => {
   return (
     <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Home slider />} />
-          <Route path='/products' element={<Home slider={false} title='All Products'/>} />
+          <Route path='/' element={<Home slider brandName feature />} />
+          <Route path='/products' element={<Home slider={false} brandName={false} feature={false} title='All Products'/>} />
           <Route path='/contact-us' element={<Contact />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/profile' element={<Profile />}/>

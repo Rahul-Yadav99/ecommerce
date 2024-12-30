@@ -41,8 +41,8 @@ const Layout = ({children}) => {
         {/* Desktop Nav */}
         <nav className='py-2 bg-white shadow-xl sticky top-0 left-0 z-10'>
         <div className='md:w-8/12 w-11/12 h-full m-auto flex items-center justify-between'>
-            <Link to={'/'} className='font-bold text-2xl text-[dodgerblue] flex  items-center gap-3'>
-                <img src="/img/logo.png" alt="" className='h-[2%] w-[10%]'/>
+            <Link to={'/'} className='font-bold text-2xl text-[dodgerblue] flex  items-center gap-1'>
+                <img src="/img/logo.png" alt="" className='md:w-[60px] w-[10%]'/>
                 VibeNest
             </Link>
             <button className='md:hidden' onClick={() => setMobileMenu(!mobileMenu)}>

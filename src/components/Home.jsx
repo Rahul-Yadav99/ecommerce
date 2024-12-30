@@ -13,7 +13,7 @@ import Loader from './Loader'
 const auth = getAuth(firebaseAppConfig)
 const db = getFirestore(firebaseAppConfig)
 
-const Home = ({slider, title='Latest Products'}) => {
+const Home = ({slider, brandName, feature, title='Latest Products'}) => {
 
   const navigate = useNavigate()
 
@@ -218,6 +218,8 @@ const Home = ({slider, title='Latest Products'}) => {
         slider && <Slider />
       }
 
+      {
+        brandName &&
       <div className="bg-white md:py-20 py-8 text-center">
         <h1 className='md:text-3xl text-2xl font-semibold text-gray-700'>Shop By Brands</h1>
         <p className='text-gray-500'>Select Your Favorite Brands And Purchase</p>
@@ -231,7 +233,9 @@ const Home = ({slider, title='Latest Products'}) => {
               ))
             }
         </div>
-      </div> 
+      </div>
+      }
+       
 
     <hr />
     
@@ -247,13 +251,13 @@ const Home = ({slider, title='Latest Products'}) => {
                   <h1 className='font-base text-left capitalize font-semibold'>{item.title}</h1>
                   <p className='text-gray-600 capitalize text-xs'>{item.description.slice(0,20)}...</p>
                   <div className='space-x-2'>
-                    <label className='text-gray-600 text-sm font-semibold'>₹{item.price-(item.price*item.discount)/100}</label>
-                    <del className='text-red-600 text-sm'>₹{item.price}</del>
-                    <label className='text-green-600 text-sm'>({item.discount}% off)</label>
+                    <label className='text-[dodgerblue] text-sm font-semibold'>₹{item.price-(item.price*item.discount)/100}</label>
+                    <del className='text-gray-800 text-xs'>₹{item.price}</del>
+                    <label className='text-gray-800 text-xs'>({item.discount}% off)</label>
                   </div>
                   <button 
                     onClick={()=>buyNow(item)}
-                    className='mt-1 rounded-lg bg-green-600 py-2 w-full px-3 text-white hover:bg-green-700' 
+                    className='mt-1 rounded-lg bg-gray-500 py-2 w-full px-3 text-white hover:bg-gray-800 font-semibold' 
                     style={{
                      transition:'0.3s'
                     }}
@@ -262,7 +266,7 @@ const Home = ({slider, title='Latest Products'}) => {
                   </button>
                  <button 
                   onClick={() => addToCart(item)}
-                  className='mt-1 rounded-lg bg-[dodgerblue] py-2 w-full px-3 text-white hover:bg-[#3e82ff]' 
+                  className='mt-1 rounded-lg border border-gray-800 py-2 w-full px-3 font-semibold text-gray-800 hover:bg-gray-800 hover:text-white' 
                   style={{
                     transition:'0.3s'
                   }}
@@ -276,7 +280,8 @@ const Home = ({slider, title='Latest Products'}) => {
           }
         </div>
       </div>
-
+      {
+        feature &&
       <div className='bg-white md:py-20 py-8 text-center shadow-xl'>
           <h1 className='md:text-3xl text-2xl font-semibold text-gray-700'>What We Offer!</h1>
           <p className='text-gray-500'>The purpose of lorem ipsum</p>
@@ -293,6 +298,8 @@ const Home = ({slider, title='Latest Products'}) => {
             }
           </div>
       </div>
+
+      }
       <hr />
           
     </Layout>
