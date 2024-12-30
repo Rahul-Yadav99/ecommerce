@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react'
 import Layout from './Layout'
 import Slider from './Slider';
 import firebaseAppConfig from '../util/firebase-config';
-import { getFirestore, addDoc, collection, getDocs } from 'firebase/firestore';
+import { getFirestore, addDoc, collection, getDocs, serverTimestamp, query, where } from 'firebase/firestore';
 import Swal from 'sweetalert2';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import axios from 'axios';
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
-import { useNavigate } from 'react-router-dom';
-import Loader from './Loader'
+import { redirect, useNavigate } from 'react-router-dom';
 
 const auth = getAuth(firebaseAppConfig)
 const db = getFirestore(firebaseAppConfig)
@@ -132,6 +131,8 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
 
   const [session, setSession] = useState(null)
 
+  const [address, setAddress] = useState(null)
+
   useEffect(()=>{
     onAuthStateChanged(auth, (user)=>{
       if(user){
@@ -174,6 +175,23 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
     req()
   }, [])
 
+  useEffect(()=>{
+    const req = async ()=>{
+        if(session)
+        {
+            const col = collection(db, "addresses")
+            const q = query(col, where("userId", "==", session.uid))
+            const snapshot = await getDocs(q)
+            snapshot.forEach((doc)=>{
+                const document = doc.data()
+                setAddress(document)
+            })
+        }
+    }
+
+    req()
+}, [session])
+
   const buyNow = async (product) => {
     try {
       product.userId = session.uid
@@ -191,8 +209,13 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
         description : product.title,
         image : 'https://cdn-icons-png.freepik.com/512/7835/7835563.png',
         handler : async function(response){
+          product.created_At = serverTimestamp()
+          product.address = address
           await addDoc(collection(db, 'orders'), product)
           navigate('/profile')
+        },
+        notes : {
+          name : session.displayName
         }
       }
       const rzp = new Razorpay(options)
@@ -206,11 +229,6 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
       console.log(error)
     }
   }
-
-  if(session === null)
-    return (
-      <Loader />
-    )
 
   return (
     <Layout>
@@ -280,6 +298,8 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
           }
         </div>
       </div>
+      
+      <hr />
       {
         feature &&
       <div className='bg-white md:py-20 py-8 text-center shadow-xl'>

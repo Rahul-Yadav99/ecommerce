@@ -75,7 +75,7 @@ const Cart = () => {
                   </div>
                   <div className="flex justify-center items-center mt-2 pr-2">
                     <button onClick={()=>removeProduct(item.cartId)} className=''>
-                      <i className="ri-delete-bin-6-line rounded-full p-3 bg-red-500 text-white"></i>
+                      <i className="ri-delete-bin-6-line rounded-full p-3 bg-gray-500 hover:bg-gray-800 text-white"></i>
                     </button>
                   </div>
                 </div>

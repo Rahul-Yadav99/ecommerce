@@ -269,10 +269,10 @@ const Products = () => {
                         <h1 className='font-base text-left capitalize font-semibold'>{item.title}</h1>
                         <div className="">
                           <button onClick={()=>deleteProduct(item.id)}>
-                            <i className="ri-delete-bin-6-line text-lg hover:bg-red-600 hover:text-red-200 p-2 rounded-full"></i>
+                            <i className="ri-delete-bin-6-line text-lg hover:text-red-500 hover:bg-red-200 p-2 rounded-full"></i>
                           </button>
                           <button onClick={()=>editProduct(item)}>
-                            <i className="ri-edit-box-line text-lg hover:bg-green-600 hover:text-green-200 p-2 rounded-full"></i>
+                            <i className="ri-edit-box-line text-lg hover:text-green-600 hover:bg-green-200 p-2 rounded-full"></i>
                           </button>
                         </div>
                       </div>

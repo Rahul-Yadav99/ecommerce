@@ -1,5 +1,7 @@
 import { useState } from "react"
 import { Link, useLocation } from "react-router-dom"
+import firebaseAppConfig from "../../util/firebase-config"
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
 
 const Layout = ({children}) => {
 

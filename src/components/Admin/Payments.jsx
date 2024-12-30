@@ -1,31 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from './Layout'
+import axios from 'axios'
+import moment from 'moment'
 
 const Payments = () => {
 
-  const [customers, setCustomers] = useState([
-    {
-      customerName : 'Rahul',
-      email : 'rahul@gmail.com',
-      mobile : '9910453106',
-      date : '12-10-2024',
-      payment: 100000
-    },
-    {
-        customerName : 'Rahul',
-        email : 'rahul@gmail.com',
-        mobile : '9910453106',
-        date : '12-10-2024',
-        payment: 100000
-    },
-    {
-        customerName : 'Rahul',
-        email : 'rahul@gmail.com',
-        mobile : '9910453106',
-        date : '12-10-2024',
-        payment: 100000
+  const [payments, setPayments] = useState([])
+
+  useEffect(()=>{
+    const req = async () => {
+      try{
+        const { data } = await axios.get('https://ecompayment.vercel.app/payments')
+        setPayments(data.items)
+      }catch(err){
+        console.log(err)
+      }
     }
-  ])
+
+    req()
+  }, [])
 
   return (
     <Layout>
@@ -36,16 +29,18 @@ const Payments = () => {
             <thead>
               <tr className='bg-[dodgerblue] text-white'>
                 <th className='py-4'>Customer`s Name</th>
+                <th>Payment Id</th>
                 <th>Email</th>
                 <th>Mobile</th>
                 <th>Date</th>
                 <th>Payment</th>
+                <th>P. Name</th>
               </tr>
             </thead>
 
             <tbody>
               {
-                customers.map((item, index)=>{
+                payments.map((item, index)=>{
                   return (
                     <tr key={index} 
                       className=' text-center'
@@ -53,11 +48,13 @@ const Payments = () => {
                         background: (index+1)%2 === 0 ? 'white' : '#e2e8f0' 
                       }}
                     >
-                      <td className='capitalize py-4'>{item.customerName}</td>
+                      <td className='capitalize py-4'>{item.notes.name ? item.notes.name : 'Joh Doe'}</td>
+                      <td>{item.id}</td>
                       <td>{item.email}</td>
-                      <td>{item.mobile}</td>
-                      <td>₹{item.payment.toLocaleString()}</td>
-                      <td>{item.date}</td>
+                      <td>{item.contact}</td>
+                      <td>{moment.unix(item.created_at).format('DD-MM-YYYY')}</td>
+                      <td>₹{item.fee.toLocaleString()}</td>
+                      <td>{item.description}</td>
                     </tr>
                   )
                 })
