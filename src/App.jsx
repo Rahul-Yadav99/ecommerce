@@ -15,6 +15,7 @@ import PreGuard from './components/Guard/PreGuard';
 import Cart from './components/Cart';
 import Profile from './components/Profile';
 import Failed from './components/Failed';
+import CategoryFilter from './components/CategoryFilter ';
 
 const App = () => {
   return (
@@ -25,6 +26,8 @@ const App = () => {
           <Route path='/contact-us' element={<Contact />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/profile' element={<Profile />}/>
+          <Route path='/cf' element={<CategoryFilter />}/>
+
 
           <Route element={<PreGuard />}>
             <Route path='/login' element={<Login />} />

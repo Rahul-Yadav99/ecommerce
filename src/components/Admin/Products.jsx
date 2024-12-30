@@ -102,12 +102,14 @@ const Products = () => {
     description: '',
     price: '',
     discount: '',
+    // brand : '',
   }
 
   const [productForm, setProductForm] = useState(model)
   const [productModel, setProductModel] = useState(false)
   const [loader, setLoader] = useState(false)
   const [updateUI, setUpdateUI] = useState(false)
+  const [edit, setEdit] = useState(null)
 
   useEffect(()=>{
     const req = async () => {
@@ -116,6 +118,7 @@ const Products = () => {
       snapshot.forEach((doc)=>{
         const allProducts = doc.data()
         allProducts.imageId = doc.id
+        allProducts.id = doc.id
         tmp.push(allProducts)
       })
       setProducts(tmp)
@@ -140,6 +143,7 @@ const Products = () => {
       e.preventDefault()
       await addDoc(collection(db, 'products'), productForm)  
       setProductForm(model)
+      setProductModel(false)
       new Swal({
         title: 'Product Added',
         text: 'Product Added Successfully',
@@ -192,6 +196,49 @@ const Products = () => {
       setUpdateUI(!updateUI)
     }
   }
+
+  const deleteProduct = async (id) => {
+    try {
+      const ref = doc(db, 'products', id)
+      await deleteDoc(ref)
+      setUpdateUI(!updateUI)
+      new Swal({
+        title: 'Product deleted',
+        text: 'Product has been deleted successfully',
+        icon: 'success',
+      })
+    } catch (error) {
+      new Swal({
+        title: 'Error',
+        text: error.message,
+        icon: 'error',
+      })
+    }
+  }
+
+  const editProduct = (item) => {
+    setEdit(item)
+    setProductForm(item)
+    setProductModel(true)    
+  }
+
+  const saveData = async (e) => {
+    try{
+      e.preventDefault()
+      const ref = doc(db, 'products', edit.id)
+      await updateDoc(ref, productForm)
+      setProductForm(model)
+      setProductModel(false)
+      setEdit(null)
+      setUpdateUI(!updateUI)
+    }catch(err){
+      new Swal({
+        title: 'Error',
+        text: 'Failed to update',
+        icon: 'error',
+      })
+    }
+  }
   return (
     <> 
     {
@@ -218,8 +265,18 @@ const Products = () => {
                       <input type="file" className='opacity-0 w-full h-full absolute top-0 left-0' onChange={(e)=>handleFileUpload(e, item.imageId)}/>
                     </div>
                     <div className='px-2 py-4 '>
-                      <h1 className='font-base text-left capitalize font-semibold'>{item.title}</h1>
-                      <p className='text-gray-600 capitalize text-sm'>{item.description.slice(0,50)}...</p>
+                      <div className=" flex justify-between items-center">
+                        <h1 className='font-base text-left capitalize font-semibold'>{item.title}</h1>
+                        <div className="">
+                          <button onClick={()=>deleteProduct(item.id)}>
+                            <i className="ri-delete-bin-6-line text-lg hover:bg-red-600 hover:text-red-200 p-2 rounded-full"></i>
+                          </button>
+                          <button onClick={()=>editProduct(item)}>
+                            <i className="ri-edit-box-line text-lg hover:bg-green-600 hover:text-green-200 p-2 rounded-full"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <p className='text-gray-600 capitalize text-xs'>{item.description.slice(0,20)}...</p>
                       <div className='flex gap-1 mt-1'>
                         <label className='text-sm'>₹{item.price-(item.price*item.discount)/100}</label>
                         <del className='text-sm text-red-600'>₹{item.price}</del>
@@ -239,11 +296,18 @@ const Products = () => {
                   <i className="ri-close-line text-lg font-semibold"></i>
                 </button>
                 <h1 className='text-lg font-semibold'>New Product</h1>
-                <form onSubmit={createProduct} className='grid grid-cols-2 mt-4 gap-4'>
+                <form onSubmit={edit ? saveData : createProduct} className='grid grid-cols-2 mt-4 gap-4'>
                   <input type="text" name="title" placeholder='Enter product title here' required onChange={handleProductForm} value={productForm.title} className='col-span-2 p-2 border border-gray-300 rounded'/>
                   <input type="number" name="price" placeholder='Enter product price here' required onChange={handleProductForm} value={productForm.price} className='p-2 border border-gray-300 rounded'/>
                   <input type="number" name="discount" placeholder='Enter discount discount here' required onChange={handleProductForm} value={productForm.discount} className='p-2 border border-gray-300 rounded'/>
-                  <textarea name="description" placeholder='Description' required onChange={handleProductForm} value={productForm.description} className='col-span-2 p-2 border border-gray-300 rounded' rows={10} ></textarea>
+                  {/* <select name="brand" onChange={handleProductForm} className='p-2 border border-gray-300 rounded'>
+                    <option value="all">Select Brand</option>
+                    <option value="hm">hm</option>
+                    <option value="ad">ad</option>
+                    <option value="zara">zara</option>
+                    <option value="lv">lv</option>
+                  </select> */}
+                  <textarea name="description" placeholder='Description' onChange={handleProductForm} value={productForm.description} className='col-span-2 p-2 border border-gray-300 rounded' rows={10} ></textarea>
                   <div>
                     <button className='bg-[dodgerblue] text-white py-2 px-4 rounded hover:bg-[deeppink]'>Submit</button>
                   </div>

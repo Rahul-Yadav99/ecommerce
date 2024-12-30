@@ -217,6 +217,24 @@ const Home = ({slider, title='Latest Products'}) => {
       {
         slider && <Slider />
       }
+
+      <div className="bg-white md:py-20 py-8 text-center">
+        <h1 className='md:text-3xl text-2xl font-semibold text-gray-700'>Shop By Brands</h1>
+        <p className='text-gray-500'>Select Your Favorite Brands And Purchase</p>
+        <div className="grid md:grid-cols-5 grid-cols-2 gap-4 md:w-8/12 w-11/12 m-auto mt-3">
+            {
+              brands.map((item, index) => (
+                <div key={index} className='border py-2 px-4 rounded-lg'>
+                  <img src={item.url}  />
+                </div>
+                
+              ))
+            }
+        </div>
+      </div> 
+
+    <hr />
+    
       <div className='md:w-8/12 w-9/12 m-auto py-8'>
         <h1 className='md:text-3xl text-2xl font-semibold text-gray-700 text-center'>{title}</h1>
         <p className='text-gray-600 text-sm md:text-base md:mt-3 mb-5 text-center'>Bring home the latest products designed to blend sophistication with practicality.</p>
@@ -227,7 +245,7 @@ const Home = ({slider, title='Latest Products'}) => {
               <img src={item.image ? item.image : "https://via.placeholder.com/300x300"} alt="" className='h-72 w-72 object-cover rounded-lg' />
               <div className='flex flex-col items-start justify-start mt-2 p-2'>
                   <h1 className='font-base text-left capitalize font-semibold'>{item.title}</h1>
-                  <p className='text-gray-600 capitalize text-xs'>{item.description.slice(0,50)}...</p>
+                  <p className='text-gray-600 capitalize text-xs'>{item.description.slice(0,20)}...</p>
                   <div className='space-x-2'>
                     <label className='text-gray-600 text-sm font-semibold'>₹{item.price-(item.price*item.discount)/100}</label>
                     <del className='text-red-600 text-sm'>₹{item.price}</del>
@@ -276,20 +294,7 @@ const Home = ({slider, title='Latest Products'}) => {
           </div>
       </div>
       <hr />
-      <div className="bg-white md:py-20 py-8 text-center shadow-xl">
-        <h1 className='md:text-3xl text-2xl font-semibold text-gray-700'>Shop By Brands</h1>
-        <p className='text-gray-500'>Select Your Favorite Brands And Purchase</p>
-        <div className="grid md:grid-cols-5 grid-cols-2 gap-4 md:w-8/12 w-11/12 m-auto mt-3">
-            {
-              brands.map((item, index) => (
-                <div key={index} className='border py-2 px-4 rounded-lg'>
-                  <img src={item.url}  />
-                </div>
-                
-              ))
-            }
-        </div>
-      </div>     
+          
     </Layout>
   )
 }

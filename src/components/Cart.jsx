@@ -66,7 +66,7 @@ const Cart = () => {
                 <div className="flex justify-between">
                   <div className='flex flex-col items-start justify-start gap-y-1 mt-2 pl-2'>
                       <h1 className='text-base font-semibold capitalize'>{item.title}</h1>
-                      <p className='text-gray-600 capitalize text-xs'>{item.description.slice(0,50)}...</p>
+                      <p className='text-gray-600 capitalize text-xs'>{item.description.slice(0,20)}...</p>
                       <div className='space-x-2 '>
                         <label className='text-gray-600 font-semibold text-sm'>₹{item.price-(item.price*item.discount)/100}</label>
                         <del className='text-red-600 text-xs'>₹{item.price}</del>
