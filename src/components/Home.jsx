@@ -8,6 +8,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import axios from 'axios';
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
 import { redirect, useNavigate } from 'react-router-dom';
+import Marquee from 'react-fast-marquee';
 
 const auth = getAuth(firebaseAppConfig)
 const db = getFirestore(firebaseAppConfig)
@@ -237,26 +238,21 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
       }
 
       {
-        brandName &&
-      <div className="bg-white md:py-20 py-8 text-center">
-        <h1 className='md:text-3xl text-2xl font-semibold text-gray-700'>Shop By Brands</h1>
-        <p className='text-gray-500'>Select Your Favorite Brands And Purchase</p>
-        <div className="grid md:grid-cols-5 grid-cols-2 gap-4 md:w-8/12 w-11/12 m-auto mt-3">
+        brandName && 
+        <div className='py-8 space-y-14'>
+          <h1 className='capitalize font-semibold text-4xl text-gray-700 text-center'>Trusted by <span className='text-[dodgerblue] font-bold'>50+</span> companies</h1>
+          <Marquee pauseOnHover speed={90} className='space-x-8 mt-4'>
             {
-              brands.map((item, index) => (
-                <div key={index} className='border py-2 px-4 rounded-lg'>
-                  <img src={item.url}  />
+              brands.map((item, index)=>(
+                <div key={index} className='hover:bg-gray-300 p-4 rounded-lg'>
+                  <img src={item.url} className='h-14'/>
                 </div>
-                
               ))
             }
+          </Marquee>
         </div>
-      </div>
-      }
-       
+      } 
 
-    <hr />
-    
       <div className='md:w-8/12 w-9/12 m-auto py-8'>
         <h1 className='md:text-3xl text-2xl font-semibold text-gray-700 text-center'>{title}</h1>
         <p className='text-gray-600 text-sm md:text-base md:mt-3 mb-5 text-center'>Bring home the latest products designed to blend sophistication with practicality.</p>
