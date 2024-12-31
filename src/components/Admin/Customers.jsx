@@ -1,18 +1,27 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from './Layout'
+import { collection, getDocs, getFirestore } from 'firebase/firestore'
+import firebaseAppConfig from '../../util/firebase-config'
+import moment from 'moment'
+
+const db = getFirestore(firebaseAppConfig)
 
 const Customers = () => {
 
-  const [customers, setCustomers] = useState([
-    {
-      customerName : 'Rahul',
-      email : 'rahul@gmail.com',
-      mobile : '9910453106',
-      date : '12-10-2024',
-      address : 'Sonia Vihar, New Delhi, Delhi-110094'
-    }
-  ])
+  const [customers, setCustomers] = useState([])
 
+  useEffect(()=>{
+    const req = async () => {
+      const snapshot = await getDocs(collection(db, 'customers'))
+      const tmp = []
+      snapshot.forEach((doc)=>{
+        const document = doc.data()
+        tmp.push(document)
+      })
+      setCustomers(tmp)
+    }
+    req()
+  }, [])
   return (
     <Layout>
       <div className='min-h-screen'>
@@ -25,7 +34,6 @@ const Customers = () => {
                 <th>Email</th>
                 <th>Mobile</th>
                 <th>Date</th>
-                <th>Address</th>
               </tr>
             </thead>
 
@@ -40,10 +48,9 @@ const Customers = () => {
                       }}
                     >
                       <td className='capitalize py-4'>{item.customerName}</td>
-                      <td>{item.email}</td>
-                      <td>{item.mobile}</td>
-                      <td>{item.date}</td>
-                      <td>{item.address}</td>
+                      <td>{item.customerEmail}</td>
+                      <td>{item.customerMobile}</td>
+                      <td>{moment(item.createAt.toDate()).format('DD MMM YYYY')}</td>
                     </tr>
                   )
                 })

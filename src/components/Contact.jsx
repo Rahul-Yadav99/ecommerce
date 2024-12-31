@@ -4,7 +4,7 @@ import Layout from './Layout'
 const Contact = () => {
   return (
     <Layout>
-        <div className='md:w-5/12 w-11/12 m-auto md:py-20 py-8 bg-white gap-20'>
+        <div className='md:w-5/12 w-11/12 m-auto md:py-20 py-8 gap-20'>
             <div className='flex flex-col justify-center'>
                 <form action="" className='mt-5 space-y-5'>
                     <div className='flex flex-col gap-2'>

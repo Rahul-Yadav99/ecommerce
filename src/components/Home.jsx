@@ -134,6 +134,9 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
 
   const [address, setAddress] = useState(null)
 
+  const [updateUI, setUpdateUI] = useState(false)
+  
+
   useEffect(()=>{
     onAuthStateChanged(auth, (user)=>{
       if(user){
@@ -148,6 +151,7 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
     try{
       item.userId = session.uid;
       await addDoc(collection(db, "carts"), item)
+      setUpdateUI(!updateUI)
       new Swal({
         title : 'Item Added',
         text : 'Item has been added to your cart',
@@ -232,7 +236,7 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
   }
 
   return (
-    <Layout>
+    <Layout update={updateUI}>
       {
         slider && <Slider />
       }
@@ -240,7 +244,7 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
       {
         brandName && 
         <div className='py-8 space-y-14'>
-          <h1 className='capitalize font-semibold text-4xl text-gray-700 text-center'>Trusted by <span className='text-[dodgerblue] font-bold'>50+</span> companies</h1>
+          <h1 className='capitalize font-semibold md:text-3xl text-2xl text-gray-700 text-center'>Trusted by <span className='text-[dodgerblue] font-bold'>50+</span> companies</h1>
           <Marquee pauseOnHover speed={90} className='space-x-8 mt-4'>
             {
               brands.map((item, index)=>(
@@ -254,12 +258,12 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
       } 
 
       <div className='md:w-8/12 w-9/12 m-auto py-8'>
-        <h1 className='md:text-3xl text-2xl font-semibold text-gray-700 text-center'>{title}</h1>
+        <h1 className='md:text-3xl text-xl font-semibold text-gray-700 text-center'>{title}</h1>
         <p className='text-gray-600 text-sm md:text-base md:mt-3 mb-5 text-center'>Bring home the latest products designed to blend sophistication with practicality.</p>
         <div className='grid md:grid-cols-3 grid-cols-1 md:gap-8 gap-4 '>
           {
             products.map((item, index) => (
-              <div key={index} className='m-auto pb-2 shadow-xl rounded-lg'>
+              <div key={index} className='m-auto pb-2 shadow-2xl rounded-lg '>
               <img src={item.image ? item.image : "https://via.placeholder.com/300x300"} alt="" className='h-72 w-72 object-cover rounded-lg' />
               <div className='flex flex-col items-start justify-start mt-2 p-2'>
                   <h1 className='font-base text-left capitalize font-semibold'>{item.title}</h1>

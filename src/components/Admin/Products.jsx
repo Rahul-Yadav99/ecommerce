@@ -4,7 +4,6 @@ import firebaseAppConfig from '../../util/firebase-config'
 import { getFirestore, addDoc, collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import Swal from 'sweetalert2'
 import Loader from '../Loader'
-import { getId } from 'firebase/installations'
 
 const db = getFirestore(firebaseAppConfig)
 

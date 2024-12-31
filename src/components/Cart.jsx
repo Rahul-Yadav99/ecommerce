@@ -2,18 +2,27 @@ import React, { useState, useEffect } from 'react'
 import Layout from './Layout'
 import firebaseAppConfig from '../util/firebase-config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, getDocs, collection, query, where, doc, deleteDoc } from 'firebase/firestore';
+import { getFirestore, getDocs, collection, query, where, doc, deleteDoc, serverTimestamp, addDoc } from 'firebase/firestore';
+import { useRazorpay } from 'react-razorpay';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const auth = getAuth(firebaseAppConfig)
 const db = getFirestore(firebaseAppConfig)
 
 const Cart = () => {
 
+  const navigate = useNavigate()
+
+  const { error, isLoading, Razorpay } = useRazorpay();
+  
   const [products, setProducts] = useState([
   ])
   const [session, setSession] = useState(null)
   
   const [updateUi, setUpdateUi] = useState(false)
+
+  const [address, setAddress] = useState(null)
 
   useEffect(()=>{
       onAuthStateChanged(auth, (user)=>{
@@ -43,15 +52,86 @@ const Cart = () => {
       res()
     }, [session, updateUi])
 
+    useEffect(()=>{
+        const req = async ()=>{
+            if(session)
+            {
+                const col = collection(db, "addresses")
+                const q = query(col, where("userId", "==", session.uid))
+                const snapshot = await getDocs(q)
+                snapshot.forEach((doc)=>{
+                    const document = doc.data()
+                    setAddress(document)
+                })
+            }
+        }
+    
+        req()
+    }, [session])
+
     const removeProduct = async (id) => {
       const ref = doc(db, "carts", id);
       await deleteDoc(ref);
       setUpdateUi(!updateUi)
     }
 
+    const getPrice = (products) => {
+      let sum = 0
+      for(let item of products){
+        let amount = item.price-(item.price*item.discount)/100
+        sum = sum + amount
+      }
+      return sum
+    }
+
+    const buyNow = async ()=>{
+      try {
+          const amount = getPrice(products)
+          const {data} = await axios.post('https://ecompayment.vercel.app/order', {amount: amount})
+          const options = {
+              key: 'rzp_test_W1As5WgUmla9nV',
+              amount: data.amount,
+              order_id: data.orderId,
+              name: 'VibeNest',
+              description: 'Bulk products',
+              image: 'https://cdn-icons-png.freepik.com/512/7835/7835563.png',
+              handler: async function(response) {
+                  for(let item of products)
+                  {
+                      let product = {
+                          ...item,
+                          userId: session.uid,
+                          status: 'pending',
+                          email: session.email,
+                          customerName: session.displayName,
+                          createdAt: serverTimestamp(),
+                          address: address
+                      }
+                      await addDoc(collection(db, "orders"), product)
+                      await removeProduct(item.cartId)
+                  }
+                  navigate('/profile')
+              },
+              notes: {
+                  name: session.displayName
+              }
+          }
+          const rzp = new Razorpay(options)
+
+          rzp.open()
+
+          rzp.on("payment.failed", function(response) {
+              navigate('/failed')
+          })
+      }
+      catch(err)
+      {
+          console.log(err)
+      }
+  }
 
   return (
-    <Layout>
+    <Layout update={updateUi}>
       <div className='md:w-8/12 w-9/12 m-auto py-8'>
         <div className='flex items-center gap-4'>
           <i className="ri-shopping-cart-line text-2xl font-bold"></i>
@@ -85,8 +165,8 @@ const Cart = () => {
         </div>
         <hr className='my-6'/>
         <div className='flex justify-between items-center'>
-          <h1 className='text-lg font-semibold'>Total : ₹52,000</h1>  
-          <button className=' bg-[dodgerblue] text-white px-4 py-2 rounded hover:bg-[#3e82ff]'>
+          <h1 className='text-lg font-semibold'>Total : ₹{Math.round(getPrice(products))}</h1>  
+          <button className=' bg-[dodgerblue] text-white px-4 py-2 rounded hover:bg-[#3e82ff]' onClick={buyNow}>
           <i className="ri-shopping-bag-line mr-3"></i>
             Buy Now
           </button>

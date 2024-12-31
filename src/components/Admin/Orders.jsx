@@ -8,170 +8,7 @@ import moment from 'moment'
 const db = getFirestore(firebaseAppConfig)
 const Orders = () => {
 
-  const [orders, setOrders] = useState([
-    // {
-    //   orderID : '#abc123',
-    //   customerName : 'Rahul',
-    //   email : 'rahul@gmail.com',
-    //   mobile : '9910453106',
-    //   product : 'iphone',
-    //   amount: 50000,
-    //   date : '12-10-2024'
-    // },
-    // {
-    //   orderID : '#abc123',
-    //   customerName : 'Rahul',
-    //   email : 'rahul@gmail.com',
-    //   mobile : '9910453106',
-    //   product : 'iphone',
-    //   amount: 50000,
-    //   date : '12-10-2024'
-    // },
-    // {
-    //   orderID : '#abc123',
-    //   customerName : 'Rahul',
-    //   email : 'rahul@gmail.com',
-    //   mobile : '9910453106',
-    //   product : 'iphone',
-    //   amount: 50000,
-    //   date : '12-10-2024'
-    // },
-    // {
-    //   orderID : '#abc123',
-    //   customerName : 'Rahul',
-    //   email : 'rahul@gmail.com',
-    //   mobile : '9910453106',
-    //   product : 'iphone',
-    //   amount: 50000,
-    //   date : '12-10-2024'
-    // },
-    // {
-    //   orderID : '#abc123',
-    //   customerName : 'Rahul',
-    //   email : 'rahul@gmail.com',
-    //   mobile : '9910453106',
-    //   product : 'iphone',
-    //   amount: 50000,
-    //   date : '12-10-2024'
-    // },
-    // {
-    //   orderID : '#abc123',
-    //   customerName : 'Rahul',
-    //   email : 'rahul@gmail.com',
-    //   mobile : '9910453106',
-    //   product : 'iphone',
-    //   amount: 50000,
-    //   date : '12-10-2024'
-    // },
-    // {
-    //   orderID : '#abc123',
-    //   customerName : 'Rahul',
-    //   email : 'rahul@gmail.com',
-    //   mobile : '9910453106',
-    //   product : 'iphone',
-    //   amount: 50000,
-    //   date : '12-10-2024'
-    // },
-    // {
-    //   orderID : '#abc123',
-    //   customerName : 'Rahul',
-    //   email : 'rahul@gmail.com',
-    //   mobile : '9910453106',
-    //   product : 'iphone',
-    //   amount: 50000,
-    //   date : '12-10-2024'
-    // },
-    // {
-    //   orderID : '#abc123',
-    //   customerName : 'Rahul',
-    //   email : 'rahul@gmail.com',
-    //   mobile : '9910453106',
-    //   product : 'iphone',
-    //   amount: 50000,
-    //   date : '12-10-2024'
-    // },
-    // {
-    //   orderID : '#abc123',
-    //   customerName : 'Rahul',
-    //   email : 'rahul@gmail.com',
-    //   mobile : '9910453106',
-    //   product : 'iphone',
-    //   amount: 50000,
-    //   date : '12-10-2024'
-    // },
-    // {
-    //   orderID : '#abc123',
-    //   customerName : 'Rahul',
-    //   email : 'rahul@gmail.com',
-    //   mobile : '9910453106',
-    //   product : 'iphone',
-    //   amount: 50000,
-    //   date : '12-10-2024'
-    // },
-    // {
-    //   orderID : '#abc123',
-    //   customerName : 'Rahul',
-    //   email : 'rahul@gmail.com',
-    //   mobile : '9910453106',
-    //   product : 'iphone',
-    //   amount: 50000,
-    //   date : '12-10-2024'
-    // },
-    // {
-    //   orderID : '#abc123',
-    //   customerName : 'Rahul',
-    //   email : 'rahul@gmail.com',
-    //   mobile : '9910453106',
-    //   product : 'iphone',
-    //   amount: 50000,
-    //   date : '12-10-2024'
-    // },
-    // {
-    //   orderID : '#abc123',
-    //   customerName : 'Rahul',
-    //   email : 'rahul@gmail.com',
-    //   mobile : '9910453106',
-    //   product : 'iphone',
-    //   amount: 50000,
-    //   date : '12-10-2024'
-    // },
-    // {
-    //   orderID : '#abc123',
-    //   customerName : 'Rahul',
-    //   email : 'rahul@gmail.com',
-    //   mobile : '9910453106',
-    //   product : 'iphone',
-    //   amount: 50000,
-    //   date : '12-10-2024'
-    // },
-    // {
-    //   orderID : '#abc123',
-    //   customerName : 'Rahul',
-    //   email : 'rahul@gmail.com',
-    //   mobile : '9910453106',
-    //   product : 'iphone',
-    //   amount: 50000,
-    //   date : '12-10-2024'
-    // },
-    // {
-    //   orderID : '#abc123',
-    //   customerName : 'Rahul',
-    //   email : 'rahul@gmail.com',
-    //   mobile : '9910453106',
-    //   product : 'iphone',
-    //   amount: 50000,
-    //   date : '12-10-2024'
-    // },
-    // {
-    //   orderID : '#abc123',
-    //   customerName : 'Rahul',
-    //   email : 'rahul@gmail.com',
-    //   mobile : '9910453106',
-    //   product : 'iphone',
-    //   amount: 50000,
-    //   date : '12-10-2024'
-    // }
-  ])
+  const [orders, setOrders] = useState([])
 
   useEffect(()=>{
     const req = async () => {
@@ -205,6 +42,7 @@ const Orders = () => {
       })
     }
   }
+console.log(orders);
 
   return (
     <Layout>
@@ -241,8 +79,8 @@ const Orders = () => {
                       <td>{item.email}</td>
                       <td>{item.address.mobile}</td>
                       <td className='capitalize'>{item.title}</td>
-                      <td>₹{item.price.toLocaleString()}</td>
-                      <td>{moment(item.created_At.toDate()).format('DD MMM YYYY')}</td>
+                      <td>₹{item.price}</td>
+                      <td>{moment(item.date).format('DD MMM YYYY')}</td>
                       <td>
                         {`${item.address.address}, ${item.address.city}, ${item.address.state}, ${item.address.country}`}
                       </td>
@@ -251,6 +89,7 @@ const Orders = () => {
                           <option value="pending">Pending</option>
                           <option value="processing">Processing</option>
                           <option value="dispatched">Dispatched</option>
+                          <option value="delivered">Delivered</option>
                           <option value="return">Return</option>
                         </select>
                       </td>

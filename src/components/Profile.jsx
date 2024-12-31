@@ -206,7 +206,8 @@ const Profile = ()=>{
 
         else if(status === "return")
             return "bg-red-600"
-
+        else if(status === 'delivered')
+            return "bg-green-600"
         else 
             return "bg-cyan-600"
     }

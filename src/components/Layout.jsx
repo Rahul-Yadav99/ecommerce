@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import firebaseAppConfig from '../util/firebase-config'
+import { getFirestore, addDoc, collection, getDocs, deleteDoc, doc, updateDoc, query, where } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged, signOut} from 'firebase/auth'
-const auth = getAuth(firebaseAppConfig)
 
-const Layout = ({children}) => {
+const auth = getAuth(firebaseAppConfig)
+const db = getFirestore(firebaseAppConfig)
+
+const Layout = ({children, update}) => {
+
     const location = useLocation()
     const [session, setSession] = useState(null)
     const [accountMenu, setAccountMenu] = useState(false)
     const [mobileMenu, setMobileMenu] = useState(false)
+    const [cartCount, setCartCount] = useState(0)
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
@@ -19,6 +24,18 @@ const Layout = ({children}) => {
             }
         })
     },[])
+
+    useEffect(()=>{
+        if(session){
+            const req = async () => {
+                const col = collection(db, 'carts')
+                const q = query(col, where('userId', '==', session.uid))
+                const snapshot = await getDocs(q)
+                setCartCount(snapshot.size);
+            }
+            req()
+        }
+    }, [session, update])
 
     const menus = [
         {
@@ -59,9 +76,18 @@ const Layout = ({children}) => {
                                 style={{
                                     borderBottom: (item.href === location.pathname) ? '2px solid dodgerblue' : 'transparent',
                                 }}
-                            >{item.label}</Link>
+                            >
+                                {item.label}
+                            </Link>
                         </li>
                     ))
+                }
+                {
+                    (session && cartCount > 0) &&
+                    <Link to={'/cart'} className='relative'>
+                        <i className="ri-shopping-cart-line p-4 rounded-full text-lg hover:bg-[dodgerblue] hover:text-white"></i>
+                        <div className='absolute -top-3 right-3 font-semibold text-rose-600'>{cartCount}</div>
+                    </Link>
                 }
                 {
                     !session &&
@@ -80,15 +106,15 @@ const Layout = ({children}) => {
                                     <div className='flex flex-col items-start'>
                                         <h1 className='bg-gray-100 text-base font-semibold w-full text-center py-2'>{session.displayName}</h1>
                                         <Link to={'/profile'} className="text-base font-semibold hover:bg-gray-100 w-full py-2 px-16 text-start">
-                                            <i className="ri-user-line mr-3 text-green-500"></i>
+                                            <i className="ri-user-line mr-2 text-gray-800"></i>
                                             Profile
                                         </Link>
                                         <Link to={'/cart'} className="text-base font-semibold hover:bg-gray-100 w-full py-2 px-16 text-start">
-                                            <i className="ri-shopping-cart-line mr-3 text-green-500"></i>
+                                            <i className="ri-shopping-cart-line mr-2 text-gray-800"></i>
                                             Cart
                                         </Link>
                                         <button className="text-base font-semibold w-full text-left py-2 px-16 hover:bg-gray-100" onClick={() => signOut(auth)}>
-                                            <i className="ri-logout-box-line mr-3 text-red-500"></i>
+                                            <i className="ri-logout-box-line mr-2 text-gray-800"></i>
                                             Logout
                                         </button>
                                     </div>
@@ -100,7 +126,7 @@ const Layout = ({children}) => {
         </div>
       </nav>
   
-       <div className="bg-white">
+       <div className="bg-neutral-50">
         {children}
        </div>
 

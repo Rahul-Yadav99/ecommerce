@@ -3,9 +3,10 @@ import Layout from './Layout'
 import { Link, useNavigate } from 'react-router-dom'
 import firebaseAppConfig from '../util/firebase-config'
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
-import Swal from 'sweetalert2'
+import { getFirestore, addDoc, collection, serverTimestamp } from 'firebase/firestore'
 
 const auth = getAuth(firebaseAppConfig)
+const db = getFirestore(firebaseAppConfig)
 
 const Signup = () => {
   const navigate = useNavigate()
@@ -15,6 +16,7 @@ const Signup = () => {
   const [formValue, setFormValue] = useState({
     fullname: '',
     email: '',
+    mobile: '',
     password: '',
   })
 
@@ -22,20 +24,18 @@ const Signup = () => {
     try {
       e.preventDefault()
       setLoader(true)
-      await createUserWithEmailAndPassword(auth, formValue.email, formValue.password)
+      const userCredential = await createUserWithEmailAndPassword(auth, formValue.email, formValue.password)
       await updateProfile(auth.currentUser,{displayName: formValue.fullname})
-      new Swal({
-        title: 'Signup Successfull',
-        text: 'You have been signed up successfully',
-        icon: 'success',
+      await addDoc(collection(db, 'customers'), {
+        customerName: formValue.fullname,
+        customerEmail: formValue.email,
+        customerId: userCredential.user.uid,
+        customerMobile: formValue.mobile,
+        createAt: serverTimestamp()
       })
       navigate('/')
     } catch (err) {
       setError(err.message)
-      new Swal({
-        title: 'Error',
-        text: err.message
-      })
     }
     finally{
       setLoader(false)
@@ -68,6 +68,10 @@ const Signup = () => {
                     <div className='flex flex-col gap-2'>
                         <label className='font-semibold text-lg'>Email:</label>
                         <input onChange={handleOnChange} type="email" name="email" placeholder='rahul@gmail.com' required className='p-3 border border-gray-300 rounded'/>
+                    </div>
+                    <div className='flex flex-col gap-2'>
+                        <label className='font-semibold text-lg'>Mobile:</label>
+                        <input onChange={handleOnChange} type="number" name="mobile" placeholder='9999999999' required className='p-3 border border-gray-300 rounded'/>
                     </div>
                     <div className='flex flex-col gap-2'>
                         <label className='font-semibold text-lg'>Password:</label>
