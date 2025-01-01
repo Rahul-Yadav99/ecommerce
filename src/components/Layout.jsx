@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import firebaseAppConfig from '../util/firebase-config'
-import { getFirestore, addDoc, collection, getDocs, deleteDoc, doc, updateDoc, query, where } from 'firebase/firestore'
+import { getFirestore, collection, getDocs, query, where } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged, signOut} from 'firebase/auth'
 
 const auth = getAuth(firebaseAppConfig)

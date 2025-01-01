@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Layout from './Layout'
 import firebaseAppConfig from '../../util/firebase-config'
 import { getFirestore, addDoc, collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore'
-import Swal from 'sweetalert2'
 import Loader from '../Loader'
+import { toast } from 'react-toastify'
 
 const db = getFirestore(firebaseAppConfig)
 
@@ -143,17 +143,9 @@ const Products = () => {
       await addDoc(collection(db, 'products'), productForm)  
       setProductForm(model)
       setProductModel(false)
-      new Swal({
-        title: 'Product Added',
-        text: 'Product Added Successfully',
-        icon: 'success',
-      })  
+      toast.success('Product Added') 
     } catch (error) {
-      new Swal({
-        title: 'Error',
-        text: error.message,
-        icon: 'error',
-      })
+      toast.error(error.message,)
     }finally{
       setUpdateUI(!updateUI)
     }    
@@ -185,11 +177,7 @@ const Products = () => {
       const ref = doc(db, 'products', id)
       await updateDoc(ref, { image: imageURL })      
     } catch (error) {
-      new Swal({
-        title: 'Error',
-        text: error.message,
-        icon: 'error',
-      })
+      toast.error(error.message,)
     }finally{
       setLoader(false)
       setUpdateUI(!updateUI)
@@ -201,17 +189,9 @@ const Products = () => {
       const ref = doc(db, 'products', id)
       await deleteDoc(ref)
       setUpdateUI(!updateUI)
-      new Swal({
-        title: 'Product deleted',
-        text: 'Product has been deleted successfully',
-        icon: 'success',
-      })
+      toast.success('Product deleted')
     } catch (error) {
-      new Swal({
-        title: 'Error',
-        text: error.message,
-        icon: 'error',
-      })
+      toast.error(error.message,)
     }
   }
 
@@ -231,11 +211,7 @@ const Products = () => {
       setEdit(null)
       setUpdateUI(!updateUI)
     }catch(err){
-      new Swal({
-        title: 'Error',
-        text: 'Failed to update',
-        icon: 'error',
-      })
+      toast.error(error.message,)
     }
   }
   return (
@@ -306,7 +282,7 @@ const Products = () => {
                     <option value="zara">zara</option>
                     <option value="lv">lv</option>
                   </select> */}
-                  <textarea name="description" placeholder='Description' onChange={handleProductForm} value={productForm.description} className='col-span-2 p-2 border border-gray-300 rounded' rows={10} ></textarea>
+            <textarea name="description" placeholder='Description' onChange={handleProductForm} value={productForm.description} className='col-span-2 p-2 border border-gray-300 rounded' rows={10} ></textarea>
                   <div>
                     <button className='bg-[dodgerblue] text-white py-2 px-4 rounded hover:bg-[deeppink]'>Submit</button>
                   </div>

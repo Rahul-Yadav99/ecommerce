@@ -3,12 +3,12 @@ import Layout from './Layout'
 import Slider from './Slider';
 import firebaseAppConfig from '../util/firebase-config';
 import { getFirestore, addDoc, collection, getDocs, serverTimestamp, query, where } from 'firebase/firestore';
-import Swal from 'sweetalert2';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import axios from 'axios';
-import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
+import { useRazorpay } from "react-razorpay";
 import { redirect, useNavigate } from 'react-router-dom';
 import Marquee from 'react-fast-marquee';
+import { toast } from 'react-toastify';
 
 const auth = getAuth(firebaseAppConfig)
 const db = getFirestore(firebaseAppConfig)
@@ -152,17 +152,9 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
       item.userId = session.uid;
       await addDoc(collection(db, "carts"), item)
       setUpdateUI(!updateUI)
-      new Swal({
-        title : 'Item Added',
-        text : 'Item has been added to your cart',
-        icon : 'success',
-      })
+      toast.success("Product Added")
     }catch(err){
-      new Swal({
-        title: 'Error',
-        text: 'Something went wrong',
-        icon: 'error',
-      })
+      toast.warn('Please Signup')
     }
   }
 
@@ -228,10 +220,10 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
       rzp.open()
 
       rap.on('Payment Failed', function(response){
-        navigate('/failed')
+        redirect('/failed')
       })
     } catch (error) {
-      console.log(error)
+      toast.error(error)
     }
   }
 

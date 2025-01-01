@@ -7,6 +7,7 @@ import Layout from './Layout'
 import Swal from 'sweetalert2'
 import uploadFile from '../util/storage'
 import Loader from './Loader'
+import { toast } from 'react-toastify'
 
 const auth = getAuth(firebaseAppConfig)
 const db = getFirestore(firebaseAppConfig)
@@ -137,10 +138,7 @@ const Profile = ()=>{
             displayName: formValue.fullname,
             phoneNumber: formValue.mobile
         })
-        new Swal({
-            icon: 'success',
-            title: 'Profile Saved !'
-        })
+        toast.success('Profile Saved !')
     }
 
     const setAddress = async (e)=>{
@@ -149,18 +147,11 @@ const Profile = ()=>{
             await addDoc(collection(db, "addresses"), addressForm)
             setIsAddress(true)
             setIsUpdated(!isUpdated)
-            new Swal({
-                icon: 'success',
-                title: 'Address Saved !'
-            })
+            toast.success('Address Saved !')
         }
         catch(err)
         {
-            new Swal({
-                icon: 'error',
-                title: 'Failed !',
-                text: err.message
-            })
+            toast.error(err.message + 'Failed !')
         }
     }
 
@@ -169,18 +160,12 @@ const Profile = ()=>{
             e.preventDefault()
             const ref = doc(db, "addresses", docId)
             await updateDoc(ref, addressForm)
-            new Swal({
-                icon: 'success',
-                title: 'Address Updated !'
-            })
+            toast.success('Address Updated !')
+
         }
         catch(err)
         {
-            new Swal({
-                icon: 'error',
-                title: 'Failed !',
-                text: err.message
-            })
+            toast.error(err.message)
         }
     }
 

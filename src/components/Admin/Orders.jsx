@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Layout from './Layout'
 import firebaseAppConfig from '../../util/firebase-config';
 import { getFirestore, getDocs, collection, doc, updateDoc } from 'firebase/firestore';
-import Swal from 'sweetalert2';
 import moment from 'moment'
+import { toast } from 'react-toastify';
 
 const db = getFirestore(firebaseAppConfig)
 const Orders = () => {
@@ -29,20 +29,11 @@ const Orders = () => {
       const status = e.target.value
       const ref = await doc(db, 'orders', orderId)
       await updateDoc(ref, {status : status})   
-      new Swal({
-        title: 'Order Status Updated',
-        text: 'Order status updated successfully',
-        icon: 'success',
-      })   
+      toast.success('Order Status Updated')  
     } catch (error) {
-      new Swal({
-        title: "Error",
-        text: error.message,
-        icon: "error",
-      })
+      toast.error(error.message)
     }
   }
-console.log(orders);
 
   return (
     <Layout>
