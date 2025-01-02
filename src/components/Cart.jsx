@@ -163,13 +163,22 @@ const Cart = () => {
             ))
           }
         </div>
+        {
+            (products.length === 0) &&
+            <div className="flex justify-center items-center h-[50vh]">
+              <h1 className='md:text-4xl text-2xl font-semibold text-gray-800'>Cart is Empty !</h1>
+            </div> 
+          }
         <hr className='my-6'/>
         <div className='flex justify-between items-center'>
           <h1 className='text-lg font-semibold'>Total : ₹{Math.round(getPrice(products))}</h1>  
-          <button className=' bg-[dodgerblue] text-white px-4 py-2 rounded hover:bg-[#3e82ff]' onClick={buyNow}>
-          <i className="ri-shopping-bag-line mr-3"></i>
-            Buy Now
-          </button>
+          {
+            (products.length > 0) &&
+              <button className=' bg-[dodgerblue] text-white px-4 py-2 rounded hover:bg-[#3e82ff]' onClick={buyNow}>
+              <i className="ri-shopping-bag-line mr-3"></i>
+                Buy Now
+              </button>
+          }
         </div>
       </div>
     </Layout>

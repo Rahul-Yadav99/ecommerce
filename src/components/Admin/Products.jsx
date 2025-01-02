@@ -101,7 +101,7 @@ const Products = () => {
     description: '',
     price: '',
     discount: '',
-    // brand : '',
+    brand : '',
   }
 
   const [productForm, setProductForm] = useState(model)
@@ -211,7 +211,7 @@ const Products = () => {
       setEdit(null)
       setUpdateUI(!updateUI)
     }catch(err){
-      toast.error(error.message,)
+      toast.error(err.message,)
     }
   }
   return (
@@ -275,14 +275,15 @@ const Products = () => {
                   <input type="text" name="title" placeholder='Enter product title here' required onChange={handleProductForm} value={productForm.title} className='col-span-2 p-2 border border-gray-300 rounded'/>
                   <input type="number" name="price" placeholder='Enter product price here' required onChange={handleProductForm} value={productForm.price} className='p-2 border border-gray-300 rounded'/>
                   <input type="number" name="discount" placeholder='Enter discount discount here' required onChange={handleProductForm} value={productForm.discount} className='p-2 border border-gray-300 rounded'/>
-                  {/* <select name="brand" onChange={handleProductForm} className='p-2 border border-gray-300 rounded'>
-                    <option value="all">Select Brand</option>
-                    <option value="hm">hm</option>
-                    <option value="ad">ad</option>
-                    <option value="zara">zara</option>
-                    <option value="lv">lv</option>
-                  </select> */}
-            <textarea name="description" placeholder='Description' onChange={handleProductForm} value={productForm.description} className='col-span-2 p-2 border border-gray-300 rounded' rows={10} ></textarea>
+                  <select name="brand" onChange={handleProductForm} className='p-2 border border-gray-300 rounded'>
+                    <option value="All">Select Brand</option>
+                    <option value="H&M">H&M</option>
+                    <option value="Adidas">Adidas</option>
+                    <option value="Zara">Zara</option>
+                    <option value="Louis Vuitton">Louis Vuitton</option>
+                    <option value="Vibe Nest">Vibe Nest</option>
+                  </select>
+                  <textarea name="description" placeholder='Description' onChange={handleProductForm} value={productForm.description} className='col-span-2 p-2 border border-gray-300 rounded' rows={10} ></textarea>
                   <div>
                     <button className='bg-[dodgerblue] text-white py-2 px-4 rounded hover:bg-[deeppink]'>Submit</button>
                   </div>

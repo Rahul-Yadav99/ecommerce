@@ -97,7 +97,7 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
     },
   ])
 
-  const [brands, setBrands] = useState([
+  const [brandsImage, setBrandsImage] = useState([
     {
       url : '/img/01.webp'
     },
@@ -226,6 +226,13 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
       toast.error(error)
     }
   }
+  //filter brnds
+  const brand = ['All', 'H&M', "Adidas", 'Zara', 'Louis Vuitton', 'Vibe Nest']
+
+  const [selectedBrand, setSelectedBrand] = useState('All')
+
+  const filterProducts = selectedBrand === 'All' ? products : products.filter((item) => item.brand == selectedBrand) 
+
 
   return (
     <Layout update={updateUI}>
@@ -237,9 +244,9 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
         brandName && 
         <div className='py-8 space-y-14'>
           <h1 className='capitalize font-semibold md:text-3xl text-2xl text-gray-700 text-center'>Trusted by <span className='text-[dodgerblue] font-bold'>50+</span> companies</h1>
-          <Marquee pauseOnHover speed={90} className='space-x-8 mt-4'>
+          <Marquee pauseOnHover speed={90} className='md:space-x-8 space-x-4 mt-4'>
             {
-              brands.map((item, index)=>(
+              brandsImage.map((item, index)=>(
                 <div key={index} className='hover:bg-gray-300 p-4 rounded-lg'>
                   <img src={item.url} className='h-14'/>
                 </div>
@@ -252,9 +259,24 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
       <div className='md:w-8/12 w-9/12 m-auto py-8'>
         <h1 className='md:text-3xl text-xl font-semibold text-gray-700 text-center'>{title}</h1>
         <p className='text-gray-600 text-sm md:text-base md:mt-3 mb-5 text-center'>Bring home the latest products designed to blend sophistication with practicality.</p>
+        <div className="md:m-16 m-4 flex justify-end">
+          <select 
+            value={selectedBrand} 
+            onChange={(e)=>setSelectedBrand(e.target.value)}
+            className='py-2 px-4 rounded-md border border-gray-800'
+          >
+            {
+              brand.map((item)=>(
+                <option value={item}>
+                  {item}
+                </option>
+              ))
+            }
+          </select>
+        </div>
         <div className='grid md:grid-cols-3 grid-cols-1 md:gap-8 gap-4 '>
           {
-            products.map((item, index) => (
+            filterProducts.map((item, index) => (
               <div key={index} className='m-auto pb-2 shadow-2xl rounded-lg '>
               <img src={item.image ? item.image : "https://via.placeholder.com/300x300"} alt="" className='h-72 w-72 object-cover rounded-lg' />
               <div className='flex flex-col items-start justify-start mt-2 p-2'>
