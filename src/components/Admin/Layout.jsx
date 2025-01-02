@@ -1,18 +1,33 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, useLocation } from "react-router-dom"
-import firebaseAppConfig from "../../util/firebase-config"
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
+import firebaseAppConfig from '../../util/firebase-config'
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth"
+
+
+const auth = getAuth(firebaseAppConfig)
+
 
 const Layout = ({children}) => {
 
     const [size, setSize] = useState(280)
     const [accountMenu, setAccountMenu] = useState(false)
+    const [session, setSession] = useState(null)
     const location = useLocation()
+
+    useEffect(()=>{
+        onAuthStateChanged(auth, (user)=>{
+            if(user){
+                setSession(user)
+            }else{
+                setSession(null)
+            }
+        })
+    }, [])
 
     const menus = [
         {
             label : 'Dashboard',
-            href: '/admin/dashbaord'
+            href: '/admin/dashboard'
         },
         {
             label : 'Customers',
@@ -30,10 +45,6 @@ const Layout = ({children}) => {
             label : 'Payments',
             href: '/admin/payments'
         },
-        {
-            label : 'Settings',
-            href: '/admin/settings'
-        }
     ]
     
     return (
@@ -57,7 +68,7 @@ const Layout = ({children}) => {
                             </Link>
                         ))
                     }
-                    <button className="text-left p-3 text-base font-[17.5px] text-white hover:bg-[#e11d48]">
+                    <button className="text-left p-3 text-base font-[17.5px] text-white hover:bg-[#e11d48]" onClick={()=>signOut(auth)}>
                         Logout
                     </button>
                 </div>
@@ -88,11 +99,11 @@ const Layout = ({children}) => {
                             {
                                 accountMenu &&
                                 <div className="shadow-xl absolute top-[60px] right-0 bg-white p-6 w-[210px]">
-                                    <div>
-                                        <h1 className="text-base font-semibold">Rahul</h1>
-                                        <p className="text-base font-semibold">rahul@gmail.com</p>
+                                    <div className="space-y-2">
+                                        <h1 className="text-base text-gray-600">{session.displayName}</h1>
+                                        <p className="text-base  text-gray-600">{session.email}</p>
                                         <div className="h-px bg-gray-300 my-4" />
-                                        <button className="text-base font-semibold">
+                                        <button className="text-base font-semibold" onClick={()=>signOut(auth)}>
                                             <i className="ri-logout-box-line mr-3 text-red-500"></i>
                                             Logout
                                         </button>

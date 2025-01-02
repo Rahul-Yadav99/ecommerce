@@ -31,6 +31,7 @@ const Signup = () => {
         customerEmail: formValue.email,
         customerId: userCredential.user.uid,
         customerMobile: formValue.mobile,
+        role: 'user',
         createAt: serverTimestamp()
       })
       navigate('/')

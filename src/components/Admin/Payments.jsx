@@ -53,7 +53,7 @@ const Payments = () => {
                       <td>{item.email}</td>
                       <td>{item.contact}</td>
                       <td>{moment.unix(item.created_at).format('DD-MM-YYYY')}</td>
-                      <td>₹{item.fee.toLocaleString()}</td>
+                      <td>₹{item.fee}</td>
                       <td>{item.description}</td>
                     </tr>
                   )

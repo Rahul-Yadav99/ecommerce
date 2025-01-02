@@ -13,6 +13,7 @@ const Layout = ({children, update}) => {
     const [session, setSession] = useState(null)
     const [accountMenu, setAccountMenu] = useState(false)
     const [mobileMenu, setMobileMenu] = useState(false)
+    const [role, setRole] = useState(null)
     const [cartCount, setCartCount] = useState(0)
 
     useEffect(() => {
@@ -36,6 +37,21 @@ const Layout = ({children, update}) => {
             req()
         }
     }, [session, update])
+
+    useEffect(()=>{
+        if(session){
+            const req = async () => {
+                const col = collection(db, 'customers')
+                const q = query(col, where('customerId', '==', session.uid))
+                const snapshot = await getDocs(q)
+                snapshot.forEach((doc)=>{
+                    const document = doc.data()
+                    setRole(document.role)
+                })
+            }
+            req()
+        }
+    }, [session])
 
     const menus = [
         {
@@ -105,6 +121,13 @@ const Layout = ({children, update}) => {
                                 <div className="shadow-xl absolute top-[60px] right-0 bg-white py-6">
                                     <div className='flex flex-col items-start'>
                                         <h1 className='bg-gray-100 text-base font-semibold w-full text-center py-2'>{session.displayName}</h1>
+                                        {
+                                            (role && role === 'admin') &&
+                                                <Link to={'/admin/dashboard'} className="text-base font-semibold hover:bg-gray-100 w-full py-2 px-8 text-start">
+                                                    <i className="ri-git-repository-private-line mr-2 text-gray-800 "></i>
+                                                    Admin Panel
+                                                </Link>
+                                        }
                                         <Link to={'/profile'} className="text-base font-semibold hover:bg-gray-100 w-full py-2 px-16 text-start">
                                             <i className="ri-user-line mr-2 text-gray-800"></i>
                                             Profile

@@ -46,11 +46,9 @@ const Orders = () => {
                 <th className='py-4'>Order Id</th>
                 <th>Customer`s Name</th>
                 <th>Email</th>
-                <th>Mobile</th>
                 <th>Product</th>
                 <th>Amount</th>
                 <th>Date</th>
-                <th>Address</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -68,13 +66,9 @@ const Orders = () => {
                       <td className='py-4'>{item.order_id}</td>
                       <td className='capitalize'>{item.userName}</td>
                       <td>{item.email}</td>
-                      <td>{item.address.mobile}</td>
                       <td className='capitalize'>{item.title}</td>
                       <td>₹{item.price}</td>
                       <td>{moment(item.date).format('DD MMM YYYY')}</td>
-                      <td>
-                        {`${item.address.address}, ${item.address.city}, ${item.address.state}, ${item.address.country}`}
-                      </td>
                       <td className='capitalize'>
                         <select className='p-2 border border-gray-200' onChange={(e)=>updateOrderStatus(e, item.order_id)}>
                           <option value="pending">Pending</option>
