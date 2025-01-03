@@ -210,15 +210,15 @@ const Layout = ({children, update}) => {
                                     <div className='flex flex-col items-start'>
                                         <h1 className='bg-gray-100 text-base font-semibold w-full text-center py-2'>{session.displayName}</h1>
                                         <Link to={'/profile'} className="text-base font-semibold hover:bg-gray-100 w-full py-2 px-16 text-start">
-                                            <i className="ri-user-line mr-3 text-green-500"></i>
+                                            <i className="ri-user-line mr-3 text-gray-800"></i>
                                             Profile
                                         </Link>
                                         <Link to={'/cart'} className="text-base font-semibold hover:bg-gray-100 w-full py-2 px-16 text-start">
-                                            <i className="ri-shopping-cart-line mr-3 text-green-500"></i>
+                                            <i className="ri-shopping-cart-line mr-3 text-gray-800"></i>
                                             Cart
                                         </Link>
                                         <button className="text-base font-semibold w-full text-left py-2 px-16 hover:bg-gray-100" onClick={() => signOut(auth)}>
-                                            <i className="ri-logout-box-line mr-3 text-red-500"></i>
+                                            <i className="ri-logout-box-line mr-3 text-gray-800"></i>
                                             Logout
                                         </button>
                                     </div>

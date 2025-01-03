@@ -251,11 +251,11 @@ const Products = () => {
                           </button>
                         </div>
                       </div>
-                      <p className='text-gray-600 capitalize text-xs'>{item.description.slice(0,20)}...</p>
-                      <div className='flex gap-1 mt-1'>
+                      <p className='text-gray-800 capitalize text-xs'>{item.description.slice(0,20)}...</p>
+                      <div className='flex gap-1 mt-1 items-center'>
                         <label className='text-sm'>₹{item.price-(item.price*item.discount)/100}</label>
-                        <del className='text-sm text-red-600'>₹{item.price}</del>
-                        <label className='text-sm text-green-600'>({item.discount}% off)</label>
+                        <del className='text-xs text-gray-800'>₹{item.price}</del>
+                        <label className='text-xs text-gray-800'>({item.discount}% off)</label>
                       </div>
                     </div>
                   </div>
