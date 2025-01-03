@@ -89,7 +89,7 @@ const Cart = () => {
           const amount = getPrice(products)
           const {data} = await axios.post('https://ecompayment.vercel.app/order', {amount: amount})
           const options = {
-              key: 'rzp_test_W1As5WgUmla9nV',
+              key: import.meta.env.VITE_RAZORPAY_API_KEY,
               amount: data.amount,
               order_id: data.orderId,
               name: 'VibeNest',

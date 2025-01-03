@@ -199,7 +199,7 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
       const amount = Math.round(product.price-(product.price*product.discount)/100)
       const { data } = await axios.post('https://ecompayment.vercel.app/order', { amount : amount })
       const options = {
-        key: 'rzp_test_W1As5WgUmla9nV',
+        key: import.meta.env.VITE_RAZORPAY_API_KEY,
         amount: data.amount,
         order_id : data.orderId,
         name : 'VibeNest',
@@ -233,7 +233,6 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
 
   const filterProducts = selectedBrand === 'All' ? products : products.filter((item) => item.brand == selectedBrand) 
 
-
   return (
     <Layout update={updateUI}>
       {
@@ -243,7 +242,7 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
       {
         brandName && 
         <div className='py-8 space-y-14'>
-          <h1 className='capitalize font-semibold md:text-3xl text-2xl text-gray-700 text-center'>Trusted by <span className='text-[dodgerblue] font-bold'>50+</span> companies</h1>
+          <h1 className='capitalize font-semibold md:text-3xl text-2xl text-gray-700 text-center'>Trusted by<span className='text-[dodgerblue] font-bold'>50+</span> companies</h1>
           <Marquee pauseOnHover speed={90} className='md:space-x-8 space-x-4 mt-4'>
             {
               brandsImage.map((item, index)=>(
