@@ -19,57 +19,7 @@ const Home = ({slider, brandName, feature, title='Latest Products'}) => {
 
   const { error, isLoading, Razorpay } = useRazorpay();
 
-  const [products, setProducts] = useState([
-    // {
-    //   title : 'Men`s Shirt blue denim',
-    //   description : 'I am related to men`s product',
-    //   price: 2000,
-    //   discount: 50,
-    //   image: '/products/a.jpg'
-    // },
-    // {
-    //   title : 'Men`s Shirt blue denim',
-    //   description : 'I am related to men`s product',
-    //   price: 2000,
-    //   discount: 15,
-    //   image: '/products/b.jpg'
-    // },
-    // {
-    //   title : 'Men`s Shirt blue denim',
-    //   description : 'I am related to men`s product',
-    //   price: 2000,
-    //   discount: 15,
-    //   image: '/products/c.jpg'
-    // },
-    // {
-    //   title : 'Men`s Shirt blue denim',
-    //   description : 'I am related to men`s product',
-    //   price: 2000,
-    //   discount: 15,
-    //   image: '/products/d.jpg'
-    // },
-    // {
-    //   title : 'Men`s Shirt blue denim',
-    //   description : 'I am related to men`s product',
-    //   price: 2000,
-    //   discount: 15,
-    //   image: '/products/e.jpg'
-    // },
-    // {
-    //   title : 'Men`s Shirt blue denim',
-    //   description : 'I am related to men`s product',
-    //   price: 2000,
-    //   discount: 15,
-    //   image: '/products/a.jpg'
-    // },
-    // {
-    //   title : 'Men`s Shirt blue denim',
-    //   description : 'I am related to men`s product',
-    //   price: 2000,
-    //   discount: 15,
-    //   image: '/products/g.jpg'
-    // }
-  ])
+  const [products, setProducts] = useState([])
 
   const [weOffer, setWeOffer] = useState([
     {
