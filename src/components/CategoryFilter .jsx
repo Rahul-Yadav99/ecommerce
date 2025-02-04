@@ -13,10 +13,7 @@ const categories = ["All", "Clothing", "Electronics", "Footwear"];
 const CategoryFilter = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const filteredProducts =
-    selectedCategory === "All"
-      ? products
-      : products.filter((product) => product.category === selectedCategory);
+  const filteredProducts = selectedCategory === "All" ? products : products.filter((product) => product.category === selectedCategory);
 
   return (
     <div>
