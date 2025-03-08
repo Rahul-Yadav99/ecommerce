@@ -101,7 +101,7 @@ const Products = () => {
     description: '',
     price: '',
     discount: '',
-    brand : '',
+    brand: '',
   }
 
   const [productForm, setProductForm] = useState(model)
@@ -110,11 +110,11 @@ const Products = () => {
   const [updateUI, setUpdateUI] = useState(false)
   const [edit, setEdit] = useState(null)
 
-  useEffect(()=>{
+  useEffect(() => {
     const req = async () => {
       const snapshot = await getDocs(collection(db, "products"))
       const tmp = []
-      snapshot.forEach((doc)=>{
+      snapshot.forEach((doc) => {
         const allProducts = doc.data()
         allProducts.imageId = doc.id
         allProducts.id = doc.id
@@ -134,28 +134,28 @@ const Products = () => {
       ...productForm,
       [name]: value
     })
-    
+
   }
 
   const createProduct = async (e) => {
     try {
       e.preventDefault()
-      await addDoc(collection(db, 'products'), productForm)  
+      await addDoc(collection(db, 'products'), productForm)
       setProductForm(model)
       setProductModel(false)
-      toast.success('Product Added') 
+      toast.success('Product Added')
     } catch (error) {
       toast.error(error.message,)
-    }finally{
+    } finally {
       setUpdateUI(!updateUI)
-    }    
+    }
   }
 
   const handleFileUpload = async (e, id) => {
     try {
       const input = e.target
       const file = input.files[0]
-      if(!file) return
+      if (!file) return
       setLoader(true)
       const formData = new FormData()
       formData.append('file', file)
@@ -173,12 +173,12 @@ const Products = () => {
       //   image: imageURL,
       //   createdAt: new Date()
       // })
-      
+
       const ref = doc(db, 'products', id)
-      await updateDoc(ref, { image: imageURL })      
+      await updateDoc(ref, { image: imageURL })
     } catch (error) {
       toast.error(error.message,)
-    }finally{
+    } finally {
       setLoader(false)
       setUpdateUI(!updateUI)
     }
@@ -198,11 +198,11 @@ const Products = () => {
   const editProduct = (item) => {
     setEdit(item)
     setProductForm(item)
-    setProductModel(true)    
+    setProductModel(true)
   }
 
   const saveData = async (e) => {
-    try{
+    try {
       e.preventDefault()
       const ref = doc(db, 'products', edit.id)
       await updateDoc(ref, productForm)
@@ -210,91 +210,91 @@ const Products = () => {
       setProductModel(false)
       setEdit(null)
       setUpdateUI(!updateUI)
-    }catch(err){
+    } catch (err) {
       toast.error(err.message,)
     }
   }
   return (
-    <> 
-    {
-      loader 
-      ?
-      <Loader />
-      :
-      <Layout>
-        <div className="min-h-screen">
-          <div className="flex justify-between">
-            <h1 className='text-xl font-semibold mb-4'>Product`s</h1>
-            <button className='border px-2 py-3 text-white bg-[dodgerblue] rounded hover:bg-[deeppink]' onClick={()=>setProductModel(true)}>
-              <i className='ri-sticky-note-add-line mr-1'></i>
-              New Product
-            </button>
-          </div>
-  
-            <div className=' grid md:grid-cols-4 grid-cols-1 gap-8 mt-3'>
-              {
-                products.map((item, index)=>(
-                  <div key={index} className='bg-white rounded-md shadow-xl m-auto'>
-                    <div className="relative overflow-hidden ">
-                      <img src={item.image ? item.image : 'https://via.placeholder.com/300x300'} className='w-72 h-72 object-cover rounded-lg'/>
-                      <input type="file" className='opacity-0 w-full h-full absolute top-0 left-0' onChange={(e)=>handleFileUpload(e, item.imageId)}/>
-                    </div>
-                    <div className='px-2 py-4 '>
-                      <div className=" flex justify-between items-center">
-                        <h1 className='font-base text-left capitalize font-semibold'>{item.title}</h1>
-                        <div className="">
-                          <button onClick={()=>deleteProduct(item.id)}>
-                            <i className="ri-delete-bin-6-line text-lg hover:text-red-500 hover:bg-red-200 p-2 rounded-full"></i>
-                          </button>
-                          <button onClick={()=>editProduct(item)}>
-                            <i className="ri-edit-box-line text-lg hover:text-green-600 hover:bg-green-200 p-2 rounded-full"></i>
-                          </button>
+    <>
+      {
+        loader
+          ?
+          <Loader />
+          :
+          <Layout>
+            <div className="min-h-screen">
+              <div className="flex justify-between">
+                <h1 className='text-xl font-semibold mb-4'>Product`s</h1>
+                <button className='border px-2 py-3 text-white bg-[dodgerblue] rounded hover:bg-[deeppink]' onClick={() => setProductModel(true)}>
+                  <i className='ri-sticky-note-add-line mr-1'></i>
+                  New Product
+                </button>
+              </div>
+
+              <div className=' grid md:grid-cols-4 grid-cols-1 gap-8 mt-3'>
+                {
+                  products.map((item, index) => (
+                    <div key={index} className='bg-white rounded-md shadow-xl m-auto'>
+                      <div className="relative overflow-hidden ">
+                        <img src={item.image ? item.image : 'https://via.placeholder.com/300x300'} className='w-72 h-72 object-cover rounded-lg' />
+                        <input type="file" className='opacity-0 w-full h-full absolute top-0 left-0' onChange={(e) => handleFileUpload(e, item.imageId)} />
+                      </div>
+                      <div className='px-2 py-4 '>
+                        <div className=" flex justify-between items-center">
+                          <h1 className='font-base text-left capitalize font-semibold'>{item.title}</h1>
+                          <div className="">
+                            <button onClick={() => deleteProduct(item.id)}>
+                              <i className="ri-delete-bin-6-line text-lg hover:text-red-500 hover:bg-red-200 p-2 rounded-full"></i>
+                            </button>
+                            <button onClick={() => editProduct(item)}>
+                              <i className="ri-edit-box-line text-lg hover:text-green-600 hover:bg-green-200 p-2 rounded-full"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <p className='text-gray-800 capitalize text-xs'>{item.description.slice(0, 20)}...</p>
+                        <div className='flex gap-1 mt-1 items-center'>
+                          <label className='text-sm'>₹{item.price - (item.price * item.discount) / 100}</label>
+                          <del className='text-xs text-gray-800'>₹{item.price}</del>
+                          <label className='text-xs text-gray-800'>({item.discount}% off)</label>
                         </div>
                       </div>
-                      <p className='text-gray-800 capitalize text-xs'>{item.description.slice(0,20)}...</p>
-                      <div className='flex gap-1 mt-1 items-center'>
-                        <label className='text-sm'>₹{item.price-(item.price*item.discount)/100}</label>
-                        <del className='text-xs text-gray-800'>₹{item.price}</del>
-                        <label className='text-xs text-gray-800'>({item.discount}% off)</label>
-                      </div>
                     </div>
+                  ))
+                }
+              </div>
+
+              {
+                productModel &&
+                <div className="bg-gray-800 bg-opacity-80 absolute top-0 left-0 w-full h-full flex justify-center items-center">
+                  <div className="bg-white w-6/12 py-4 px-6 rounded-md relative">
+                    <button className='absolute top-3 right-3' onClick={() => setProductModel(false)}>
+                      <i className="ri-close-line text-lg font-semibold"></i>
+                    </button>
+                    <h1 className='text-lg font-semibold'>New Product</h1>
+                    <form onSubmit={edit ? saveData : createProduct} className='grid grid-cols-2 mt-4 gap-4'>
+                      <input type="text" name="title" placeholder='Enter product title here' required onChange={handleProductForm} value={productForm.title} className='col-span-2 p-2 border border-gray-300 rounded' />
+                      <input type="number" name="price" placeholder='Enter product price here' required onChange={handleProductForm} value={productForm.price} className='p-2 border border-gray-300 rounded' />
+                      <input type="number" name="discount" placeholder='Enter discount discount here' required onChange={handleProductForm} value={productForm.discount} className='p-2 border border-gray-300 rounded' />
+                      <select name="brand" onChange={handleProductForm} className='p-2 border border-gray-300 rounded'>
+                        <option value="All">Select Brand</option>
+                        <option value="H&M">H&M</option>
+                        <option value="Adidas">Adidas</option>
+                        <option value="Zara">Zara</option>
+                        <option value="Louis Vuitton">Louis Vuitton</option>
+                        <option value="Vibe Nest">Vibe Nest</option>
+                      </select>
+                      <textarea name="description" placeholder='Description' onChange={handleProductForm} value={productForm.description} className='col-span-2 p-2 border border-gray-300 rounded' rows={10} ></textarea>
+                      <div>
+                        <button className='bg-[dodgerblue] text-white py-2 px-4 rounded hover:bg-[deeppink]'>Submit</button>
+                      </div>
+                    </form>
                   </div>
-                ))
+                </div>
               }
             </div>
-  
-          {
-            productModel && 
-            <div className="bg-gray-800 bg-opacity-80 absolute top-0 left-0 w-full h-full flex justify-center items-center">
-              <div className="bg-white w-6/12 py-4 px-6 rounded-md relative">
-                <button className='absolute top-3 right-3' onClick={()=>setProductModel(false)}>
-                  <i className="ri-close-line text-lg font-semibold"></i>
-                </button>
-                <h1 className='text-lg font-semibold'>New Product</h1>
-                <form onSubmit={edit ? saveData : createProduct} className='grid grid-cols-2 mt-4 gap-4'>
-                  <input type="text" name="title" placeholder='Enter product title here' required onChange={handleProductForm} value={productForm.title} className='col-span-2 p-2 border border-gray-300 rounded'/>
-                  <input type="number" name="price" placeholder='Enter product price here' required onChange={handleProductForm} value={productForm.price} className='p-2 border border-gray-300 rounded'/>
-                  <input type="number" name="discount" placeholder='Enter discount discount here' required onChange={handleProductForm} value={productForm.discount} className='p-2 border border-gray-300 rounded'/>
-                  <select name="brand" onChange={handleProductForm} className='p-2 border border-gray-300 rounded'>
-                    <option value="All">Select Brand</option>
-                    <option value="H&M">H&M</option>
-                    <option value="Adidas">Adidas</option>
-                    <option value="Zara">Zara</option>
-                    <option value="Louis Vuitton">Louis Vuitton</option>
-                    <option value="Vibe Nest">Vibe Nest</option>
-                  </select>
-                  <textarea name="description" placeholder='Description' onChange={handleProductForm} value={productForm.description} className='col-span-2 p-2 border border-gray-300 rounded' rows={10} ></textarea>
-                  <div>
-                    <button className='bg-[dodgerblue] text-white py-2 px-4 rounded hover:bg-[deeppink]'>Submit</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          }
-        </div>
-      </Layout>
+          </Layout>
 
-    }
+      }
     </>
   )
 }
